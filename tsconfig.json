@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "es2022",
+    "lib": ["dom", "es2022"],
+    "module": "es2022",
+    "moduleResolution": "node",
+    "types": [
+      "react",
+      "@vitest/browser/matchers",
+      "@vitest/browser/providers/playwright",
+      "vitest-browser-react"
+    ],
+    "noEmit": true,
+    "esModuleInterop": true,
+    "stripInternal": true,
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts"],
+  "exclude": ["node_modules"]
+}
