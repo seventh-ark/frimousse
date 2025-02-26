@@ -10,6 +10,9 @@
     "lint:biome": "biome lint"
   },
   "dependencies": {
+    "@liveblocks/client": "^2.18.3",
+    "@liveblocks/node": "^2.18.3",
+    "@liveblocks/react": "^2.18.3",
     "frimousse": "file:../",
     "next": "15.1.7",
     "react": "^19.0.0",
