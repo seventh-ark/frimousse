@@ -94,7 +94,7 @@ export default function Page() {
               <EmojiPicker.ActiveEmoji>
                 {({ emoji }) => (
                   <>
-                    <div className="-ml-1 flex aspect-square w-9 items-center justify-center text-2xl">
+                    <div className="-ml-1 flex size-9 items-center justify-center text-2xl">
                       {emoji?.emoji}
                     </div>
                     <div className="flex w-0 min-w-0 flex-1 flex-col justify-center text-xs">
@@ -109,7 +109,7 @@ export default function Page() {
                 )}
               </EmojiPicker.ActiveEmoji>
               <EmojiPicker.SkinToneSelector
-                className="mr-1 cursor-pointer"
+                className="-mr-0.5 size-9 cursor-pointer"
                 emoji="👋"
               />
             </div>

@@ -153,8 +153,13 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
       (event: FocusEvent<HTMLDivElement>) => {
         onFocusCapture?.(event);
 
+        const { searchRef, viewportRef } = store.get();
+
         if (!event.isDefaultPrevented()) {
-          setFocusedWithin(true);
+          setFocusedWithin(
+            event.target === searchRef?.current ||
+              event.target === viewportRef?.current,
+          );
         }
       },
       [onFocusCapture],
@@ -169,11 +174,16 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
           !event.currentTarget.contains(event.relatedTarget)
         ) {
           setFocusedWithin(false);
-          store.get().onActiveEmojiReset();
         }
       },
       [onBlurCapture],
     );
+
+    useLayoutEffect(() => {
+      if (!isFocusedWithin) {
+        store.get().onActiveEmojiReset();
+      }
+    }, [isFocusedWithin]);
 
     useImperativeHandle(forwardedRef, () => ref.current);
 
