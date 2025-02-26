@@ -11,7 +11,10 @@ export type {
   EmojiPickerListCategoryHeaderProps,
   EmojiPickerListEmojiProps,
   EmojiPickerListComponents,
+  Emoji,
+  Category,
   Locale,
+  SkinTone,
 } from "./types";
 export * as EmojiPicker from "./components/emoji-picker";
 export { useActiveEmoji, useSkinTone } from "./hooks";
