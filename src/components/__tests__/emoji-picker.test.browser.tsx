@@ -500,6 +500,101 @@ describe("EmojiPicker.List", () => {
   });
 });
 
+describe("EmojiPicker.SkinToneSelector", () => {
+  it("should display the current skin tone and change to the next one on click", async () => {
+    page.render(
+      <DefaultPage
+        rootChildren={
+          <EmojiPicker.SkinToneSelector
+            data-testid="skin-tone-selector"
+            emoji="👸"
+          />
+        }
+        skinTone="medium"
+      />,
+    );
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveTextContent("👸🏽");
+
+    await page.getByTestId("skin-tone-selector").click();
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveTextContent("👸🏾");
+
+    await page.getByTestId("skin-tone-selector").click();
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveTextContent("👸🏿");
+
+    await page.getByTestId("skin-tone-selector").click();
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveTextContent("👸");
+
+    await page.getByTestId("skin-tone-selector").click();
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveTextContent("👸🏻");
+
+    await page.getByTestId("skin-tone-selector").click();
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveTextContent("👸🏼");
+  });
+
+  it("should be correctly labelled", async () => {
+    page.render(
+      <DefaultPage
+        rootChildren={
+          <EmojiPicker.SkinToneSelector data-testid="skin-tone-selector" />
+        }
+        skinTone="medium"
+      />,
+    );
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveAccessibleName("Change skin tone (Medium-dark skin tone)");
+
+    await page.getByTestId("skin-tone-selector").click();
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveAccessibleName("Change skin tone (Dark skin tone)");
+
+    await page.getByTestId("skin-tone-selector").click();
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveAccessibleName("Change skin tone");
+
+    await page.getByTestId("skin-tone-selector").click();
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveAccessibleName("Change skin tone (Light skin tone)");
+
+    await page.getByTestId("skin-tone-selector").click();
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveAccessibleName("Change skin tone (Medium-light skin tone)");
+
+    await page.getByTestId("skin-tone-selector").click();
+
+    await expect
+      .element(page.getByTestId("skin-tone-selector"))
+      .toHaveAccessibleName("Change skin tone (Medium skin tone)");
+  });
+});
+
 describe("EmojiPicker.Loading", () => {
   it("should render when loading emojis", async () => {
     page.render(<DefaultPage />);
