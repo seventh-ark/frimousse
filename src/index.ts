@@ -4,6 +4,7 @@ export type {
   EmojiPickerActiveEmojiProps,
   EmojiPickerRootProps,
   EmojiPickerSearchProps,
+  EmojiPickerSkinToneSelectorProps,
   EmojiPickerSkinToneProps,
   EmojiPickerViewportProps,
   EmojiPickerListProps,

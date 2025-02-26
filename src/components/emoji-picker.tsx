@@ -5,6 +5,7 @@ import {
   type ChangeEvent,
   type FocusEvent,
   Fragment,
+  type MouseEvent,
   type ReactNode,
   type SyntheticEvent,
   type UIEvent,
@@ -49,6 +50,7 @@ import type {
   EmojiPickerRootProps,
   EmojiPickerSearchProps,
   EmojiPickerSkinToneProps,
+  EmojiPickerSkinToneSelectorProps,
   EmojiPickerViewportProps,
   WithAttributes,
 } from "../types";
@@ -408,6 +410,100 @@ const EmojiPickerSearch = forwardRef<HTMLInputElement, EmojiPickerSearchProps>(
     );
   },
 );
+
+const ActiveEmojiAnnouncer = memo(() => {
+  const activeEmoji = useActiveEmoji();
+
+  if (!activeEmoji) {
+    return null;
+  }
+
+  return (
+    <div
+      aria-live="polite"
+      style={{
+        border: 0,
+        clip: "rect(0, 0, 0, 0)",
+        height: 1,
+        margin: -1,
+        overflow: "hidden",
+        padding: 0,
+        position: "absolute",
+        whiteSpace: "nowrap",
+        width: 1,
+        wordWrap: "normal",
+      }}
+    >
+      {activeEmoji.label}
+    </div>
+  );
+});
+
+const EmojiPickerViewport = forwardRef<
+  HTMLDivElement,
+  EmojiPickerViewportProps
+>(({ children, onScroll, style, ...props }, forwardedRef) => {
+  const store = useEmojiPickerStore();
+  const ref = useRef<HTMLDivElement>(null!);
+  const callbackRef = useCallback((element: HTMLDivElement | null) => {
+    if (element) {
+      ref.current = element;
+      store.set({ viewportRef: ref });
+    }
+  }, []);
+
+  const handleScroll = useCallback(
+    (event: UIEvent<HTMLDivElement>) => {
+      onScroll?.(event);
+
+      store.get().onViewportScroll(event.currentTarget.scrollTop);
+    },
+    [onScroll],
+  );
+
+  useLayoutEffect(() => {
+    /* v8 ignore next 3 */
+    if (!ref.current) {
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver(([entry]) => {
+      const height = entry?.contentRect.height ?? 0;
+
+      if (store.get().viewportHeight !== height) {
+        store.get().onViewportHeightChange(height);
+      }
+    });
+
+    resizeObserver.observe(ref.current);
+
+    store.get().onViewportHeightChange(ref.current.clientHeight);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  useImperativeHandle(forwardedRef, () => ref.current);
+
+  return (
+    <div
+      frimousse-viewport=""
+      {...props}
+      onScroll={handleScroll}
+      ref={callbackRef}
+      style={{
+        contain: "layout paint",
+        overflowY: "auto",
+        position: "relative",
+        ...style,
+      }}
+    >
+      <ActiveEmojiAnnouncer />
+      {children}
+    </div>
+  );
+});
 
 function listEmojiProps(
   emoji: EmojiPickerEmoji,
@@ -812,97 +908,40 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
   },
 );
 
-const ActiveEmojiAnnouncer = memo(() => {
-  const activeEmoji = useActiveEmoji();
-
-  if (!activeEmoji) {
-    return null;
-  }
-
-  return (
-    <div
-      aria-live="polite"
-      style={{
-        border: 0,
-        clip: "rect(0, 0, 0, 0)",
-        height: 1,
-        margin: -1,
-        overflow: "hidden",
-        padding: 0,
-        position: "absolute",
-        whiteSpace: "nowrap",
-        width: 1,
-        wordWrap: "normal",
-      }}
-    >
-      {activeEmoji.label}
-    </div>
+const EmojiPickerSkinToneSelector = forwardRef<
+  HTMLButtonElement,
+  EmojiPickerSkinToneSelectorProps
+>(({ emoji, onClick, ...props }, forwardedRef) => {
+  const [skinTone, setSkinTone, skinTones] = useSkinTone(emoji);
+  const skinToneVariationIndex = useMemo(
+    () =>
+      Math.max(
+        0,
+        skinTones.findIndex(
+          (skinToneVariation) => skinToneVariation.skinTone === skinTone,
+        ),
+      ),
+    [skinTone, skinTones],
   );
-});
+  const skinToneVariation = skinTones[skinToneVariationIndex]!;
 
-const EmojiPickerViewport = forwardRef<
-  HTMLDivElement,
-  EmojiPickerViewportProps
->(({ children, onScroll, style, ...props }, forwardedRef) => {
-  const store = useEmojiPickerStore();
-  const ref = useRef<HTMLDivElement>(null!);
-  const callbackRef = useCallback((element: HTMLDivElement | null) => {
-    if (element) {
-      ref.current = element;
-      store.set({ viewportRef: ref });
-    }
-  }, []);
+  const handleClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      onClick?.(event);
 
-  const handleScroll = useCallback(
-    (event: UIEvent<HTMLDivElement>) => {
-      onScroll?.(event);
-
-      store.get().onViewportScroll(event.currentTarget.scrollTop);
-    },
-    [onScroll],
-  );
-
-  useLayoutEffect(() => {
-    /* v8 ignore next 3 */
-    if (!ref.current) {
-      return;
-    }
-
-    const resizeObserver = new ResizeObserver(([entry]) => {
-      const height = entry?.contentRect.height ?? 0;
-
-      if (store.get().viewportHeight !== height) {
-        store.get().onViewportHeightChange(height);
+      if (!event.isDefaultPrevented()) {
+        setSkinTone(
+          skinTones[(skinToneVariationIndex + 1) % skinTones.length]!.skinTone,
+        );
       }
-    });
-
-    resizeObserver.observe(ref.current);
-
-    store.get().onViewportHeightChange(ref.current.clientHeight);
-
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, []);
-
-  useImperativeHandle(forwardedRef, () => ref.current);
+    },
+    [onClick, setSkinTone, skinToneVariationIndex, skinTones],
+  );
 
   return (
-    <div
-      frimousse-viewport=""
-      {...props}
-      onScroll={handleScroll}
-      ref={callbackRef}
-      style={{
-        contain: "layout paint",
-        overflowY: "auto",
-        position: "relative",
-        ...style,
-      }}
-    >
-      <ActiveEmojiAnnouncer />
-      {children}
-    </div>
+    <button type="button" {...props} onClick={handleClick} ref={forwardedRef}>
+      {skinToneVariation.emoji}
+    </button>
   );
 });
 
@@ -944,17 +983,13 @@ function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps) {
 function EmojiPickerActiveEmoji({ children }: EmojiPickerActiveEmojiProps) {
   const activeEmoji = useActiveEmoji();
 
-  return typeof children === "function"
-    ? children({ emoji: activeEmoji })
-    : children;
+  return children({ emoji: activeEmoji });
 }
 
 function EmojiPickerSkinTone({ children }: EmojiPickerSkinToneProps) {
   const [skinTone, setSkinTone, skinTones] = useSkinTone();
 
-  return typeof children === "function"
-    ? children({ skinTone, setSkinTone, skinTones })
-    : children;
+  return children({ skinTone, setSkinTone, skinTones });
 }
 
 export {
@@ -962,6 +997,7 @@ export {
   EmojiPickerSearch as Search, // <EmojiPicker.Search />
   EmojiPickerViewport as Viewport, // <EmojiPicker.Viewport />
   EmojiPickerList as List, // <EmojiPicker.List />
+  EmojiPickerSkinToneSelector as SkinToneSelector, // <EmojiPicker.SkinToneSelector />
   EmojiPickerLoading as Loading, // <EmojiPicker.Loading />
   EmojiPickerEmpty as Empty, // <EmojiPicker.Empty />
   EmojiPickerActiveEmoji as ActiveEmoji, // <EmojiPicker.ActiveEmoji />

@@ -90,11 +90,11 @@ export default function Page() {
                 }}
               />
             </EmojiPicker.Viewport>
-            <div className="flex w-full min-w-0 flex-1 border-gray-200 border-t p-2">
+            <div className="flex w-full min-w-0 flex-1 gap-1 border-gray-200 border-t p-2">
               <EmojiPicker.ActiveEmoji>
                 {({ emoji }) => (
                   <>
-                    <div className="-ml-1 mr-1 flex aspect-square w-9 items-center justify-center text-2xl">
+                    <div className="-ml-1 flex aspect-square w-9 items-center justify-center text-2xl">
                       {emoji?.emoji}
                     </div>
                     <div className="flex w-0 min-w-0 flex-1 flex-col justify-center text-xs">
@@ -108,6 +108,10 @@ export default function Page() {
                   </>
                 )}
               </EmojiPicker.ActiveEmoji>
+              <EmojiPicker.SkinToneSelector
+                className="mr-1 cursor-pointer"
+                emoji="👋"
+              />
             </div>
           </EmojiPicker.Root>
         )}

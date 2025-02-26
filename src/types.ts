@@ -125,6 +125,11 @@ export type EmojiPickerViewportProps = ComponentProps<"div">;
 
 export type EmojiPickerSearchProps = ComponentProps<"input">;
 
+export interface EmojiPickerSkinToneSelectorProps
+  extends Omit<ComponentProps<"button">, "children"> {
+  emoji?: string;
+}
+
 export type EmojiPickerLoadingProps = {
   children?: ReactNode;
 };
