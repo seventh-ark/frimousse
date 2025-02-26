@@ -12,8 +12,11 @@ export default function Page() {
 
   return (
     <>
-      <header>v{pkg.version}</header>
-      <main>
+      <header className="container py-6">
+        <h1 className="font-headings text-3xl tracking-tight">Frimousse</h1>
+        <span>v{pkg.version}</span>
+      </header>
+      <main className="container">
         <button onClick={() => setOpen(!isOpen)} type="button">
           Toggle
         </button>
