@@ -13,4 +13,4 @@ export type {
   Locale,
 } from "./types";
 export * as EmojiPicker from "./components/emoji-picker";
-export { useActiveEmoji, useSearch, useSkinTone } from "./hooks";
+export { useActiveEmoji, useSkinTone } from "./hooks";

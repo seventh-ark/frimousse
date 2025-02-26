@@ -5,6 +5,7 @@ import {
   type ChangeEvent,
   type FocusEvent,
   Fragment,
+  type ReactNode,
   type SyntheticEvent,
   type UIEvent,
   forwardRef,
@@ -19,13 +20,14 @@ import {
 import { EMOJI_FONT_FAMILY } from "../constants";
 import { getEmojiData } from "../data/emoji";
 import { getEmojiPickerData } from "../data/emoji-picker";
-import { useActiveEmoji, useSearch, useSkinTone } from "../hooks";
+import { useActiveEmoji, useSkinTone } from "../hooks";
 import {
   $activeEmoji,
   $categoriesRowsStartIndices,
   $isEmpty,
   $isLoading,
   $rowsCount,
+  $search,
   type EmojiPickerStore,
   EmojiPickerStoreProvider,
   createEmojiPickerStore,
@@ -314,7 +316,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
           previousRowHeight = state.rowHeight;
 
           ref.current.style.setProperty(
-            "--frimousse-row-height",
+            "--frimousse-list-row-height",
             `${state.rowHeight}px`,
           );
         }
@@ -323,7 +325,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
           previousCategoryHeaderHeight = state.categoryHeaderHeight;
 
           ref.current.style.setProperty(
-            "--frimousse-category-header-height",
+            "--frimousse-list-category-header-height",
             `${state.categoryHeaderHeight}px`,
           );
         }
@@ -437,7 +439,7 @@ function listRowProps(
     style: {
       contain: "content",
       display: "flex",
-      height: "var(--frimousse-row-height)",
+      height: "var(--frimousse-list-row-height)",
     },
   };
 }
@@ -450,7 +452,7 @@ function listCategoryHeaderProps(
     "frimousse-list-category-header": "",
     style: {
       contain: "layout paint",
-      height: "var(--frimousse-category-header-height)",
+      height: "var(--frimousse-list-category-header-height)",
       pointerEvents: "auto",
       position: "sticky",
       top: 0,
@@ -571,11 +573,11 @@ const EmojiPickerListCategory = memo(
       <div
         style={{
           contain: "content",
-          height: `calc(var(--frimousse-category-header-height) + ${dataCategory.rowsCount} * var(--frimousse-row-height))`,
+          height: `calc(var(--frimousse-list-category-header-height) + ${dataCategory.rowsCount} * var(--frimousse-list-row-height))`,
           width: "100%",
           pointerEvents: "none",
           position: "absolute",
-          top: `calc(${categoryIndex} * var(--frimousse-category-header-height) + ${dataCategory.startRowIndex} * var(--frimousse-row-height))`,
+          top: `calc(${categoryIndex} * var(--frimousse-list-category-header-height) + ${dataCategory.startRowIndex} * var(--frimousse-list-row-height))`,
         }}
       >
         <CategoryHeader {...listCategoryHeaderProps(category)} />
@@ -764,8 +766,8 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
         {...props}
         ref={callbackRef}
         style={{
-          height: `calc(${rowsCount} * var(--frimousse-row-height) + ${categoriesCount} * var(--frimousse-category-header-height))`,
-          paddingTop: `calc(${viewportStartRowIndex} * var(--frimousse-row-height) + ${previousHeadersCount} * var(--frimousse-category-header-height))`,
+          height: `calc(${rowsCount} * var(--frimousse-list-row-height) + ${categoriesCount} * var(--frimousse-list-category-header-height))`,
+          paddingTop: `calc(${viewportStartRowIndex} * var(--frimousse-list-row-height) + ${previousHeadersCount} * var(--frimousse-list-category-header-height))`,
           ...style,
         }}
       >
@@ -785,7 +787,7 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
                 {categoryIndex >= 0 && (
                   <div
                     style={{
-                      height: "var(--frimousse-category-header-height)",
+                      height: "var(--frimousse-list-category-header-height)",
                     }}
                   />
                 )}
@@ -915,16 +917,28 @@ function EmojiPickerLoading({ children }: EmojiPickerLoadingProps) {
   return <>{children}</>;
 }
 
+function EmojiPickerEmptyWithSearch({
+  children,
+}: { children: (props: { search: string }) => ReactNode }) {
+  const store = useEmojiPickerStore();
+  const search = useSelector(store, $search);
+
+  return children({ search });
+}
+
 function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps) {
   const store = useEmojiPickerStore();
   const isEmpty = useSelector(store, $isEmpty);
-  const search = useSearch();
 
   if (!isEmpty) {
     return null;
   }
 
-  return typeof children === "function" ? children({ search }) : children;
+  return typeof children === "function" ? (
+    <EmojiPickerEmptyWithSearch>{children}</EmojiPickerEmptyWithSearch>
+  ) : (
+    children
+  );
 }
 
 function EmojiPickerActiveEmoji({ children }: EmojiPickerActiveEmojiProps) {

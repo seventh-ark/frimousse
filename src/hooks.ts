@@ -1,16 +1,10 @@
 import { useCallback, useDeferredValue, useMemo } from "react";
-import { $activeEmoji, $search, sameEmojiPickerEmoji } from "./store";
+import { $activeEmoji, sameEmojiPickerEmoji } from "./store";
 
 import { useEmojiPickerStore } from "./store";
 import type { Emoji, SkinTone, SkinToneVariation } from "./types";
 import { getSkinToneVariations } from "./utils/get-skin-tone-variations";
 import { useSelector, useSelectorKey } from "./utils/store";
-
-export function useSearch(): string {
-  const store = useEmojiPickerStore();
-
-  return useSelector(store, $search);
-}
 
 export function useActiveEmoji(): Emoji | undefined {
   const store = useEmojiPickerStore();
