@@ -334,6 +334,10 @@ export function $categoriesRowsStartIndices(state: EmojiPickerStore) {
   return state.data?.categoriesStartRowIndices;
 }
 
+export function $skinTones(state: EmojiPickerStore) {
+  return state.data?.skinTones;
+}
+
 export function sameEmojiPickerEmoji(
   a: EmojiPickerEmoji | undefined,
   b: EmojiPickerEmoji | undefined,

@@ -104,5 +104,6 @@ export function getEmojiPickerData(
     categories,
     categoriesStartRowIndices,
     rows,
+    skinTones: data.skinTones,
   };
 }

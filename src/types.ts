@@ -89,6 +89,7 @@ export type EmojiPickerData = {
   categories: EmojiPickerDataCategory[];
   categoriesStartRowIndices: number[];
   rows: EmojiPickerDataRow[];
+  skinTones: Record<Exclude<SkinTone, "none">, string>;
 };
 
 export type EmojiPickerListComponents = {

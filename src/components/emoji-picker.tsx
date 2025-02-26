@@ -29,6 +29,7 @@ import {
   $isLoading,
   $rowsCount,
   $search,
+  $skinTones,
   type EmojiPickerStore,
   EmojiPickerStoreProvider,
   createEmojiPickerStore,
@@ -911,39 +912,66 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
 const EmojiPickerSkinToneSelector = forwardRef<
   HTMLButtonElement,
   EmojiPickerSkinToneSelectorProps
->(({ emoji, onClick, ...props }, forwardedRef) => {
-  const [skinTone, setSkinTone, skinTones] = useSkinTone(emoji);
-  const skinToneVariationIndex = useMemo(
-    () =>
-      Math.max(
-        0,
-        skinTones.findIndex(
-          (skinToneVariation) => skinToneVariation.skinTone === skinTone,
+>(
+  (
+    { emoji, onClick, "aria-label": ariaLabel = "Change skin tone", ...props },
+    forwardedRef,
+  ) => {
+    const store = useEmojiPickerStore();
+    const skinTones = useSelector(store, $skinTones, shallow);
+    const [skinTone, setSkinTone, skinTonesVariations] = useSkinTone(emoji);
+
+    const skinToneVariationIndex = useMemo(
+      () =>
+        Math.max(
+          0,
+          skinTonesVariations.findIndex(
+            (variation) => variation.skinTone === skinTone,
+          ),
         ),
-      ),
-    [skinTone, skinTones],
-  );
-  const skinToneVariation = skinTones[skinToneVariationIndex]!;
+      [skinTone, skinTonesVariations],
+    );
 
-  const handleClick = useCallback(
-    (event: MouseEvent<HTMLButtonElement>) => {
-      onClick?.(event);
+    const skinToneVariation = skinTonesVariations[skinToneVariationIndex]!;
+    const nextSkinToneVariation =
+      skinTonesVariations[
+        (skinToneVariationIndex + 1) % skinTonesVariations.length
+      ]!;
+    const nextSkinTone = nextSkinToneVariation.skinTone;
 
-      if (!event.isDefaultPrevented()) {
-        setSkinTone(
-          skinTones[(skinToneVariationIndex + 1) % skinTones.length]!.skinTone,
-        );
-      }
-    },
-    [onClick, setSkinTone, skinToneVariationIndex, skinTones],
-  );
+    const skinToneLabel =
+      skinTone === "none" ? undefined : skinTones?.[skinTone];
+    const nextSkinToneLabel =
+      nextSkinTone === "none" ? undefined : skinTones?.[nextSkinTone];
 
-  return (
-    <button type="button" {...props} onClick={handleClick} ref={forwardedRef}>
-      {skinToneVariation.emoji}
-    </button>
-  );
-});
+    const handleClick = useCallback(
+      (event: MouseEvent<HTMLButtonElement>) => {
+        onClick?.(event);
+
+        if (!event.isDefaultPrevented()) {
+          setSkinTone(nextSkinTone);
+        }
+      },
+      [onClick, setSkinTone, nextSkinTone],
+    );
+
+    return (
+      <button
+        type="button"
+        {...props}
+        aria-label={
+          ariaLabel + (nextSkinToneLabel ? ` (${nextSkinToneLabel})` : "")
+        }
+        aria-live="polite"
+        aria-valuetext={skinToneLabel}
+        onClick={handleClick}
+        ref={forwardedRef}
+      >
+        {skinToneVariation.emoji}
+      </button>
+    );
+  },
+);
 
 function EmojiPickerLoading({ children }: EmojiPickerLoadingProps) {
   const store = useEmojiPickerStore();
@@ -993,13 +1021,13 @@ function EmojiPickerSkinTone({ children }: EmojiPickerSkinToneProps) {
 }
 
 export {
-  EmojiPickerRoot as Root, // <EmojiPicker.Root />
-  EmojiPickerSearch as Search, // <EmojiPicker.Search />
-  EmojiPickerViewport as Viewport, // <EmojiPicker.Viewport />
-  EmojiPickerList as List, // <EmojiPicker.List />
+  EmojiPickerRoot as Root, //                         <EmojiPicker.Root />
+  EmojiPickerSearch as Search, //                     <EmojiPicker.Search />
+  EmojiPickerViewport as Viewport, //                 <EmojiPicker.Viewport />
+  EmojiPickerList as List, //                         <EmojiPicker.List />
   EmojiPickerSkinToneSelector as SkinToneSelector, // <EmojiPicker.SkinToneSelector />
-  EmojiPickerLoading as Loading, // <EmojiPicker.Loading />
-  EmojiPickerEmpty as Empty, // <EmojiPicker.Empty />
-  EmojiPickerActiveEmoji as ActiveEmoji, // <EmojiPicker.ActiveEmoji />
-  EmojiPickerSkinTone as SkinTone, // <EmojiPicker.SkinTone />
+  EmojiPickerLoading as Loading, //                   <EmojiPicker.Loading />
+  EmojiPickerEmpty as Empty, //                       <EmojiPicker.Empty />
+  EmojiPickerActiveEmoji as ActiveEmoji, //           <EmojiPicker.ActiveEmoji />
+  EmojiPickerSkinTone as SkinTone, //                 <EmojiPicker.SkinTone />
 };
