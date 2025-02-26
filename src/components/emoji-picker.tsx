@@ -319,7 +319,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
           previousRowHeight = state.rowHeight;
 
           ref.current.style.setProperty(
-            "--frimousse-list-row-height",
+            "--frimousse-row-height",
             `${state.rowHeight}px`,
           );
         }
@@ -328,7 +328,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
           previousCategoryHeaderHeight = state.categoryHeaderHeight;
 
           ref.current.style.setProperty(
-            "--frimousse-list-category-header-height",
+            "--frimousse-category-header-height",
             `${state.categoryHeaderHeight}px`,
           );
         }
@@ -518,7 +518,7 @@ function listEmojiProps(
     "aria-colindex": columnIndex,
     "aria-selected": isActive || undefined,
     "data-active": isActive ? "" : undefined,
-    "frimousse-list-emoji": "",
+    "frimousse-emoji": "",
     style: {
       fontFamily: "var(--frimousse-font-family)",
     },
@@ -532,11 +532,11 @@ function listRowProps(
   return {
     role: "row",
     "aria-rowindex": rowIndex,
-    "frimousse-list-row": "",
+    "frimousse-row": "",
     style: {
       contain: "content",
       display: "flex",
-      height: "var(--frimousse-list-row-height)",
+      height: "var(--frimousse-row-height)",
     },
   };
 }
@@ -546,10 +546,10 @@ function listCategoryHeaderProps(
 ): WithAttributes<EmojiPickerListCategoryHeaderProps> {
   return {
     category,
-    "frimousse-list-category-header": "",
+    "frimousse-category-header": "",
     style: {
       contain: "layout paint",
-      height: "var(--frimousse-list-category-header-height)",
+      height: "var(--frimousse-category-header-height)",
       pointerEvents: "auto",
       position: "sticky",
       top: 0,
@@ -668,13 +668,14 @@ const EmojiPickerListCategory = memo(
 
     return (
       <div
+        frimousse-category=""
         style={{
           contain: "content",
-          height: `calc(var(--frimousse-list-category-header-height) + ${dataCategory.rowsCount} * var(--frimousse-list-row-height))`,
+          height: `calc(var(--frimousse-category-header-height) + ${dataCategory.rowsCount} * var(--frimousse-row-height))`,
           width: "100%",
           pointerEvents: "none",
           position: "absolute",
-          top: `calc(${categoryIndex} * var(--frimousse-list-category-header-height) + ${dataCategory.startRowIndex} * var(--frimousse-list-row-height))`,
+          top: `calc(${categoryIndex} * var(--frimousse-category-header-height) + ${dataCategory.startRowIndex} * var(--frimousse-row-height))`,
         }}
       >
         <CategoryHeader {...listCategoryHeaderProps(category)} />
@@ -756,7 +757,7 @@ const EmojiPickerListSizesHandler = memo(
           visibility: "hidden",
         }}
       >
-        <div ref={rowRef}>
+        <div frimousse-row-sizer="" ref={rowRef}>
           <Row {...listRowProps(-1)}>
             {emojis.map((emoji, index) => (
               <Emoji key={index} {...listEmojiProps(emoji, index, false)} />
@@ -764,6 +765,7 @@ const EmojiPickerListSizesHandler = memo(
           </Row>
         </div>
         <div
+          frimousse-category=""
           style={{
             contain: "content",
             pointerEvents: "none",
@@ -771,7 +773,7 @@ const EmojiPickerListSizesHandler = memo(
             width: "100%",
           }}
         >
-          <div ref={categoryHeaderRef}>
+          <div frimousse-category-header-sizer="" ref={categoryHeaderRef}>
             <CategoryHeader {...listCategoryHeaderProps(category)} />
           </div>
         </div>
@@ -863,8 +865,8 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
         {...props}
         ref={callbackRef}
         style={{
-          height: `calc(${rowsCount} * var(--frimousse-list-row-height) + ${categoriesCount} * var(--frimousse-list-category-header-height))`,
-          paddingTop: `calc(${viewportStartRowIndex} * var(--frimousse-list-row-height) + ${previousHeadersCount} * var(--frimousse-list-category-header-height))`,
+          height: `calc(${rowsCount} * var(--frimousse-row-height) + ${categoriesCount} * var(--frimousse-category-header-height))`,
+          paddingTop: `calc(${viewportStartRowIndex} * var(--frimousse-row-height) + ${previousHeadersCount} * var(--frimousse-category-header-height))`,
           ...style,
         }}
       >
@@ -884,7 +886,7 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
                 {categoryIndex >= 0 && (
                   <div
                     style={{
-                      height: "var(--frimousse-list-category-header-height)",
+                      height: "var(--frimousse-category-header-height)",
                     }}
                   />
                 )}
