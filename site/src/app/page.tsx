@@ -63,7 +63,7 @@ export default function Page() {
                 </div>
               </EmojiPicker.Empty>
               <EmojiPicker.List
-                className="select-none"
+                className="select-none pb-1"
                 components={{
                   Row: ({ children, ...props }) => (
                     <div {...props} className="scroll-mb-1 px-1">

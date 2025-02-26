@@ -864,48 +864,53 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
         role="grid"
         {...props}
         ref={callbackRef}
-        style={{
-          height: `calc(${rowsCount} * var(--frimousse-row-height) + ${categoriesCount} * var(--frimousse-category-header-height))`,
-          paddingTop: `calc(${viewportStartRowIndex} * var(--frimousse-row-height) + ${previousHeadersCount} * var(--frimousse-category-header-height))`,
-          ...style,
-        }}
       >
-        <EmojiPickerListSizesHandler
-          CategoryHeader={CategoryHeader}
-          Emoji={Emoji}
-          Row={Row}
-        />
-        {Array.from(
-          { length: viewportEndRowIndex - viewportStartRowIndex + 1 },
-          (_, index) => {
-            const rowIndex = viewportStartRowIndex + index;
-            const categoryIndex = categoriesRowsStartIndices.indexOf(rowIndex);
-
-            return (
-              <Fragment key={rowIndex}>
-                {categoryIndex >= 0 && (
-                  <div
-                    style={{
-                      height: "var(--frimousse-category-header-height)",
-                    }}
-                  />
-                )}
-                <EmojiPickerListRow
-                  Emoji={Emoji}
-                  Row={Row}
-                  rowIndex={rowIndex}
-                />
-              </Fragment>
-            );
-          },
-        )}
-        {Array.from({ length: categoriesCount }, (_, index) => (
-          <EmojiPickerListCategory
+        <div
+          frimousse-list-sizer=""
+          style={{
+            position: "relative",
+            height: `calc(${rowsCount} * var(--frimousse-row-height) + ${categoriesCount} * var(--frimousse-category-header-height))`,
+            paddingTop: `calc(${viewportStartRowIndex} * var(--frimousse-row-height) + ${previousHeadersCount} * var(--frimousse-category-header-height))`,
+          }}
+        >
+          <EmojiPickerListSizesHandler
             CategoryHeader={CategoryHeader}
-            categoryIndex={index}
-            key={index}
+            Emoji={Emoji}
+            Row={Row}
           />
-        ))}
+          {Array.from(
+            { length: viewportEndRowIndex - viewportStartRowIndex + 1 },
+            (_, index) => {
+              const rowIndex = viewportStartRowIndex + index;
+              const categoryIndex =
+                categoriesRowsStartIndices.indexOf(rowIndex);
+
+              return (
+                <Fragment key={rowIndex}>
+                  {categoryIndex >= 0 && (
+                    <div
+                      style={{
+                        height: "var(--frimousse-category-header-height)",
+                      }}
+                    />
+                  )}
+                  <EmojiPickerListRow
+                    Emoji={Emoji}
+                    Row={Row}
+                    rowIndex={rowIndex}
+                  />
+                </Fragment>
+              );
+            },
+          )}
+          {Array.from({ length: categoriesCount }, (_, index) => (
+            <EmojiPickerListCategory
+              CategoryHeader={CategoryHeader}
+              categoryIndex={index}
+              key={index}
+            />
+          ))}
+        </div>
       </div>
     );
   },
