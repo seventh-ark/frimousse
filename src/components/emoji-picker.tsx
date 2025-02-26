@@ -707,7 +707,6 @@ const EmojiPickerListSizesHandler = memo(
         Array<EmojiPickerEmoji>(columns).fill({
           emoji: "🙂",
           label: "",
-          shortcode: "",
         }),
       [columns],
     );

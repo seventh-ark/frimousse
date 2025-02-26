@@ -44,7 +44,6 @@ export type EmojiDataEmoji = {
   emoji: string;
   category: number;
   label: string;
-  shortcode: string;
   version: number;
   tags: string[];
   countryFlag: true | undefined;
@@ -66,7 +65,6 @@ export type EmojiData = {
 export type EmojiPickerEmoji = {
   emoji: string;
   label: string;
-  shortcode: string;
 };
 
 export type EmojiPickerCategory = {

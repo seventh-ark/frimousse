@@ -9,7 +9,6 @@ import type {
   SkinTone,
 } from "../types";
 import { capitalize } from "../utils/capitalize";
-import { formatAsShortcode } from "../utils/format-as-shortcode";
 import { isEmojiSupported } from "../utils/is-emoji-supported";
 import { getStorage, setStorage } from "../utils/storage";
 import * as $ from "../utils/validate";
@@ -189,7 +188,6 @@ async function fetchEmojiData(
       category: emoji.group,
       version: emoji.version,
       label: capitalize(emoji.label),
-      shortcode: formatAsShortcode(emoji.label),
       tags: emoji.tags ?? [],
       countryFlag:
         (countryFlagsSubgroup &&
@@ -261,7 +259,6 @@ const validateLocalData = $.object<LocalData>({
         emoji: $.string,
         category: $.number,
         label: $.string,
-        shortcode: $.string,
         version: $.number,
         tags: $.naiveArray($.string),
         countryFlag: $.optional($.boolean as $.Validator<true>),

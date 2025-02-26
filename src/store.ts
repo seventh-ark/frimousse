@@ -6,7 +6,6 @@ import type {
   Locale,
   SkinTone,
 } from "./types";
-import { formatAsShortcode } from "./utils/format-as-shortcode";
 import { createStore, useCreateStoreContext } from "./utils/store";
 
 const VIEWPORT_OVERSCAN = 2;
@@ -305,9 +304,7 @@ export function $activeEmoji(
   const activeEmoji =
     state.data?.rows[state.activeRowIndex]?.emojis[state.activeColumnIndex];
 
-  return activeEmoji
-    ? { ...activeEmoji, shortcode: formatAsShortcode(activeEmoji.label) }
-    : undefined;
+  return activeEmoji;
 }
 
 export function $isEmpty(state: EmojiPickerStore) {
