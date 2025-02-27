@@ -12,6 +12,7 @@ import {
 } from "@liveblocks/react/suspense";
 import type { EmojiPickerRootProps } from "frimousse";
 import type { ReactionsJson } from "liveblocks.config";
+import { SmilePlus } from "lucide-react";
 import {
   type ComponentProps,
   type MouseEvent,
@@ -44,20 +45,19 @@ interface ReactionsProps {
 const ReactionButton = memo(
   ({ emoji, isActive, count, className, ...props }: ReactionButtonProps) => {
     return (
-      <button
+      <Button
         className={cn(
+          "rounded-full px-2 py-1 text-sm",
+          isActive &&
+            "bg-accent/10 font-medium text-accent ring-accent hover:border-accent hover:bg-accent/10 focus-visible:border-accent focus-visible:bg-accent/10 focus-visible:ring-accent/20",
           className,
-          "rounded-full border border-transparent px-2 py-1 text-sm",
-          "transition duration-150 ease-out",
-          isActive
-            ? "border-accent bg-accent/10 font-medium text-accent"
-            : "bg-muted hover:border-border hover:bg-background",
         )}
         type="button"
+        variant="secondary"
         {...props}
       >
         {emoji} {count}
-      </button>
+      </Button>
     );
   },
 );
@@ -67,8 +67,15 @@ const AddReactionButton = memo(
     return (
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="secondary" {...props}>
-            Add reaction
+          <Button
+            aria-label="Add reaction"
+            className="rounded-full"
+            size="icon"
+            title="Add reaction"
+            variant="secondary"
+            {...props}
+          >
+            <SmilePlus />
           </Button>
         </PopoverTrigger>
         <PopoverContent>

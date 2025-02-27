@@ -17,7 +17,7 @@
   --accent-foreground: var(--color-neutral-50);
   --border: var(--color-neutral-200);
   --input: var(--color-neutral-200);
-  --ring: var(--color-neutral-400);
+  --ring: var(--color-neutral-200);
   --radius: 0.625rem;
 }
 
