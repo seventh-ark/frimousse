@@ -25,7 +25,7 @@ export async function Reactions({
   }
 
   return (
-    <div className={cn("flex gap-2", className)} {...props}>
+    <div className={cn("flex flex-wrap gap-1.5", className)} {...props}>
       <ClientReactions roomId={ROOM_ID} serverReactions={storage.reactions} />
     </div>
   );
