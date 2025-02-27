@@ -114,6 +114,10 @@ const LiveblocksReaction = memo(({ emoji }: { emoji: string }) => {
     [emoji, isActive],
   );
 
+  if (count === 0) {
+    return null;
+  }
+
   return (
     <ReactionButton
       count={count}
@@ -155,14 +159,17 @@ function LiveblocksReactions() {
 function ServerReactions({ reactions }: { reactions: ReactionsJson }) {
   return (
     <>
-      {Object.entries(reactions).map(([emoji, users]) => (
-        <ReactionButton
-          count={Object.keys(users).length}
-          disabled
-          emoji={emoji}
-          key={emoji}
-        />
-      ))}
+      {Object.entries(reactions).map(([emoji, users]) => {
+        const count = Object.keys(users).length;
+
+        if (count === 0) {
+          return null;
+        }
+
+        return (
+          <ReactionButton count={count} disabled emoji={emoji} key={emoji} />
+        );
+      })}
       <AddReactionButton disabled />
     </>
   );
@@ -206,17 +213,25 @@ function LocalReactions({
 
   return (
     <>
-      {Object.entries(reactions).map(([emoji, users]) => (
-        <ReactionButton
-          count={users.length}
-          emoji={emoji}
-          isActive={users.includes(id)}
-          key={emoji}
-          onClick={() => {
-            handleReactionClick(emoji);
-          }}
-        />
-      ))}
+      {Object.entries(reactions).map(([emoji, users]) => {
+        const count = users.length;
+
+        if (count === 0) {
+          return null;
+        }
+
+        return (
+          <ReactionButton
+            count={count}
+            emoji={emoji}
+            isActive={users.includes(id)}
+            key={emoji}
+            onClick={() => {
+              handleReactionClick(emoji);
+            }}
+          />
+        );
+      })}
       <AddReactionButton onEmojiSelect={handleAddReactionClick} />
     </>
   );
