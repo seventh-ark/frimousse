@@ -10,6 +10,7 @@ import {
   useSelf,
   useStorage,
 } from "@liveblocks/react/suspense";
+import type { EmojiPickerRootProps } from "frimousse";
 import type { ReactionsJson } from "liveblocks.config";
 import {
   type ComponentProps,
@@ -19,11 +20,20 @@ import {
   useState,
 } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { Button } from "./ui/button";
+import { EmojiPicker } from "./ui/emoji-picker";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
-interface ReactionProps extends Omit<ComponentProps<"button">, "children"> {
+interface ReactionButtonProps
+  extends Omit<ComponentProps<"button">, "children"> {
   emoji: string;
   count: number;
   isActive?: boolean;
+}
+
+interface AddReactionButtonProps
+  extends Omit<ComponentProps<"button">, "children"> {
+  onEmojiSelect?: EmojiPickerRootProps["onEmojiSelect"];
 }
 
 interface ReactionsProps {
@@ -31,8 +41,8 @@ interface ReactionsProps {
   serverReactions: ReactionsJson;
 }
 
-const Reaction = memo(
-  ({ emoji, isActive, count, className, ...props }: ReactionProps) => {
+const ReactionButton = memo(
+  ({ emoji, isActive, count, className, ...props }: ReactionButtonProps) => {
     return (
       <button
         className={cn(
@@ -45,6 +55,23 @@ const Reaction = memo(
       >
         {emoji} {count}
       </button>
+    );
+  },
+);
+
+const AddReactionButton = memo(
+  ({ onEmojiSelect, ...props }: AddReactionButtonProps) => {
+    return (
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="secondary" {...props}>
+            Add reaction
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <EmojiPicker onEmojiSelect={onEmojiSelect} />
+        </PopoverContent>
+      </Popover>
     );
   },
 );
@@ -78,7 +105,7 @@ const LiveblocksReaction = memo(({ emoji }: { emoji: string }) => {
   );
 
   return (
-    <Reaction
+    <ReactionButton
       count={count}
       emoji={emoji}
       isActive={isActive}
@@ -88,13 +115,29 @@ const LiveblocksReaction = memo(({ emoji }: { emoji: string }) => {
 });
 
 function LiveblocksReactions() {
+  const { id } = useSelf();
   const reactions = useStorage((storage) => storage.reactions.keys());
+
+  const handleAddReactionClick = useMutation(
+    ({ storage }, emoji: string) => {
+      if (!id) {
+        return;
+      }
+
+      storage.get("reactions")?.set(emoji, new LiveMap([[id, true]]));
+    },
+    [id],
+  );
 
   return (
     <>
       {Array.from(reactions).map((emoji) => (
         <LiveblocksReaction emoji={emoji} key={emoji} />
       ))}
+      <AddReactionButton
+        disabled={!id}
+        onEmojiSelect={handleAddReactionClick}
+      />
     </>
   );
 }
@@ -103,13 +146,14 @@ function ServerReactions({ reactions }: { reactions: ReactionsJson }) {
   return (
     <>
       {Object.entries(reactions).map(([emoji, users]) => (
-        <Reaction
+        <ReactionButton
           count={Object.keys(users).length}
           disabled
           emoji={emoji}
           key={emoji}
         />
       ))}
+      <AddReactionButton disabled />
     </>
   );
 }
@@ -141,10 +185,19 @@ function LocalReactions({
     });
   }, []);
 
+  const handleAddReactionClick = useCallback((emoji: string) => {
+    setReactions((previousReactions) => {
+      return {
+        ...previousReactions,
+        [emoji]: [...(previousReactions[emoji] ?? []), id],
+      };
+    });
+  }, []);
+
   return (
     <>
       {Object.entries(reactions).map(([emoji, users]) => (
-        <Reaction
+        <ReactionButton
           count={users.length}
           emoji={emoji}
           isActive={users.includes(id)}
@@ -154,6 +207,7 @@ function LocalReactions({
           }}
         />
       ))}
+      <AddReactionButton onEmojiSelect={handleAddReactionClick} />
     </>
   );
 }

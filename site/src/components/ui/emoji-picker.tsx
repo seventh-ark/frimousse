@@ -1,32 +1,17 @@
 "use client";
+
 import { cn } from "@/lib/utils";
 import {
   EmojiPicker as EmojiPickerPrimitive,
-  type Locale,
-  type SkinTone,
+  type EmojiPickerRootProps,
 } from "frimousse";
 import { FrownIcon, LoaderCircleIcon } from "lucide-react";
 
-function EmojiPicker({
-  className,
-  columns = 12,
-  locale = "en",
-  skinTone = "none",
-  onEmojiSelect,
-}: {
-  className?: string;
-  columns?: number;
-  locale?: Locale;
-  skinTone?: SkinTone;
-  onEmojiSelect: (emoji: string) => void;
-}) {
+function EmojiPicker({ className, ...props }: EmojiPickerRootProps) {
   return (
     <EmojiPickerPrimitive.Root
       className={cn("w-fit rounded-md border bg-background", className)}
-      columns={columns}
-      locale={locale}
-      onEmojiSelect={onEmojiSelect}
-      skinTone={skinTone}
+      {...props}
     >
       <EmojiPickerPrimitive.Search className="w-full p-2 text-sm outline-none placeholder:text-muted-foreground" />
       <EmojiPickerPrimitive.Viewport className="h-[320px]">
