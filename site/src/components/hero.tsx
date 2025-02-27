@@ -1,4 +1,5 @@
 import { Logo } from "./logo";
+import { Reactions } from "./reactions";
 
 export function Hero() {
   return (
@@ -13,6 +14,7 @@ export function Hero() {
         dependencies. Always up-to-date, accessible, and optimized for
         performance. Perfect for modern web apps.
       </p>
+      <Reactions className="mt-6" />
     </div>
   );
 }
