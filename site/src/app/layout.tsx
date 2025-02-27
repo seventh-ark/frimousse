@@ -20,8 +20,9 @@ const openRunde = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Frimousse",
-  description: "An emoji picker component for React.",
+  title: "Frimousse —  An emoji picker component for React",
+  description:
+    "A fast, lightweight, and fully customizable React emoji picker with zero dependencies. Always up-to-date, accessible, and optimized for performance—perfect for modern web apps.",
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
