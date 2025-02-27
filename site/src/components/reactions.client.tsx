@@ -10,30 +10,26 @@ import {
   useSelf,
   useStorage,
 } from "@liveblocks/react/suspense";
+import NumberFlow from "@number-flow/react";
 import type { EmojiPickerRootProps } from "frimousse";
 import type { ReactionsJson } from "liveblocks.config";
 import { SmilePlus } from "lucide-react";
-import {
-  type ComponentProps,
-  type MouseEvent,
-  memo,
-  useCallback,
-  useState,
-} from "react";
+import { type HTMLMotionProps, LayoutGroup, motion } from "motion/react";
+import { type MouseEvent, memo, useCallback, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Button } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import { EmojiPicker } from "./ui/emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 interface ReactionButtonProps
-  extends Omit<ComponentProps<"button">, "children"> {
+  extends Omit<HTMLMotionProps<"button">, "children"> {
   emoji: string;
   count: number;
   isActive?: boolean;
 }
 
 interface AddReactionButtonProps
-  extends Omit<ComponentProps<"button">, "children"> {
+  extends Omit<HTMLMotionProps<"button">, "children"> {
   onEmojiSelect?: EmojiPickerRootProps["onEmojiSelect"];
 }
 
@@ -45,20 +41,20 @@ interface ReactionsProps {
 const ReactionButton = memo(
   ({ emoji, isActive, count, className, ...props }: ReactionButtonProps) => {
     return (
-      <Button
+      <motion.button
         className={cn(
-          "rounded-full px-2 py-1 text-sm",
+          buttonVariants({ variant: "secondary" }),
+          "rounded-full px-2.5 py-1 text-sm",
           isActive
             ? "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:bg-accent/10 focus-visible:ring-accent/20"
             : "text-secondary-foreground",
           className,
         )}
-        type="button"
-        variant="secondary"
+        layout
         {...props}
       >
-        {emoji} {count}
-      </Button>
+        {emoji} <NumberFlow value={count} />
+      </motion.button>
     );
   },
 );
@@ -68,16 +64,18 @@ const AddReactionButton = memo(
     return (
       <Popover>
         <PopoverTrigger asChild>
-          <Button
+          <motion.button
             aria-label="Add reaction"
-            className="rounded-full text-secondary-foreground"
-            size="icon"
+            className={cn(
+              buttonVariants({ variant: "secondary", size: "icon" }),
+              "rounded-full text-secondary-foreground",
+            )}
+            layout
             title="Add reaction"
-            variant="secondary"
             {...props}
           >
             <SmilePlus />
-          </Button>
+          </motion.button>
         </PopoverTrigger>
         <PopoverContent>
           <EmojiPicker onEmojiSelect={onEmojiSelect} />
@@ -145,7 +143,7 @@ function LiveblocksReactions() {
   );
 
   return (
-    <>
+    <LayoutGroup>
       {Array.from(reactions).map((emoji) => (
         <LiveblocksReaction emoji={emoji} key={emoji} />
       ))}
@@ -153,7 +151,7 @@ function LiveblocksReactions() {
         disabled={!id}
         onEmojiSelect={handleAddReactionClick}
       />
-    </>
+    </LayoutGroup>
   );
 }
 
