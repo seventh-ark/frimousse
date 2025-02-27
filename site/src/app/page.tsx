@@ -1,11 +1,9 @@
-"use client";
-
-import { EmojiPickerPlayground } from "@/components/emoji-picker-playground";
+import { Hero } from "@/components/hero";
 
 export default function Page() {
   return (
     <div className="container">
-      <EmojiPickerPlayground />
+      <Hero />
     </div>
   );
 }
