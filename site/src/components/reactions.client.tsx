@@ -49,7 +49,7 @@ const ReactionButton = memo(
         className={cn(
           "rounded-full px-2 py-1 text-sm",
           isActive &&
-            "bg-accent/10 font-medium text-accent ring-accent hover:border-accent hover:bg-accent/10 focus-visible:border-accent focus-visible:bg-accent/10 focus-visible:ring-accent/20",
+            "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/10 focus-visible:border-accent focus-visible:bg-accent/10 focus-visible:ring-accent/20",
           className,
         )}
         type="button"
