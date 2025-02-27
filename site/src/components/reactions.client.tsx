@@ -47,8 +47,11 @@ const ReactionButton = memo(
       <button
         className={cn(
           className,
-          "cursor-pointer rounded-full px-2 py-1 text-sm",
-          isActive ? "bg-blue-100" : "bg-gray-100",
+          "rounded-full border border-transparent px-2 py-1 text-sm",
+          "transition duration-150 ease-out",
+          isActive
+            ? "border-accent bg-accent/10 font-medium text-accent"
+            : "bg-muted hover:border-border hover:bg-background",
         )}
         type="button"
         {...props}

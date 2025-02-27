@@ -39,7 +39,7 @@ function EmojiPicker({ className, ...props }: EmojiPickerRootProps) {
               <button
                 {...props}
                 aria-label={emoji.label}
-                className="flex size-7 cursor-pointer items-center justify-center whitespace-nowrap rounded-md transition duration-100 data-[active]:bg-muted data-[active]:duration-0"
+                className="flex size-7 items-center justify-center whitespace-nowrap rounded-md transition duration-100 data-[active]:bg-muted data-[active]:duration-0"
               >
                 {emoji.emoji}
               </button>
@@ -69,7 +69,7 @@ function EmojiPicker({ className, ...props }: EmojiPickerRootProps) {
           )}
         </EmojiPickerPrimitive.ActiveEmoji>
         <EmojiPickerPrimitive.SkinToneSelector
-          className="size-8 cursor-pointer text-2xl"
+          className="size-8 text-2xl"
           emoji="👋"
         />
       </div>

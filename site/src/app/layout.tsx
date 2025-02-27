@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import "./styles.css";
+import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
+import { cn } from "@/lib/utils";
 import localFont from "next/font/local";
 import { config } from "./config";
 
@@ -51,7 +53,15 @@ export default function RootLayout({ children }: PropsWithChildren) {
           disableTransitionOnChange
           enableSystem
         >
-          {children}
+          <div
+            className={cn(
+              "container relative min-h-dvh",
+              "md:before:-inset-x-2 before:pointer-events-none before:absolute before:inset-x-4 before:h-full before:border-border before:border-x before:border-dotted",
+            )}
+          >
+            {children}
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>
