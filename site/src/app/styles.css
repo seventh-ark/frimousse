@@ -16,6 +16,7 @@
   --accent: var(--color-rose-500);
   --accent-foreground: var(--color-neutral-50);
   --border: var(--color-neutral-200);
+  --input: var(--color-neutral-200);
   --ring: var(--color-neutral-400);
   --radius: 0.625rem;
 }
@@ -34,8 +35,6 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
