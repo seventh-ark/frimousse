@@ -140,9 +140,9 @@ export default function Page() {
                     <button
                       {...props}
                       aria-label={emoji.label}
-                      className="flex size-7 cursor-pointer items-center justify-center rounded-md transition duration-100 data-[active]:bg-gray-100 data-[active]:duration-0"
+                      className="flex size-7 cursor-pointer items-center justify-center whitespace-nowrap rounded-md transition duration-100 data-[active]:bg-gray-100 data-[active]:duration-0"
                     >
-                      <span className="whitespace-nowrap">{emoji.emoji}</span>
+                      {emoji.emoji}
                     </button>
                   ),
                   CategoryHeader: ({ category, ...props }) => (

@@ -175,16 +175,79 @@ describe("EmojiPicker", () => {
       .element(page.getByTestId("selected-emoji"))
       .toHaveTextContent("😀");
 
-    await userEvent.keyboard("{ArrowRight}");
-    await userEvent.keyboard("{ArrowRight}");
-    await userEvent.keyboard("{ArrowRight}");
-    await userEvent.keyboard("{ArrowRight}");
-    await userEvent.keyboard("{ArrowLeft}");
-    await userEvent.keyboard("{ArrowLeft}");
+    await userEvent.keyboard("{ArrowRight>4/}");
+    await userEvent.keyboard("{ArrowLeft>2/}");
     await userEvent.keyboard("{ArrowBottom}");
     await userEvent.keyboard("{ArrowLeft}");
     await userEvent.keyboard("{ArrowTop}");
     await userEvent.keyboard("{ArrowLeft}");
+    await userEvent.keyboard("{Enter}");
+
+    await expect
+      .element(page.getByTestId("selected-emoji"))
+      .toHaveTextContent("😀");
+  });
+
+  it("should scroll the viewport when navigating with the keyboard", async () => {
+    page.render(
+      <DefaultPage
+        listComponents={{
+          Emoji: ({ emoji, isActive, style, ...props }) => (
+            <button
+              {...props}
+              style={{
+                ...style,
+                background: isActive ? "red" : undefined,
+              }}
+            >
+              {emoji.emoji}
+            </button>
+          ),
+        }}
+        viewportHeight={125}
+      />,
+    );
+
+    await page.getByTestId("search").click();
+
+    await userEvent.keyboard("{ArrowDown>5/}");
+    await userEvent.keyboard("{Enter}");
+
+    await expect
+      .element(page.getByTestId("selected-emoji"))
+      .toHaveTextContent("😶");
+
+    await userEvent.keyboard("{ArrowUp>5/}");
+    await userEvent.keyboard("{Enter}");
+
+    await expect
+      .element(page.getByTestId("selected-emoji"))
+      .toHaveTextContent("😀");
+
+    await userEvent.keyboard("{ArrowRight>16/}");
+    await userEvent.keyboard("{ArrowDown>60/}");
+    await userEvent.keyboard("{Enter}");
+
+    await expect
+      .element(page.getByTestId("selected-emoji"))
+      .toHaveTextContent("🦔");
+
+    await userEvent.keyboard("{ArrowRight}");
+    await userEvent.keyboard("{ArrowUp>80/}");
+    await userEvent.keyboard("{ArrowLeft>10/}");
+    await userEvent.keyboard("{Enter}");
+
+    await expect
+      .element(page.getByTestId("selected-emoji"))
+      .toHaveTextContent("😀");
+
+    // Losing focus will reset the active emoji and will make
+    // the keyboard navigation start from the first emoji
+    await userEvent.tab({ shift: true });
+
+    await page.getByTestId("search").click();
+
+    await userEvent.keyboard("{ArrowDown}");
     await userEvent.keyboard("{Enter}");
 
     await expect
@@ -372,76 +435,56 @@ describe("EmojiPicker.Search", () => {
 });
 
 describe("EmojiPicker.Viewport", () => {
-  it("should virtualize rows", async () => {
+  it("should virtualize rows based on the viewport height", async () => {
     function Page() {
       const [viewportHeight, setViewportHeight] = useState(400);
       const [rowHeight, setRowHeight] = useState(30);
       const [categoryHeaderHeight, setCategoryHeaderHeight] = useState(30);
 
       return (
-        <>
-          <div>
-            <input
-              data-testid="viewport-height"
-              onChange={(event) =>
-                setViewportHeight(Number(event.target.value))
-              }
-              type="number"
-              value={viewportHeight}
-            />
-            <input
-              data-testid="row-height"
-              onChange={(event) => setRowHeight(Number(event.target.value))}
-              type="number"
-              value={rowHeight}
-            />
-            <input
-              data-testid="category-header-height"
-              onChange={(event) =>
-                setCategoryHeaderHeight(Number(event.target.value))
-              }
-              type="number"
-              value={categoryHeaderHeight}
-            />
-          </div>
-          <div>
-            <EmojiPicker.Root data-testid="root">
-              <EmojiPicker.Viewport
-                data-testid="viewport"
-                style={{ height: viewportHeight }}
+        <DefaultPage
+          listComponents={{
+            Row: ({ children, style, ...props }) => (
+              <div
+                data-testid="custom-row"
+                {...props}
+                style={{ ...style, height: rowHeight }}
               >
-                <EmojiPicker.List
-                  components={{
-                    Row: ({
-                      children,
-                      "aria-rowindex": rowIndex,
-                      style,
-                      ...props
-                    }) => (
-                      <div
-                        {...props}
-                        data-testid={`row: ${rowIndex}`}
-                        style={{ ...style, height: rowHeight }}
-                      >
-                        {children}
-                      </div>
-                    ),
-                    CategoryHeader: ({ category, style, ...props }) => (
-                      <div
-                        {...props}
-                        data-testid={`category-header: ${category.label}`}
-                        style={{ ...style, height: categoryHeaderHeight }}
-                      >
-                        {category.label}
-                      </div>
-                    ),
-                  }}
-                  data-testid="list"
-                />
-              </EmojiPicker.Viewport>
-            </EmojiPicker.Root>
-          </div>
-        </>
+                {children}
+              </div>
+            ),
+            CategoryHeader: ({ category, style, ...props }) => (
+              <div
+                data-testid="custom-category-header"
+                {...props}
+                style={{ ...style, height: categoryHeaderHeight }}
+              >
+                {category.label}
+              </div>
+            ),
+          }}
+        >
+          <input
+            data-testid="viewport-height"
+            onChange={(event) => setViewportHeight(Number(event.target.value))}
+            type="number"
+            value={viewportHeight}
+          />
+          <input
+            data-testid="row-height"
+            onChange={(event) => setRowHeight(Number(event.target.value))}
+            type="number"
+            value={rowHeight}
+          />
+          <input
+            data-testid="category-header-height"
+            onChange={(event) =>
+              setCategoryHeaderHeight(Number(event.target.value))
+            }
+            type="number"
+            value={categoryHeaderHeight}
+          />
+        </DefaultPage>
       );
     }
 
@@ -449,22 +492,66 @@ describe("EmojiPicker.Viewport", () => {
 
     await expect.element(page.getByText("😀")).toBeInTheDocument();
 
-    await expect.element(page.getByTestId("row: 10")).toBeInTheDocument();
-    await expect.element(page.getByTestId("row: 20")).not.toBeInTheDocument();
+    await expect.element(page.getByRole("row").nth(10)).toBeInTheDocument();
+    await expect.element(page.getByRole("row").nth(20)).not.toBeInTheDocument();
 
     await page.getByTestId("viewport-height").fill("500");
     await page.getByTestId("row-height").fill("20");
     await page.getByTestId("category-header-height").fill("20");
 
-    await expect.element(page.getByTestId("row: 10")).toBeInTheDocument();
-    await expect.element(page.getByTestId("row: 20")).toBeInTheDocument();
+    await expect.element(page.getByRole("row").nth(10)).toBeInTheDocument();
+    await expect.element(page.getByRole("row").nth(20)).toBeInTheDocument();
 
     await page.getByTestId("viewport-height").fill("200");
     await page.getByTestId("row-height").fill("100");
     await page.getByTestId("category-header-height").fill("400");
 
-    await expect.element(page.getByTestId("row: 10")).not.toBeInTheDocument();
-    await expect.element(page.getByTestId("row: 20")).not.toBeInTheDocument();
+    await expect.element(page.getByRole("row").nth(10)).not.toBeInTheDocument();
+    await expect.element(page.getByRole("row").nth(20)).not.toBeInTheDocument();
+  });
+
+  it("should virtualize rows based on scroll", async () => {
+    function Page() {
+      const scrollViewport = () => {
+        const viewport = document.querySelector("[data-testid='viewport']");
+
+        viewport?.scrollBy({
+          top: 500,
+          behavior: "smooth",
+        });
+      };
+
+      return (
+        <DefaultPage viewportHeight={200}>
+          <button
+            data-testid="scroll-viewport"
+            onClick={scrollViewport}
+            type="button"
+          >
+            Scroll viewport
+          </button>
+        </DefaultPage>
+      );
+    }
+
+    page.render(<Page />);
+
+    await expect
+      .element(page.getByRole("row").nth(5))
+      .toHaveAttribute("aria-rowindex", "5");
+    await expect.element(page.getByRole("row").nth(20)).not.toBeInTheDocument();
+
+    await page.getByTestId("scroll-viewport").click();
+
+    await expect
+      .element(page.getByRole("row").nth(5))
+      .toHaveAttribute("aria-rowindex", "20");
+
+    await page.getByTestId("scroll-viewport").click();
+
+    await expect
+      .element(page.getByRole("row").nth(5))
+      .toHaveAttribute("aria-rowindex", "38");
   });
 });
 
@@ -478,12 +565,14 @@ describe("EmojiPicker.List", () => {
               {emoji.label}
             </button>
           ),
-          Row: ({ children, "aria-rowindex": rowIndex }) => (
-            <div data-testid={`custom-row: ${rowIndex}`}>{children}</div>
+          Row: ({ children, ...props }) => (
+            <div {...props} aria-label="Custom row">
+              {children}
+            </div>
           ),
           CategoryHeader: ({ category }) => (
             <div data-testid={`custom-category-header: ${category.label}`}>
-              {category.label}
+              Custom ({category.label})
             </div>
           ),
         }}
@@ -493,10 +582,12 @@ describe("EmojiPicker.List", () => {
     await expect
       .element(page.getByTestId("custom-emoji: 🥲"))
       .toHaveTextContent("Smiling face with tear");
-    await expect.element(page.getByTestId("custom-row: 1")).toBeInTheDocument();
+    await expect
+      .element(page.getByRole("row").nth(10))
+      .toHaveAccessibleName("Custom row");
     await expect
       .element(page.getByTestId("custom-category-header: Activities"))
-      .toHaveTextContent("Activities");
+      .toHaveTextContent("Custom (Activities)");
   });
 });
 
