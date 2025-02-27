@@ -6,6 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
     "lint:tsc": "tsc --noEmit",
     "lint:biome": "biome lint"
   },
@@ -13,6 +15,7 @@
     "@liveblocks/client": "^2.18.3",
     "@liveblocks/node": "^2.18.3",
     "@liveblocks/react": "^2.18.3",
+    "@vercel/functions": "^2.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "frimousse": "file:../",

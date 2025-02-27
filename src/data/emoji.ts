@@ -52,8 +52,8 @@ const EMOJIBASE_LOCALES = [
 ] satisfies Locale[];
 const EMOJIBASE_DEFAULT_LOCALE: Locale = "en";
 
-export const LOCAL_DATA_KEY = (locale: string) => `frimousse/${locale}`;
-export const SESSION_METADATA_KEY = "frimousse";
+export const LOCAL_DATA_KEY = (locale: string) => `frimousse/data/${locale}`;
+export const SESSION_METADATA_KEY = "frimousse/metadata";
 
 // Prevent EMOJIBASE_LOCALES to be out of sync with Locale
 {
