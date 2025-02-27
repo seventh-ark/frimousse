@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import "./styles.css";
+import { ThemeProvider } from "@/components/theme-provider";
 import localFont from "next/font/local";
-import { ThemeProvider } from "./components/theme-provider";
 import { config } from "./config";
 
 const inter = localFont({
