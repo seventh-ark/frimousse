@@ -2,36 +2,58 @@ import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 import "./styles.css";
 import localFont from "next/font/local";
+import { ThemeProvider } from "./components/theme-provider";
+import { config } from "./config";
 
 const inter = localFont({
   src: "./InterVariable.woff2",
   variable: "--font-inter",
 });
 
-const openRunde = localFont({
-  src: [
+export const metadata: Metadata = {
+  title: {
+    default: config.name,
+    template: `%s — ${config.name}`,
+  },
+  metadataBase: new URL(config.url),
+  description: config.description,
+  keywords: ["React", "Emoji picker", "Liveblocks"],
+  authors: [
     {
-      path: "./OpenRunde-Medium.woff2",
-      weight: "500",
-      style: "normal",
+      name: "Liveblocks",
+      url: "https://liveblocks.io",
     },
   ],
-  variable: "--font-open-runde",
-});
-
-export const metadata: Metadata = {
-  title: "Frimousse —  An emoji picker component for React",
-  description:
-    "A fast, lightweight, and fully customizable React emoji picker with zero dependencies. Always up-to-date, accessible, and optimized for performance—perfect for modern web apps.",
+  creator: "Liveblocks",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: config.url,
+    title: config.name,
+    description: config.description,
+    siteName: config.name,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: config.name,
+    description: config.description,
+    creator: "@liveblocks",
+  },
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html
-      className={`${openRunde.variable} ${inter.variable} font-sans antialiased`}
-      lang="en"
-    >
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.variable}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
