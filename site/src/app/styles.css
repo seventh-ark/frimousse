@@ -23,6 +23,18 @@
 
 .dark {
   --background: var(--color-black);
+  --foreground: var(--color-neutral-50);
+  --primary: var(--color-neutral-50);
+  --primary-foreground: var(--color-neutral-950);
+  --secondary: var(--color-neutral-800);
+  --secondary-foreground: var(--color-neutral-400);
+  --muted: var(--color-neutral-900);
+  --muted-foreground: var(--color-neutral-600);
+  --accent: var(--color-blue-500);
+  --accent-foreground: var(--color-neutral-950);
+  --border: var(--color-neutral-800);
+  --input: var(--color-neutral-800);
+  --ring: var(--color-neutral-800);
 }
 
 @theme inline {
@@ -51,6 +63,10 @@
 @layer base {
   * {
     @apply border-border outline-ring;
+  }
+
+  ::selection {
+    @apply bg-primary/10 dark:bg-primary/50 text-primary;
   }
 
   body {

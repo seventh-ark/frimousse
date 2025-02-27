@@ -48,8 +48,9 @@ const ReactionButton = memo(
       <Button
         className={cn(
           "rounded-full px-2 py-1 text-sm",
-          isActive &&
-            "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/10 focus-visible:border-accent focus-visible:bg-accent/10 focus-visible:ring-accent/20",
+          isActive
+            ? "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:bg-accent/10 focus-visible:ring-accent/20"
+            : "text-secondary-foreground",
           className,
         )}
         type="button"
@@ -69,7 +70,7 @@ const AddReactionButton = memo(
         <PopoverTrigger asChild>
           <Button
             aria-label="Add reaction"
-            className="rounded-full"
+            className="rounded-full text-secondary-foreground"
             size="icon"
             title="Add reaction"
             variant="secondary"
