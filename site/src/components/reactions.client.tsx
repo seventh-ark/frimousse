@@ -22,13 +22,12 @@ import {
 } from "liveblocks.config";
 import { SmilePlus } from "lucide-react";
 import {
-  AnimatePresence,
-  type HTMLMotionProps,
-  LayoutGroup,
-  type Variants,
-  motion,
-} from "motion/react";
-import { memo, useCallback, useEffect, useState } from "react";
+  type ComponentProps,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { buttonVariants } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "./ui/drawer";
@@ -40,14 +39,14 @@ const SKIN_TONE_MODIFIERS =
   /\u{1F3FB}|\u{1F3FC}|\u{1F3FD}|\u{1F3FE}|\u{1F3FF}/gu;
 
 interface ReactionButtonProps
-  extends Omit<HTMLMotionProps<"button">, "children"> {
+  extends Omit<ComponentProps<"button">, "children"> {
   emoji: string;
   count: number;
   isActive?: boolean;
 }
 
 interface AddReactionButtonProps
-  extends Omit<HTMLMotionProps<"button">, "children"> {
+  extends Omit<ComponentProps<"button">, "children"> {
   onEmojiSelect?: EmojiPickerRootProps["onEmojiSelect"];
 }
 
@@ -55,25 +54,6 @@ interface ReactionsProps {
   roomId: string;
   serverReactions: ReactionsJson;
 }
-
-const variants: Variants = {
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.1,
-      ease: "easeOut",
-    },
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      type: "spring",
-      stiffness: 800,
-      damping: 80,
-      mass: 1,
-    },
-  },
-};
 
 function getBaseEmoji(emoji: string) {
   return emoji
@@ -83,17 +63,9 @@ function getBaseEmoji(emoji: string) {
 }
 
 const ReactionButton = memo(
-  ({
-    emoji,
-    isActive,
-    count,
-    className,
-    style,
-    ...props
-  }: ReactionButtonProps) => {
+  ({ emoji, isActive, count, className, ...props }: ReactionButtonProps) => {
     return (
-      <motion.button
-        animate="visible"
+      <button
         className={cn(
           buttonVariants({ variant: "secondary" }),
           "gap-1 rounded-full px-2.5 py-1 text-sm tabular-nums will-change-transform",
@@ -102,21 +74,10 @@ const ReactionButton = memo(
             : "text-secondary-foreground",
           className,
         )}
-        exit="hidden"
-        initial="hidden"
-        layout
-        style={{
-          ...style,
-
-          // Prevent distortion during layout animations
-          borderRadius: 9999,
-        }}
-        variants={variants}
-        whileTap={{ scale: 0.96 }}
         {...props}
       >
         {emoji} <NumberFlow value={count} />
-      </motion.button>
+      </button>
     );
   },
 );
@@ -139,18 +100,14 @@ const AddReactionButton = memo(
     );
 
     const renderTrigger = () => (
-      <motion.button
+      <button
         aria-label="Add reaction"
-        className={cn(
-          buttonVariants({ variant: "secondary", size: "icon" }),
-          "rounded-full text-secondary-foreground",
-        )}
-        layout
+        className={cn(buttonVariants({ variant: "default" }), "rounded-full")}
         title="Add reaction"
         {...props}
       >
-        <SmilePlus />
-      </motion.button>
+        <SmilePlus /> Try it
+      </button>
     );
 
     const renderEmojiPicker = () => (
@@ -222,34 +179,31 @@ function LiveblocksReactions() {
   return (
     <>
       <AddReactionButton disabled={!id} onEmojiSelect={toggleReaction} />
-      <AnimatePresence initial={false}>
-        {Array.from(reactions)
-          .sort(([, dataA], [, dataB]) => {
-            return (
-              (dataB.get(CREATED_AT_KEY) ?? 0) -
-              (dataA.get(CREATED_AT_KEY) ?? 0)
-            );
-          })
-          .map(([emoji, data]) => {
-            const count = data.size - DEFAULT_KEYS_COUNT;
+      {Array.from(reactions)
+        .sort(([, dataA], [, dataB]) => {
+          return (
+            (dataB.get(CREATED_AT_KEY) ?? 0) - (dataA.get(CREATED_AT_KEY) ?? 0)
+          );
+        })
+        .map(([emoji, data]) => {
+          const count = data.size - DEFAULT_KEYS_COUNT;
 
-            if (count === 0) {
-              return null;
-            }
+          if (count === 0) {
+            return null;
+          }
 
-            return (
-              <ReactionButton
-                count={count}
-                emoji={emoji}
-                isActive={id ? data.has(id) : false}
-                key={emoji}
-                onClick={() => {
-                  toggleReaction(emoji);
-                }}
-              />
-            );
-          })}
-      </AnimatePresence>
+          return (
+            <ReactionButton
+              count={count}
+              emoji={emoji}
+              isActive={id ? data.has(id) : false}
+              key={emoji}
+              onClick={() => {
+                toggleReaction(emoji);
+              }}
+            />
+          );
+        })}
     </>
   );
 }
@@ -258,28 +212,21 @@ function ServerReactions({ reactions }: { reactions: ReactionsJson }) {
   return (
     <>
       <AddReactionButton disabled />
-      <AnimatePresence initial={false}>
-        {Object.entries(reactions)
-          .sort(([, dataA], [, dataB]) => {
-            return (dataB[CREATED_AT_KEY] ?? 0) - (dataA[CREATED_AT_KEY] ?? 0);
-          })
-          .map(([emoji, data]) => {
-            const count = Object.keys(data).length - DEFAULT_KEYS_COUNT;
+      {Object.entries(reactions)
+        .sort(([, dataA], [, dataB]) => {
+          return (dataB[CREATED_AT_KEY] ?? 0) - (dataA[CREATED_AT_KEY] ?? 0);
+        })
+        .map(([emoji, data]) => {
+          const count = Object.keys(data).length - DEFAULT_KEYS_COUNT;
 
-            if (count === 0) {
-              return null;
-            }
+          if (count === 0) {
+            return null;
+          }
 
-            return (
-              <ReactionButton
-                count={count}
-                disabled
-                emoji={emoji}
-                key={emoji}
-              />
-            );
-          })}
-      </AnimatePresence>
+          return (
+            <ReactionButton count={count} disabled emoji={emoji} key={emoji} />
+          );
+        })}
     </>
   );
 }
@@ -328,27 +275,25 @@ function LocalReactions({
   return (
     <>
       <AddReactionButton onEmojiSelect={toggleReaction} />
-      <AnimatePresence initial={false}>
-        {Object.entries(reactions).map(([emoji, data]) => {
-          const count = data.length - DEFAULT_KEYS_COUNT;
+      {Object.entries(reactions).map(([emoji, data]) => {
+        const count = data.length - DEFAULT_KEYS_COUNT;
 
-          if (count === 0) {
-            return null;
-          }
+        if (count === 0) {
+          return null;
+        }
 
-          return (
-            <ReactionButton
-              count={count}
-              emoji={emoji}
-              isActive={data.includes(id)}
-              key={emoji}
-              onClick={() => {
-                toggleReaction(emoji);
-              }}
-            />
-          );
-        })}
-      </AnimatePresence>
+        return (
+          <ReactionButton
+            count={count}
+            emoji={emoji}
+            isActive={data.includes(id)}
+            key={emoji}
+            onClick={() => {
+              toggleReaction(emoji);
+            }}
+          />
+        );
+      })}
     </>
   );
 }
@@ -366,17 +311,15 @@ export function Reactions({ roomId, serverReactions }: ReactionsProps) {
   return (
     <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
       <RoomProvider id={roomId} initialStorage={initialStorage}>
-        <LayoutGroup>
-          <ClientSideSuspense
-            fallback={<ServerReactions reactions={serverReactions} />}
+        <ClientSideSuspense
+          fallback={<ServerReactions reactions={serverReactions} />}
+        >
+          <ErrorBoundary
+            fallback={<LocalReactions initialReactions={serverReactions} />}
           >
-            <ErrorBoundary
-              fallback={<LocalReactions initialReactions={serverReactions} />}
-            >
-              <LiveblocksReactions />
-            </ErrorBoundary>
-          </ClientSideSuspense>
-        </LayoutGroup>
+            <LiveblocksReactions />
+          </ErrorBoundary>
+        </ClientSideSuspense>
       </RoomProvider>
     </LiveblocksProvider>
   );

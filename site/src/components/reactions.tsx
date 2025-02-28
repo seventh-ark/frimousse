@@ -10,6 +10,8 @@ import { connection } from "next/server";
 import type { ComponentProps } from "react";
 import { Reactions as ClientReactions } from "./reactions.client";
 
+const MAX_ROWS = 3;
+
 const liveblocks = new LiveblocksClient({
   secret: process.env.LIVEBLOCKS_SECRET_KEY!,
 });
@@ -43,7 +45,13 @@ export async function Reactions({
   }
 
   return (
-    <div className={cn("flex flex-wrap gap-1.5", className)} {...props}>
+    <div
+      className={cn("flex flex-wrap gap-1.5 overflow-hidden", className)}
+      style={{
+        maxHeight: `calc(var(--spacing) * 9 * ${MAX_ROWS} + var(--spacing) * 1.5 *${MAX_ROWS - 1})`,
+      }}
+      {...props}
+    >
       <ClientReactions roomId={ROOM_ID} serverReactions={reactions} />
     </div>
   );
