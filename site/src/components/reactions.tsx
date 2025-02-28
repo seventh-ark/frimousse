@@ -45,12 +45,13 @@ export function Reactions({
   return (
     <div
       className={cn(
-        "flex flex-wrap gap-(--gap) overflow-hidden",
-        "[--gap:var(--spacing)] lg:[--gap:calc(var(--spacing)*1.5)]",
+        "flex flex-wrap gap-(--gap)",
+        "[--gap:var(--spacing)] lg:[--gap:calc(var(--spacing)_*_1.5)]",
         className,
       )}
       style={{
-        height: `calc(var(--spacing) * 8 * ${MAX_ROWS} + var(--gap) *${MAX_ROWS - 1})`,
+        height: `calc(var(--spacing) * 8 * ${MAX_ROWS} + var(--gap) * ${MAX_ROWS - 1})`,
+        clipPath: "inset(-3px -3px -3px -3px)",
       }}
       {...props}
     >
