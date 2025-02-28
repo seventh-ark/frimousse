@@ -1,3 +1,5 @@
+"use cache";
+
 import type { BundledLanguage } from "shiki";
 import { codeToHtml } from "shiki";
 

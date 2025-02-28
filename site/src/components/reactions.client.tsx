@@ -190,7 +190,6 @@ function LiveblocksReactions() {
         );
 
         if (oldestReaction) {
-          console.log("DELETING", oldestReaction[0]);
           reactions.delete(oldestReaction[0]);
         }
       }
@@ -254,8 +253,10 @@ function ServerReactions({ reactions }: { reactions: ReactionsJson }) {
 }
 
 function LocalReactions({
-  initialReactions,
-}: { initialReactions: ReactionsJson }) {
+  reactions: initialReactions,
+}: {
+  reactions: ReactionsJson;
+}) {
   const id = "#####";
   const [reactions, setReactions] = useState<Record<string, string[]>>(() =>
     Object.fromEntries(
@@ -320,6 +321,31 @@ function LocalReactions({
   );
 }
 
+export function FallbackReactions() {
+  return (
+    <>
+      <AddReactionButton disabled />
+      {Object.entries(DEFAULT_REACTIONS).map(([emoji, data]) => {
+        const count = Object.keys(data).length - DEFAULT_KEYS_COUNT;
+
+        if (count === 0) {
+          return null;
+        }
+
+        return (
+          <ReactionButton
+            className="text-transparent"
+            count={count}
+            disabled
+            emoji={emoji}
+            key={emoji}
+          />
+        );
+      })}
+    </>
+  );
+}
+
 const initialStorage: Liveblocks["Storage"] = {
   reactions: new LiveMap(
     Object.entries(DEFAULT_REACTIONS).map(([emoji, data]) => [
@@ -337,7 +363,7 @@ export function Reactions({ roomId, serverReactions }: ReactionsProps) {
           fallback={<ServerReactions reactions={serverReactions} />}
         >
           <ErrorBoundary
-            fallback={<LocalReactions initialReactions={serverReactions} />}
+            fallback={<LocalReactions reactions={serverReactions} />}
           >
             <LiveblocksReactions />
           </ErrorBoundary>

@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    dynamicIO: true,
+    useCache: true,
+    ppr: true,
+  },
   async rewrites() {
     return [
       {
