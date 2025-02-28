@@ -91,8 +91,23 @@ export type EmojiPickerData = {
 };
 
 export type EmojiPickerListComponents = {
+  /**
+   * The component used to render a sticky category header.
+   *
+   * All category headers should be of the same height.
+   */
   CategoryHeader: ComponentType<EmojiPickerListCategoryHeaderProps>;
+
+  /**
+   * The component used to render a row of emojis.
+   *
+   * All rows should be of the same height.
+   */
   Row: ComponentType<EmojiPickerListRowProps>;
+
+  /**
+   * The component used to render an emoji button in the list.
+   */
   Emoji: ComponentType<EmojiPickerListEmojiProps>;
 };
 
@@ -100,23 +115,58 @@ export type EmojiPickerListRowProps = ComponentProps<"div">;
 
 export interface EmojiPickerListCategoryHeaderProps
   extends Omit<ComponentProps<"div">, "children"> {
+  /**
+   * The category for this sticky header.
+   */
   category: Category;
 }
 
 export interface EmojiPickerListEmojiProps
   extends Omit<ComponentProps<"button">, "children"> {
+  /**
+   * The emoji for this button.
+   */
   emoji: Emoji;
+
+  /**
+   * Whether the emoji is currently active (either hovered or selected
+   * via keyboard navigation).
+   */
   isActive: boolean;
 }
 
 export interface EmojiPickerListProps extends ComponentProps<"div"> {
+  /**
+   * The inner components of the list.
+   */
   components?: Partial<EmojiPickerListComponents>;
 }
 
 export interface EmojiPickerRootProps extends ComponentProps<"div"> {
+  /**
+   * The locale of the emoji picker.
+   *
+   * @default "en"
+   */
   locale?: Locale;
+
+  /**
+   * The skin tone of the emoji picker.
+   *
+   * @default "none"
+   */
   skinTone?: SkinTone;
+
+  /**
+   * The number of columns in the list.
+   *
+   * @default 10
+   */
   columns?: number;
+
+  /**
+   * A callback invoked when an emoji is selected.
+   */
   onEmojiSelect?: (emoji: string) => void;
 }
 
@@ -126,35 +176,80 @@ export type EmojiPickerSearchProps = ComponentProps<"input">;
 
 export interface EmojiPickerSkinToneSelectorProps
   extends Omit<ComponentProps<"button">, "children"> {
+  /**
+   * The emoji to use as visual for the skin tone variations.
+   *
+   * @default "✋"
+   */
   emoji?: string;
 }
 
 export type EmojiPickerLoadingProps = {
+  /**
+   * The content to render when the emoji data is loading.
+   */
   children?: ReactNode;
 };
 
 export type EmojiPickerEmptyRenderProps = {
+  /**
+   * The current search value.
+   */
   search: string;
 };
 
 export type EmojiPickerEmptyProps = {
+  /**
+   * The content to render when no emoji is found for the current search, or
+   * a render callback which receives the current search value.
+   */
   children?: ReactNode | ((props: EmojiPickerEmptyRenderProps) => ReactNode);
 };
 
 export type EmojiPickerActiveEmojiRenderProps = {
+  /**
+   * The currently active emoji (either hovered or selected
+   * via keyboard navigation).
+   */
   emoji?: Emoji;
 };
 
 export type EmojiPickerActiveEmojiProps = {
+  /**
+   * A render callback which receives the currently active emoji (either hovered or selected
+   * via keyboard navigation).
+   */
   children: (props: EmojiPickerActiveEmojiRenderProps) => ReactNode;
 };
 
 export type EmojiPickerSkinToneRenderProps = {
+  /**
+   * The current skin tone.
+   */
   skinTone: SkinTone;
+
+  /**
+   * A function to change the current skin tone.
+   */
   setSkinTone: (skinTone: SkinTone) => void;
-  skinTones: SkinToneVariation[];
+
+  /**
+   * The skin tone variations of the specified emoji.
+   */
+  skinToneVariations: SkinToneVariation[];
 };
 
 export type EmojiPickerSkinToneProps = {
+  /**
+   * The emoji to use as visual for the skin tone variations.
+   *
+   * @default "✋"
+   */
+  emoji?: string;
+
+  /**
+   * A render callback which receives the current skin tone and a function
+   * to change it, as well as the skin tone variations of the specified emoji.
+   */
   children: (props: EmojiPickerSkinToneRenderProps) => ReactNode;
 };

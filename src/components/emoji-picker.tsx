@@ -107,6 +107,28 @@ function EmojiPickerDataHandler() {
   return null;
 }
 
+/**
+ * Contains all the parts of the emoji picker.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.Root onEmojiSelect={(emoji) => console.log(emoji)}>
+ *   <EmojiPicker.Search />
+ *   <EmojiPicker.Viewport>
+ *     <EmojiPicker.List />
+ *   </EmojiPicker.Viewport>
+ * </EmojiPicker.Root>
+ * ```
+ *
+ * Options affecting the entire emoji picker (e.g. locale, columns, skin
+ * tone, etc) are available on this component.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.Root locale="fr" columns={8} skinTone="medium">
+ *   …
+ * </EmojiPicker.Root>
+ */
 const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
   (
     {
@@ -367,6 +389,27 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
   },
 );
 
+/**
+ * A search input to filter the list of emojis.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.Root>
+ *   <EmojiPicker.Search />
+ *   <EmojiPicker.Viewport>
+ *     <EmojiPicker.List />
+ *   </EmojiPicker.Viewport>
+ * </EmojiPicker.Root>
+ * ```
+ *
+ * It can be controlled or uncontrolled.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.Root>
+ *   <EmojiPicker.Search value={value} onChange={handleChange} />
+ * </EmojiPicker.Root>
+ */
 const EmojiPickerSearch = forwardRef<HTMLInputElement, EmojiPickerSearchProps>(
   ({ value, defaultValue, onChange, disabled, ...props }, forwardedRef) => {
     const store = useEmojiPickerStore();
@@ -448,6 +491,22 @@ const ActiveEmojiAnnouncer = memo(() => {
   );
 });
 
+/**
+ * The scrolling container of the emoji picker.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.Viewport>
+ *   <EmojiPicker.Loading>
+ *     <span>Loading…</span>
+ *   </EmojiPicker.Loading>
+ *   <EmojiPicker.Empty>
+ *     <span>No emoji found.</span>
+ *   </EmojiPicker.Empty>
+ *   <EmojiPicker.List />
+ * </EmojiPicker.Viewport>
+ * ```
+ */
 const EmojiPickerViewport = forwardRef<
   HTMLDivElement,
   EmojiPickerViewportProps
@@ -801,6 +860,37 @@ function DefaultEmojiPickerListRow({ ...props }: EmojiPickerListRowProps) {
   return <div {...props} />;
 }
 
+/**
+ * The list of emojis.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.Viewport>
+ *   <EmojiPicker.List />
+ * </EmojiPicker.Viewport>
+ * ```
+ *
+ * Inner components within the list can be customized.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.Viewport>
+ *   <EmojiPicker.List
+ *     components={{
+ *       CategoryHeader: ({ category, ...props }) => (
+ *         <div {...props}>{category.label}</div>
+ *       ),
+ *       Emoji: ({ emoji, isActive, ...props }) => (
+ *         <button aria-label={emoji.label} {...props}>
+ *           {emoji.emoji}
+ *         </button>
+ *       ),
+ *       Row: ({ children, ...props }) => <div {...props}>{children}</div>,
+ *     }}
+ *   />
+ * </EmojiPicker.Viewport>
+ * ```
+ */
 const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
   ({ style, components, ...props }, forwardedRef) => {
     const store = useEmojiPickerStore();
@@ -910,6 +1000,22 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
   },
 );
 
+/**
+ * A button to change the current skin tone by cycling through the
+ * available skin tones.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.SkinToneSelector />
+ * ```
+ *
+ * The emoji used as visual can be customized (by default, ✋).
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.SkinToneSelector emoji="👋" />
+ * ```
+ */
 const EmojiPickerSkinToneSelector = forwardRef<
   HTMLButtonElement,
   EmojiPickerSkinToneSelectorProps
@@ -920,23 +1026,23 @@ const EmojiPickerSkinToneSelector = forwardRef<
   ) => {
     const store = useEmojiPickerStore();
     const skinTones = useSelector(store, $skinTones, shallow);
-    const [skinTone, setSkinTone, skinTonesVariations] = useSkinTone(emoji);
+    const [skinTone, setSkinTone, skinToneVariations] = useSkinTone(emoji);
 
     const skinToneVariationIndex = useMemo(
       () =>
         Math.max(
           0,
-          skinTonesVariations.findIndex(
+          skinToneVariations.findIndex(
             (variation) => variation.skinTone === skinTone,
           ),
         ),
-      [skinTone, skinTonesVariations],
+      [skinTone, skinToneVariations],
     );
 
-    const skinToneVariation = skinTonesVariations[skinToneVariationIndex]!;
+    const skinToneVariation = skinToneVariations[skinToneVariationIndex]!;
     const nextSkinToneVariation =
-      skinTonesVariations[
-        (skinToneVariationIndex + 1) % skinTonesVariations.length
+      skinToneVariations[
+        (skinToneVariationIndex + 1) % skinToneVariations.length
       ]!;
     const nextSkinTone = nextSkinToneVariation.skinTone;
 
@@ -974,6 +1080,14 @@ const EmojiPickerSkinToneSelector = forwardRef<
   },
 );
 
+/**
+ * Renders when the emoji data is loading.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
+ * ```
+ */
 function EmojiPickerLoading({ children }: EmojiPickerLoadingProps) {
   const store = useEmojiPickerStore();
   const isLoading = useSelector(store, $isLoading);
@@ -994,6 +1108,24 @@ function EmojiPickerEmptyWithSearch({
   return children({ search });
 }
 
+/**
+ * Renders when no emoji is found for the current search.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
+ * ```
+ *
+ * It can also expose the current search to build a more
+ * detailed empty state.
+ *
+ *  @example
+ * ```tsx
+ * <EmojiPicker.Empty>
+ *   {({ search }) => <>No emoji found for "{search}"</>}
+ * </EmojiPicker.Empty>
+ * ```
+ */
 function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps) {
   const store = useEmojiPickerStore();
   const isEmpty = useSelector(store, $isEmpty);
@@ -1009,16 +1141,74 @@ function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps) {
   );
 }
 
+/**
+ * Exposes the currently active emoji (either hovered or selected
+ * via keyboard navigation).
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.ActiveEmoji>
+ *   {({ emoji }) => <span>{emoji}</span>}
+ * </EmojiPicker.ActiveEmoji>
+ * ```
+ *
+ * @see
+ * If you prefer to use a hook rather than a component,
+ * {@link useActiveEmoji} is also available.
+ */
 function EmojiPickerActiveEmoji({ children }: EmojiPickerActiveEmojiProps) {
   const activeEmoji = useActiveEmoji();
 
   return children({ emoji: activeEmoji });
 }
 
-function EmojiPickerSkinTone({ children }: EmojiPickerSkinToneProps) {
-  const [skinTone, setSkinTone, skinTones] = useSkinTone();
+/**
+ * Exposes the current skin tone and a function to change it.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.SkinTone>
+ *   {({ skinTone, setSkinTone }) => (
+ *     <div>
+ *       <span>{skinTone}</span>
+ *       <button onClick={() => setSkinTone("none")}>Reset skin tone</button>
+ *     </div>
+ *   )}
+ * </EmojiPicker.SkinTone>
+ * ```
+ *
+ * It can also make building a custom skin tone selector easier: pass an emoji
+ * you want to use as visual (by default, ✋) and it will return its skin tone
+ * variations.
+ *
+ * @example
+ * ```tsx
+ * const [skinTone, setSkinTone, skinToneVariations] = useSkinTone("👋");
+ *
+ * // [👋] [👋🏻] [👋🏼] [👋🏽] [👋🏾] [👋🏿]
+ * <EmojiPicker.SkinTone emoji="👋">
+ *   {({ skinTone, setSkinTone, skinToneVariations }) => (
+ *     skinToneVariations.map(({ skinTone, emoji }) => (
+ *       <button key={skinTone} onClick={() => setSkinTone(skinTone)}>
+ *         {emoji}
+ *       </button>
+ *     ))
+ *   )}
+ * </EmojiPicker.SkinTone>
+ * ```
+ *
+ * @see
+ * If you prefer to use a hook rather than a component,
+ * {@link useSkinTone} is also available.
+ *
+ * @see
+ * An already-built skin tone selector is also available,
+ * {@link EmojiPicker.SkinToneSelector|`<EmojiPicker.SkinToneSelector />`}.
+ */
+function EmojiPickerSkinTone({ children, emoji }: EmojiPickerSkinToneProps) {
+  const [skinTone, setSkinTone, skinToneVariations] = useSkinTone(emoji);
 
-  return children({ skinTone, setSkinTone, skinTones });
+  return children({ skinTone, setSkinTone, skinToneVariations });
 }
 
 export {
