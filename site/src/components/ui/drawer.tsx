@@ -53,8 +53,8 @@ const DrawerContent = forwardRef<
       ref={ref}
       {...props}
     >
-      <div aria-hidden="true" className="flex flex-col items-center py-2">
-        <span className="h-1 w-20 rounded-full bg-secondary" />
+      <div aria-hidden="true" className="flex flex-col items-center py-3">
+        <span className="h-1.5 w-20 rounded-full bg-secondary" />
       </div>
       {children}
     </DrawerPrimitive.Content>

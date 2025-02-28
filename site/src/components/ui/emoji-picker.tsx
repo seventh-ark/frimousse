@@ -28,7 +28,7 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
           </div>
         </EmojiPickerPrimitive.Loading>
         <EmojiPickerPrimitive.Empty>
-          <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-secondary-foreground">
+          <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-muted-foreground">
             <Frown className="size-5" />
             <span className="text-xs">No emoji found.</span>
           </div>
@@ -37,7 +37,10 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
           className="select-none pb-1"
           components={{
             Row: ({ children, ...props }) => (
-              <div {...props} className="scroll-mb-1 px-1">
+              <div
+                {...props}
+                className="scroll-mb-1 px-1 text-lg max-lg:justify-between sm:text-xl lg:text-lg"
+              >
                 {children}
               </div>
             ),
