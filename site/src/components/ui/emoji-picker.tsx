@@ -13,11 +13,11 @@ interface EmojiPickerProps extends EmojiPickerRootProps {
 
 function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
   return (
-    <EmojiPickerPrimitive.Root className={cn("w-fit", className)} {...props}>
+    <EmojiPickerPrimitive.Root className={cn("w-full", className)} {...props}>
       <div className="px-2 pt-2">
         <EmojiPickerPrimitive.Search
           autoFocus={autoFocus}
-          className="w-full rounded bg-muted p-2 text-sm outline-none placeholder:text-muted-foreground"
+          className="w-full rounded bg-muted p-2 outline-none placeholder:text-muted-foreground md:text-sm"
           placeholder="Search…"
         />
       </div>

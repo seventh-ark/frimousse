@@ -15,6 +15,7 @@
   --muted-foreground: var(--color-neutral-400);
   --accent: var(--color-blue-500);
   --accent-foreground: var(--color-neutral-50);
+  --overlay: hsl(0, 0%, 0%, 0.2);
   --border: var(--color-neutral-200);
   --input: var(--color-neutral-200);
   --ring: var(--color-neutral-200);
@@ -38,6 +39,7 @@
   --muted-foreground: var(--color-neutral-600);
   --accent: var(--color-blue-500);
   --accent-foreground: var(--color-neutral-950);
+  --overlay: hsl(0, 0%, 0%, 0.8);
   --border: var(--color-neutral-800);
   --input: var(--color-neutral-800);
   --ring: var(--color-neutral-800);
@@ -58,6 +60,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-overlay: var(--overlay);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
