@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import type { PropsWithChildren } from "react";
 import "./styles.css";
+import { AnimatedFavicon } from "@/components/animated-favicon";
 
 const inter = localFont({
   src: "./InterVariable.woff2",
@@ -56,6 +57,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <AnimatedFavicon />
+      </head>
       <body className={inter.variable}>
         <ThemeProvider
           attribute="class"
