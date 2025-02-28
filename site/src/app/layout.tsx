@@ -6,10 +6,16 @@ import localFont from "next/font/local";
 import type { PropsWithChildren } from "react";
 import "./styles.css";
 import { AnimatedFavicon } from "@/components/animated-favicon";
+import { JetBrains_Mono } from "next/font/google";
 
 const inter = localFont({
   src: "./InterVariable.woff2",
   variable: "--font-inter",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
 });
 
 const config = {
@@ -60,7 +66,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <head>
         <AnimatedFavicon />
       </head>
-      <body className={inter.variable}>
+      <body className={cn(inter.variable, jetbrainsMono.variable)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -69,8 +75,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
         >
           <div
             className={cn(
-              "container relative min-h-dvh",
-              "md:before:-inset-x-2 before:pointer-events-none before:absolute before:inset-x-4 before:h-full before:border-border before:border-x before:border-dotted",
+              "container relative flex min-h-dvh flex-col",
+              "before:pointer-events-none before:absolute before:inset-x-4 before:h-full before:border-border before:border-x before:border-dotted md:before:inset-x-0",
             )}
           >
             {children}

@@ -3,7 +3,7 @@ import { Reactions } from "./reactions";
 
 export function Hero() {
   return (
-    <div className="flex flex-col py-20 md:py-40">
+    <div className="flex flex-col pt-20 md:pt-40">
       <h1 className="inline-flex items-center gap-2 font-medium">
         <Logo />
         Frimousse

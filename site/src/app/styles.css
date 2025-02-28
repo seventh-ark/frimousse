@@ -49,6 +49,7 @@
 @theme inline {
   --font-sans: var(--font-inter), sans-serif;
   --font-sans-feature-settings: "liga" 1, "calt" 1;
+  --font-mono: var(--font-jetbrains-mono), monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -104,4 +105,8 @@
 
 @utility link {
   @apply transition-colors duration-150 ease-out font-medium text-foreground underline decoration-border decoration-dotted underline-offset-2 hover:decoration-muted-foreground focus-visible:decoration-muted-foreground;
+}
+
+@utility content {
+  @apply [&_h2]:font-medium [&_h2]:mb-3;
 }
