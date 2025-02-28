@@ -1,0 +1,22 @@
+name: CI
+on: [pull_request]
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout commit
+        uses: actions/checkout@v4
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.0
+      - name: Install dependencies
+        run: bun install
+      - name: Run linting
+        run: bun run lint && bun run lint:package
+      - name: Run tests
+        run: bun run test
