@@ -1,5 +1,6 @@
 "use cache";
 
+import { cn } from "@/lib/utils";
 import type { BundledLanguage } from "shiki";
 import { codeToHtml } from "shiki";
 import { CopyButton } from "../copy-button";
@@ -16,7 +17,10 @@ export async function CodeBlock(props: {
   return (
     <div className="group relative min-h-10 overflow-hidden rounded-md bg-muted p-3">
       <CopyButton
-        className="absolute top-1.5 right-1.5 scale-95 bg-muted opacity-0 transition duration-300 ease-out group-hover:scale-100 group-hover:opacity-100"
+        className={cn(
+          "absolute top-1.5 right-1.5 bg-muted",
+          "lg:scale-95 lg:opacity-0 lg:group-hover:scale-100 lg:group-hover:opacity-100",
+        )}
         text={props.children}
       />
       <div
