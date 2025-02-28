@@ -10,7 +10,7 @@ interface ButtonProps
 }
 
 const buttonVariants = cva(
-  "transition-all duration-200 ease-out inline-flex items-center justify-center gap-2 whitespace-nowrap rounded text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-[3px]",
+  "transition-all duration-200 ease-out inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-[3px]",
   {
     variants: {
       variant: {

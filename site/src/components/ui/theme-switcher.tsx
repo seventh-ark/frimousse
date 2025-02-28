@@ -81,7 +81,7 @@ function ThemeSwitcher({
                 "transition duration-200 ease-out",
                 isActive
                   ? "text-foreground"
-                  : "text-muted-foreground hover:text-secondary-foreground focus-visible:text-secondary-foreground",
+                  : "text-secondary-foreground hover:text-foreground focus-visible:text-foreground",
               )}
             />
           </button>
