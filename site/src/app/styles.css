@@ -19,12 +19,12 @@
   --input: var(--color-neutral-200);
   --ring: var(--color-neutral-200);
   --shadow-popover:
-    0px 1px 1.55px 0px #00000002,
-    0px 2.39px 3.72px 0px #00000003,
-    0px 4.51px 7.01px 0px #00000004,
-    0px 8.04px 12.51px 0px #00000005,
-    0px 15.04px 23.4px 0px #00000005,
-    0px 36px 56px 0px #00000008;
+    0px 0.91px 1.49px 0px #00000001,
+    0px 2.19px 3.59px 0px #00000002,
+    0px 4.13px 6.76px 0px #00000003,
+    0px 7.37px 12.06px 0px #00000003,
+    0px 13.79px 22.56px 0px #00000004,
+    0px 33px 54px 0px #00000005;
 }
 
 .dark {
