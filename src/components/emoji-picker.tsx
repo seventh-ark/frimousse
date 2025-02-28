@@ -411,9 +411,13 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
  * </EmojiPicker.Root>
  */
 const EmojiPickerSearch = forwardRef<HTMLInputElement, EmojiPickerSearchProps>(
-  ({ value, defaultValue, onChange, disabled, ...props }, forwardedRef) => {
+  (
+    { value, defaultValue, onChange, disabled, autoFocus, ...props },
+    forwardedRef,
+  ) => {
     const store = useEmojiPickerStore();
     const isLoading = useSelector(store, $isLoading);
+    const isDisabled = disabled || isLoading;
     const ref = useRef<HTMLInputElement>(null!);
     const callbackRef = useCallback((element: HTMLInputElement | null) => {
       if (element) {
@@ -434,6 +438,12 @@ const EmojiPickerSearch = forwardRef<HTMLInputElement, EmojiPickerSearchProps>(
       });
     }, []);
 
+    useLayoutEffect(() => {
+      if (!isDisabled && autoFocus) {
+        ref.current.focus();
+      }
+    }, [isDisabled, autoFocus]);
+
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {
         onChange?.(event);
@@ -450,9 +460,10 @@ const EmojiPickerSearch = forwardRef<HTMLInputElement, EmojiPickerSearchProps>(
     return (
       <input
         frimousse-search=""
-        placeholder="Search emoji…"
+        placeholder="Search…"
         type="search"
         {...props}
+        autoFocus={autoFocus}
         defaultValue={defaultValue}
         disabled={isLoading || disabled}
         onChange={handleChange}

@@ -18,7 +18,6 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
         <EmojiPickerPrimitive.Search
           autoFocus={autoFocus}
           className="w-full rounded bg-muted p-2 outline-none placeholder:text-muted-foreground md:text-sm"
-          placeholder="Search…"
         />
       </div>
       <EmojiPickerPrimitive.Viewport className="h-[320px]">

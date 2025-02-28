@@ -113,6 +113,7 @@ const AddReactionButton = memo(
 
     const renderEmojiPicker = () => (
       <EmojiPicker
+        autoFocus
         onEmojiSelect={(emoji) => {
           handleEmojiSelect?.(emoji);
           setIsOpen(false);

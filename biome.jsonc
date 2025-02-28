@@ -40,7 +40,8 @@
         "noNonNullAssertion": "off"
       },
       "a11y": {
-        "useSemanticElements": "off"
+        "useSemanticElements": "off",
+        "noAutofocus": "off"
       },
       "nursery": {
         "useSortedClasses": {
