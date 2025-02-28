@@ -35,7 +35,7 @@ export function Footer() {
           Made with{" "}
           <Heart
             aria-label="love"
-            className="pointer-events-none mr-0.5 inline size-4"
+            className="pointer-events-none inline size-4"
           />{" "}
           by{" "}
           <Link className="link" href="https://liveblocks.io" target="_blank">
