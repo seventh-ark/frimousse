@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 function getDevice(): "mobile" | "tablet" | "desktop" | null {
   if (typeof window === "undefined") return null;
 
-  return window.matchMedia("(min-width: 1024px)").matches
+  return window.matchMedia("(min-width: 64rem)").matches
     ? "desktop"
-    : window.matchMedia("(min-width: 640px)").matches
+    : window.matchMedia("(min-width: 40rem)").matches
       ? "tablet"
       : "mobile";
 }
