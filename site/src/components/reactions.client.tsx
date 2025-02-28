@@ -14,8 +14,14 @@ import NumberFlow from "@number-flow/react";
 import type { EmojiPickerRootProps } from "frimousse";
 import type { ReactionsJson } from "liveblocks.config";
 import { SmilePlus } from "lucide-react";
-import { type HTMLMotionProps, LayoutGroup, motion } from "motion/react";
-import { type MouseEvent, memo, useCallback, useState } from "react";
+import {
+  AnimatePresence,
+  type HTMLMotionProps,
+  LayoutGroup,
+  type Variants,
+  motion,
+} from "motion/react";
+import { memo, useCallback, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { buttonVariants } from "./ui/button";
 import { EmojiPicker } from "./ui/emoji-picker";
@@ -38,19 +44,47 @@ interface ReactionsProps {
   serverReactions: ReactionsJson;
 }
 
+const variants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
 const ReactionButton = memo(
-  ({ emoji, isActive, count, className, ...props }: ReactionButtonProps) => {
+  ({
+    emoji,
+    isActive,
+    count,
+    className,
+    style,
+    ...props
+  }: ReactionButtonProps) => {
     return (
       <motion.button
+        animate="visible"
         className={cn(
           buttonVariants({ variant: "secondary" }),
-          "rounded-full px-2.5 py-1 text-sm",
+          "rounded-full px-2.5 py-1 text-sm tabular-nums",
           isActive
             ? "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:bg-accent/10 focus-visible:ring-accent/20"
             : "text-secondary-foreground",
           className,
         )}
+        exit="hidden"
+        initial="hidden"
         layout
+        style={{
+          ...style,
+
+          // Prevent distortion during layout animations
+          borderRadius: 9999,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 800,
+          damping: 80,
+          mass: 4,
+        }}
+        variants={variants}
         {...props}
       >
         {emoji} <NumberFlow value={count} />
@@ -85,51 +119,26 @@ const AddReactionButton = memo(
   },
 );
 
-const LiveblocksReaction = memo(({ emoji }: { emoji: string }) => {
+function LiveblocksReactions() {
   const { id } = useSelf();
-  const { count, isActive } = useStorage((storage) => {
-    const users = storage.reactions.get(emoji);
+  const reactions = useStorage((storage) => storage.reactions);
 
-    return {
-      count: users?.size ?? 0,
-      isActive: users && id ? users.has(id) : false,
-    };
-  });
-
-  const handleClick = useMutation(
-    ({ storage }, _: MouseEvent) => {
+  const handleReactionClick = useMutation(
+    ({ storage }, emoji: string) => {
       const reaction = storage.get("reactions")?.get(emoji);
 
       if (!id || !reaction) {
         return;
       }
 
-      if (isActive) {
+      if (reaction.has(id)) {
         reaction.delete(id);
       } else {
         reaction.set(id, true);
       }
     },
-    [emoji, isActive],
+    [id],
   );
-
-  if (count === 0) {
-    return null;
-  }
-
-  return (
-    <ReactionButton
-      count={count}
-      emoji={emoji}
-      isActive={isActive}
-      onClick={handleClick}
-    />
-  );
-});
-
-function LiveblocksReactions() {
-  const { id } = useSelf();
-  const reactions = useStorage((storage) => storage.reactions.keys());
 
   const handleAddReactionClick = useMutation(
     ({ storage }, emoji: string) => {
@@ -143,33 +152,53 @@ function LiveblocksReactions() {
   );
 
   return (
-    <LayoutGroup>
-      {Array.from(reactions).map((emoji) => (
-        <LiveblocksReaction emoji={emoji} key={emoji} />
-      ))}
+    <>
       <AddReactionButton
         disabled={!id}
         onEmojiSelect={handleAddReactionClick}
       />
-    </LayoutGroup>
+      <AnimatePresence initial={false}>
+        {Array.from(reactions).map(([emoji, users]) => {
+          const count = users.size;
+
+          if (count === 0) {
+            return null;
+          }
+
+          return (
+            <ReactionButton
+              count={count}
+              emoji={emoji}
+              isActive={id ? users.has(id) : false}
+              key={emoji}
+              onClick={() => {
+                handleReactionClick(emoji);
+              }}
+            />
+          );
+        })}
+      </AnimatePresence>
+    </>
   );
 }
 
 function ServerReactions({ reactions }: { reactions: ReactionsJson }) {
   return (
     <>
-      {Object.entries(reactions).map(([emoji, users]) => {
-        const count = Object.keys(users).length;
-
-        if (count === 0) {
-          return null;
-        }
-
-        return (
-          <ReactionButton count={count} disabled emoji={emoji} key={emoji} />
-        );
-      })}
       <AddReactionButton disabled />
+      <AnimatePresence initial={false}>
+        {Object.entries(reactions).map(([emoji, users]) => {
+          const count = Object.keys(users).length;
+
+          if (count === 0) {
+            return null;
+          }
+
+          return (
+            <ReactionButton count={count} disabled emoji={emoji} key={emoji} />
+          );
+        })}
+      </AnimatePresence>
     </>
   );
 }
@@ -212,47 +241,68 @@ function LocalReactions({
 
   return (
     <>
-      {Object.entries(reactions).map(([emoji, users]) => {
-        const count = users.length;
-
-        if (count === 0) {
-          return null;
-        }
-
-        return (
-          <ReactionButton
-            count={count}
-            emoji={emoji}
-            isActive={users.includes(id)}
-            key={emoji}
-            onClick={() => {
-              handleReactionClick(emoji);
-            }}
-          />
-        );
-      })}
       <AddReactionButton onEmojiSelect={handleAddReactionClick} />
+      <AnimatePresence initial={false}>
+        {Object.entries(reactions).map(([emoji, users]) => {
+          const count = users.length;
+
+          if (count === 0) {
+            return null;
+          }
+
+          return (
+            <ReactionButton
+              count={count}
+              emoji={emoji}
+              isActive={users.includes(id)}
+              key={emoji}
+              onClick={() => {
+                handleReactionClick(emoji);
+              }}
+            />
+          );
+        })}
+      </AnimatePresence>
     </>
   );
 }
 
 const initialStorage: Liveblocks["Storage"] = {
-  reactions: new LiveMap([["😊", new LiveMap([["####0", true]])]]),
+  reactions: new LiveMap([
+    [
+      "😊",
+      new LiveMap([
+        ["####0", true],
+        ["####1", true],
+        ["####2", true],
+      ]),
+    ],
+    ["👋", new LiveMap([["####0", true]])],
+    [
+      "🎨",
+      new LiveMap([
+        ["####0", true],
+        ["####1", true],
+      ]),
+    ],
+  ]),
 };
 
 export function Reactions({ roomId, serverReactions }: ReactionsProps) {
   return (
     <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
       <RoomProvider id={roomId} initialStorage={initialStorage}>
-        <ClientSideSuspense
-          fallback={<ServerReactions reactions={serverReactions} />}
-        >
-          <ErrorBoundary
-            fallback={<LocalReactions initialReactions={serverReactions} />}
+        <LayoutGroup>
+          <ClientSideSuspense
+            fallback={<ServerReactions reactions={serverReactions} />}
           >
-            <LiveblocksReactions />
-          </ErrorBoundary>
-        </ClientSideSuspense>
+            <ErrorBoundary
+              fallback={<LocalReactions initialReactions={serverReactions} />}
+            >
+              <LiveblocksReactions />
+            </ErrorBoundary>
+          </ClientSideSuspense>
+        </LayoutGroup>
       </RoomProvider>
     </LiveblocksProvider>
   );

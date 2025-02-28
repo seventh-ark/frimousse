@@ -1,16 +1,26 @@
-import type { Metadata } from "next";
-import type { PropsWithChildren } from "react";
-import "./styles.css";
-import Footer from "@/components/footer";
+import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { config } from "./config";
+import type { PropsWithChildren } from "react";
+import "./styles.css";
 
 const inter = localFont({
   src: "./InterVariable.woff2",
   variable: "--font-inter",
 });
+
+const config = {
+  name: "Frimousse —  An emoji picker component for React",
+  url: "https://frimousse.liveblocks.io",
+  description:
+    "A fast, lightweight, and fully customizable React emoji picker with zero dependencies. Always up-to-date, accessible, and optimized for performance—perfect for modern web apps.",
+  links: {
+    twitter: "https://x.com/liveblocks",
+    github: "https://github.com/liveblocks/frimousse",
+  },
+} as const;
 
 export const metadata: Metadata = {
   title: {

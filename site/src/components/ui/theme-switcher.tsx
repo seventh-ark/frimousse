@@ -2,46 +2,46 @@
 
 import { cn } from "@/lib/utils";
 import { Monitor, Moon, Sun } from "lucide-react";
-import * as motion from "motion/react-client";
+import { motion } from "motion/react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { type ComponentProps, useDeferredValue } from "react";
 
 const THEMES = [
   {
-    key: "system",
+    type: "system",
     icon: Monitor,
     label: "system theme",
   },
   {
-    key: "light",
+    type: "light",
     icon: Sun,
     label: "light theme",
   },
   {
-    key: "dark",
+    type: "dark",
     icon: Moon,
     label: "dark theme",
   },
-];
+] as const;
 
-export const ThemeSwitcher = ({
+type Theme = (typeof THEMES)[number]["type"];
+
+interface ThemeSwitcherProps
+  extends Omit<ComponentProps<"div">, "onChange" | "value" | "defaultValue"> {
+  value?: Theme;
+  onChange?: (theme: Theme) => void;
+  defaultValue?: Theme;
+}
+
+function ThemeSwitcher({
+  value,
+  onChange,
+  defaultValue,
   className,
-}: {
-  value?: "light" | "dark" | "system";
-  onChange?: (theme: "light" | "dark" | "system") => void;
-  defaultValue?: "light" | "dark" | "system";
-  className?: string;
-}) => {
+  ...props
+}: ThemeSwitcherProps) {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
+  const deferredTheme = useDeferredValue(theme, "system");
 
   return (
     <div
@@ -49,24 +49,30 @@ export const ThemeSwitcher = ({
         "relative inline-flex h-8 items-center rounded-full border border-dotted px-1",
         className,
       )}
+      {...props}
     >
-      {THEMES.map(({ key, icon: Icon, label }) => {
-        const isActive = theme === key;
+      {THEMES.map(({ type, icon: Icon, label }) => {
+        const isActive = deferredTheme === type;
 
         return (
           <button
             aria-label={`Switch to ${label}`}
             className="relative size-6 rounded-full"
-            key={key}
-            onClick={() => setTheme(key as "light" | "dark" | "system")}
+            key={type}
+            onClick={() => setTheme(type)}
             title={`Switch to ${label}`}
             type="button"
           >
             {isActive && (
               <motion.div
-                className="absolute inset-0 rounded-full bg-muted"
+                className="-z-1 absolute inset-0 rounded-full bg-muted"
                 layoutId="activeTheme"
-                transition={{ type: "spring", duration: 0.6 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 800,
+                  damping: 80,
+                  mass: 4,
+                }}
               />
             )}
             <Icon
@@ -83,4 +89,6 @@ export const ThemeSwitcher = ({
       })}
     </div>
   );
-};
+}
+
+export { ThemeSwitcher };

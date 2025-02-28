@@ -7,14 +7,21 @@ import {
 } from "frimousse";
 import { FrownIcon, LoaderCircleIcon } from "lucide-react";
 
-function EmojiPicker({ className, ...props }: EmojiPickerRootProps) {
+interface EmojiPickerProps extends EmojiPickerRootProps {
+  autoFocus?: boolean;
+}
+
+function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
   return (
     <EmojiPickerPrimitive.Root
       className={cn("w-fit rounded-md border bg-background", className)}
       {...props}
     >
-      <EmojiPickerPrimitive.Search className="w-full p-2 text-sm outline-none placeholder:text-muted-foreground" />
-      <EmojiPickerPrimitive.Viewport className="h-[320px]">
+      <EmojiPickerPrimitive.Search
+        autoFocus={autoFocus}
+        className="w-full p-2 text-sm outline-hidden placeholder:text-muted-foreground"
+      />
+      <EmojiPickerPrimitive.Viewport className="h-[320px] outline-hidden">
         <EmojiPickerPrimitive.Loading>
           <div className="flex h-full w-full flex-col items-center justify-center gap-3">
             <LoaderCircleIcon className="size-6 animate-spin" />
@@ -76,7 +83,5 @@ function EmojiPicker({ className, ...props }: EmojiPickerRootProps) {
     </EmojiPickerPrimitive.Root>
   );
 }
-
-EmojiPicker.displayName = "EmojiPicker";
 
 export { EmojiPicker };
