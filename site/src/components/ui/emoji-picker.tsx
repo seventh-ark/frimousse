@@ -5,7 +5,7 @@ import {
   EmojiPicker as EmojiPickerPrimitive,
   type EmojiPickerRootProps,
 } from "frimousse";
-import { FrownIcon, LoaderCircleIcon } from "lucide-react";
+import { Frown, LoaderCircle } from "lucide-react";
 
 interface EmojiPickerProps extends EmojiPickerRootProps {
   autoFocus?: boolean;
@@ -23,13 +23,13 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
       <EmojiPickerPrimitive.Viewport className="h-[320px]">
         <EmojiPickerPrimitive.Loading>
           <div className="flex h-full w-full flex-col items-center justify-center gap-3">
-            <LoaderCircleIcon className="size-6 animate-spin" />
+            <LoaderCircle className="size-6 animate-spin" />
             <span>Loading…</span>
           </div>
         </EmojiPickerPrimitive.Loading>
         <EmojiPickerPrimitive.Empty>
           <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-secondary-foreground">
-            <FrownIcon className="size-5" />
+            <Frown className="size-5" />
             <span className="text-xs">No emoji found.</span>
           </div>
         </EmojiPickerPrimitive.Empty>

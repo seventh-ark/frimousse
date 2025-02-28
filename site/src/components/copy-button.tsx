@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Check, Copy } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import * as motion from "motion/react-client";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 
 const COPY_ANIMATION_DURATION = 2000;
@@ -23,6 +23,34 @@ const variants = {
   },
 };
 
+function CopyButtonIcon({ isAnimating }: { isAnimating: boolean }) {
+  return (
+    <AnimatePresence initial={false} mode="wait">
+      {isAnimating ? (
+        <motion.div
+          animate="visible"
+          exit="hidden"
+          initial="hidden"
+          key="copied"
+          variants={variants}
+        >
+          <Check className="size-3.5" />
+        </motion.div>
+      ) : (
+        <motion.div
+          animate="visible"
+          exit="hidden"
+          initial="hidden"
+          key="copy"
+          variants={variants}
+        >
+          <Copy className="size-3.5" />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export function CopyButton({
   text,
   className,
@@ -33,8 +61,13 @@ export function CopyButton({
   label?: string;
 }) {
   const timeout = useRef(0);
+  const [isMounted, setIsMounted] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [, setHasCopied] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const copyToClipboard = useCallback(async (text: string) => {
     window.clearTimeout(timeout.current);
@@ -69,29 +102,7 @@ export function CopyButton({
       title={label}
       variant="ghost"
     >
-      <AnimatePresence initial={false} mode="wait">
-        {isAnimating ? (
-          <motion.div
-            animate="visible"
-            exit="hidden"
-            initial="hidden"
-            key="copied"
-            variants={variants}
-          >
-            <Check className="size-3.5" />
-          </motion.div>
-        ) : (
-          <motion.div
-            animate="visible"
-            exit="hidden"
-            initial="hidden"
-            key="copy"
-            variants={variants}
-          >
-            <Copy className="size-3.5" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isMounted && <CopyButtonIcon isAnimating={isAnimating} />}
     </Button>
   );
 }
