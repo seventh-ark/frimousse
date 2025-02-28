@@ -29,6 +29,7 @@ function PopoverContent({
           "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-[0.98] data-[state=open]:zoom-in-[0.98] data-[state=closed]:animate-out data-[state=open]:animate-in",
           className,
         )}
+        collisionPadding={8}
         data-slot="popover-content"
         sideOffset={sideOffset}
         {...props}
