@@ -104,5 +104,5 @@
 }
 
 @utility content {
-  @apply [&_h2]:font-medium [&_h2]:mb-3;
+  @apply [&_h2]:font-medium [&_h2]:mb-3 [&_p]:text-secondary-foreground [&_p]:mb-[1em];
 }

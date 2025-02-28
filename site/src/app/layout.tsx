@@ -1,4 +1,4 @@
-import { Footer } from "@/components/footer";
+import { Footer } from "@/components/sections/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";

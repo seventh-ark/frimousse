@@ -1,5 +1,5 @@
-import { Logo } from "./logo";
-import { Reactions } from "./reactions";
+import { Logo } from "../logo";
+import { Reactions } from "../reactions";
 
 export function Hero() {
   return (

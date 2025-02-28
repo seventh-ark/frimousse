@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Heart } from "./logo";
-import { ThemeSwitcher } from "./ui/theme-switcher";
+import { Heart } from "../logo";
+import { ThemeSwitcher } from "../ui/theme-switcher";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
