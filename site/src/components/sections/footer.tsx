@@ -7,7 +7,7 @@ export function Footer() {
 
   return (
     <footer className="mt-auto flex justify-between gap-10 pt-20 pb-8 text-secondary-foreground text-xs md:pt-32">
-      <div className="flex flex-col gap-0.5">
+      <div className="flex flex-col gap-1">
         <span>
           © <time dateTime={currentYear.toString()}>{currentYear}</time>{" "}
           <Link className="link" href="/">
