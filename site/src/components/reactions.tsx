@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { Liveblocks as LiveblocksClient } from "@liveblocks/node";
 import {
   DEFAULT_REACTIONS,
+  MAX_ROWS,
   ROOM_ID,
   type ReactionsJson,
 } from "liveblocks.config";
@@ -9,8 +10,6 @@ import { unstable_cache as cache } from "next/cache";
 import { connection } from "next/server";
 import type { ComponentProps } from "react";
 import { Reactions as ClientReactions } from "./reactions.client";
-
-const MAX_ROWS = 3;
 
 const liveblocks = new LiveblocksClient({
   secret: process.env.LIVEBLOCKS_SECRET_KEY!,

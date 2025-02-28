@@ -18,6 +18,7 @@ import {
   DEFAULT_KEYS,
   DEFAULT_KEYS_COUNT,
   DEFAULT_REACTIONS,
+  MAX_REACTIONS,
   type ReactionsJson,
 } from "liveblocks.config";
 import { SmilePlus } from "lucide-react";
@@ -150,11 +151,12 @@ function LiveblocksReactions() {
         return;
       }
 
-      const reaction = storage.get("reactions")?.get(emoji);
+      const reactions = storage.get("reactions");
+      const reaction = reactions?.get(emoji);
 
       if (!reaction) {
         // If the reaction doesn't exist, initialize it with self
-        storage.get("reactions")?.set(
+        reactions?.set(
           emoji,
           new LiveMap([
             [CREATED_AT_KEY, Date.now()],
@@ -164,6 +166,10 @@ function LiveblocksReactions() {
       } else if (reaction.has(id)) {
         // If the reaction exists and is active, remove self
         reaction.delete(id);
+
+        if (reaction.size === DEFAULT_KEYS_COUNT) {
+          reactions?.delete(emoji);
+        }
       } else {
         // If the reaction exists and isn't active, add self
         if (reaction.size === DEFAULT_KEYS_COUNT) {
@@ -171,6 +177,22 @@ function LiveblocksReactions() {
         }
 
         reaction.set(id, 1);
+      }
+
+      if (reactions && reactions.size > MAX_REACTIONS) {
+        const [oldestReaction] = Array.from(reactions.entries()).sort(
+          ([, dataA], [, dataB]) => {
+            return (
+              (dataA.get(CREATED_AT_KEY) ?? 0) -
+              (dataB.get(CREATED_AT_KEY) ?? 0)
+            );
+          },
+        );
+
+        if (oldestReaction) {
+          console.log("DELETING", oldestReaction[0]);
+          reactions.delete(oldestReaction[0]);
+        }
       }
     },
     [id],
