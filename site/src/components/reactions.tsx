@@ -46,7 +46,7 @@ export function Reactions({
     <div
       className={cn("flex flex-wrap gap-1.5 overflow-hidden", className)}
       style={{
-        height: `calc(var(--spacing) * 9 * ${MAX_ROWS} + var(--spacing) * 1.5 *${MAX_ROWS - 1})`,
+        height: `calc(var(--spacing) * 8 * ${MAX_ROWS} + var(--spacing) * 1.5 *${MAX_ROWS - 1})`,
       }}
       {...props}
     >

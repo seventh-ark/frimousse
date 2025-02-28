@@ -51,6 +51,11 @@
   --font-sans-feature-settings: "liga" 1, "calt" 1;
   --font-mono: var(--font-jetbrains-mono), monospace;
 
+  --text-base: 0.9375rem;
+  --text-sm: 0.8125rem;
+
+  --spacing-outer-gutter: calc(var(--spacing) * 8);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
@@ -75,7 +80,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground font-sans antialiased text-base;
   }
 
   strong {
@@ -95,7 +100,7 @@
 
 @utility container {
   margin-inline: auto;
-  padding-inline: calc(var(--spacing) * 8);
+  padding-inline: var(--spacing-outer-gutter);
   max-width: var(--container-2xl);
 }
 

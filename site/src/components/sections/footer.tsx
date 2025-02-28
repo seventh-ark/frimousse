@@ -20,7 +20,7 @@ async function Year(props: ComponentProps<"time">) {
 
 export function Footer() {
   return (
-    <footer className="mt-auto flex justify-between gap-10 pt-20 pb-8 text-secondary-foreground text-xs md:pt-40">
+    <footer className="mt-auto flex justify-between gap-10 pt-20 pb-outer-gutter text-secondary-foreground text-xs md:pt-40">
       <div className="flex flex-col gap-1">
         <span>
           ©{" "}
