@@ -74,10 +74,6 @@
     @apply border-border outline-ring;
   }
 
-  ::selection {
-    @apply bg-primary/10 dark:bg-primary/50 text-primary;
-  }
-
   body {
     @apply bg-background text-foreground font-sans antialiased;
   }
