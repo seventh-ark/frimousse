@@ -22,7 +22,7 @@ import {
   type Variants,
   motion,
 } from "motion/react";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { buttonVariants } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "./ui/drawer";
@@ -107,7 +107,12 @@ const ReactionButton = memo(
 const AddReactionButton = memo(
   ({ onEmojiSelect, ...props }: AddReactionButtonProps) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
     const { isMobile } = useMediaQuery();
+
+    useEffect(() => {
+      setIsMounted(true);
+    }, []);
 
     const renderTrigger = () => (
       <motion.button
@@ -132,6 +137,10 @@ const AddReactionButton = memo(
         }}
       />
     );
+
+    if (!isMounted) {
+      return renderTrigger();
+    }
 
     return isMobile ? (
       <Drawer onOpenChange={setIsOpen} open={isOpen}>
