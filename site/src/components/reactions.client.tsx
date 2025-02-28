@@ -77,7 +77,7 @@ const ReactionButton = memo(
         animate="visible"
         className={cn(
           buttonVariants({ variant: "secondary" }),
-          "rounded-full px-2.5 py-1 text-sm tabular-nums will-change-transform",
+          "gap-1 rounded-full px-2.5 py-1 text-sm tabular-nums will-change-transform",
           isActive
             ? "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:ring-accent/20 dark:bg-accent/20 dark:focus-visible:bg-accent/20 dark:hover:bg-accent/25"
             : "text-secondary-foreground",
