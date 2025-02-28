@@ -1,5 +1,8 @@
 import { cn } from "@/lib/utils";
 import { Liveblocks as LiveblocksClient } from "@liveblocks/node";
+import type { ReactionsJson } from "liveblocks.config";
+import { unstable_cache as cache } from "next/cache";
+import { connection } from "next/server";
 import type { ComponentProps } from "react";
 import { Reactions as ClientReactions } from "./reactions.client";
 
@@ -9,24 +12,37 @@ const liveblocks = new LiveblocksClient({
   secret: process.env.LIVEBLOCKS_SECRET_KEY!,
 });
 
+const getServerReactions = cache(
+  async () => {
+    const storage = (await liveblocks.getStorageDocument(
+      ROOM_ID,
+      "json",
+    )) as unknown as Liveblocks["StorageJson"];
+
+    return storage.reactions;
+  },
+  ["reactions"],
+  { revalidate: 5 },
+);
+
 export async function Reactions({
   className,
   ...props
 }: Omit<ComponentProps<"div">, "children">) {
-  let storage: Liveblocks["StorageJson"];
+  // Prevent prerendering the server reactions
+  await connection();
+
+  let reactions: ReactionsJson;
 
   try {
-    storage = (await liveblocks.getStorageDocument(
-      ROOM_ID,
-      "json",
-    )) as unknown as Liveblocks["StorageJson"];
+    reactions = await getServerReactions();
   } catch (error) {
-    storage = { reactions: {} };
+    reactions = { reactions: {} };
   }
 
   return (
     <div className={cn("flex flex-wrap gap-1.5", className)} {...props}>
-      <ClientReactions roomId={ROOM_ID} serverReactions={storage.reactions} />
+      <ClientReactions roomId={ROOM_ID} serverReactions={reactions} />
     </div>
   );
 }
