@@ -1,12 +1,14 @@
 import { cn } from "@/lib/utils";
 import { Liveblocks as LiveblocksClient } from "@liveblocks/node";
-import type { ReactionsJson } from "liveblocks.config";
+import {
+  DEFAULT_REACTIONS,
+  ROOM_ID,
+  type ReactionsJson,
+} from "liveblocks.config";
 import { unstable_cache as cache } from "next/cache";
 import { connection } from "next/server";
 import type { ComponentProps } from "react";
 import { Reactions as ClientReactions } from "./reactions.client";
-
-const ROOM_ID = "frimousse";
 
 const liveblocks = new LiveblocksClient({
   secret: process.env.LIVEBLOCKS_SECRET_KEY!,
@@ -37,7 +39,7 @@ export async function Reactions({
   try {
     reactions = await getServerReactions();
   } catch (error) {
-    reactions = { reactions: {} };
+    reactions = DEFAULT_REACTIONS;
   }
 
   return (

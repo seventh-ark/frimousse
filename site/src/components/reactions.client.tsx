@@ -13,7 +13,13 @@ import {
 } from "@liveblocks/react/suspense";
 import NumberFlow from "@number-flow/react";
 import type { EmojiPickerRootProps } from "frimousse";
-import type { ReactionsJson } from "liveblocks.config";
+import {
+  CREATED_AT_KEY,
+  DEFAULT_KEYS,
+  DEFAULT_KEYS_COUNT,
+  DEFAULT_REACTIONS,
+  type ReactionsJson,
+} from "liveblocks.config";
 import { SmilePlus } from "lucide-react";
 import {
   AnimatePresence,
@@ -28,6 +34,10 @@ import { buttonVariants } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "./ui/drawer";
 import { EmojiPicker } from "./ui/emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+
+const ZWJ = "\u200D";
+const SKIN_TONE_MODIFIERS =
+  /\u{1F3FB}|\u{1F3FC}|\u{1F3FD}|\u{1F3FE}|\u{1F3FF}/gu;
 
 interface ReactionButtonProps
   extends Omit<HTMLMotionProps<"button">, "children"> {
@@ -64,6 +74,13 @@ const variants: Variants = {
     },
   },
 };
+
+function getBaseEmoji(emoji: string) {
+  return emoji
+    .split(ZWJ)
+    .map((segment) => segment.replace(SKIN_TONE_MODIFIERS, ""))
+    .join(ZWJ);
+}
 
 const ReactionButton = memo(
   ({
@@ -114,6 +131,13 @@ const AddReactionButton = memo(
       setIsMounted(true);
     }, []);
 
+    const handleEmojiSelect = useCallback(
+      (emoji: string) => {
+        onEmojiSelect?.(getBaseEmoji(emoji));
+      },
+      [onEmojiSelect],
+    );
+
     const renderTrigger = () => (
       <motion.button
         aria-label="Add reaction"
@@ -132,7 +156,7 @@ const AddReactionButton = memo(
     const renderEmojiPicker = () => (
       <EmojiPicker
         onEmojiSelect={(emoji) => {
-          onEmojiSelect?.(emoji);
+          handleEmojiSelect?.(emoji);
           setIsOpen(false);
         }}
       />
@@ -163,60 +187,68 @@ function LiveblocksReactions() {
   const { id } = useSelf();
   const reactions = useStorage((storage) => storage.reactions);
 
-  const handleReactionClick = useMutation(
-    ({ storage }, emoji: string) => {
-      const reaction = storage.get("reactions")?.get(emoji);
-
-      if (!id || !reaction) {
-        return;
-      }
-
-      if (reaction.has(id)) {
-        reaction.delete(id);
-      } else {
-        reaction.set(id, true);
-      }
-    },
-    [id],
-  );
-
-  const handleAddReactionClick = useMutation(
+  const toggleReaction = useMutation(
     ({ storage }, emoji: string) => {
       if (!id) {
         return;
       }
 
-      storage.get("reactions")?.set(emoji, new LiveMap([[id, true]]));
+      const reaction = storage.get("reactions")?.get(emoji);
+
+      if (!reaction) {
+        // If the reaction doesn't exist, initialize it with self
+        storage.get("reactions")?.set(
+          emoji,
+          new LiveMap([
+            [CREATED_AT_KEY, Date.now()],
+            [id, 1],
+          ]),
+        );
+      } else if (reaction.has(id)) {
+        // If the reaction exists and is active, remove self
+        reaction.delete(id);
+      } else {
+        // If the reaction exists and isn't active, add self
+        if (reaction.size === DEFAULT_KEYS_COUNT) {
+          reaction.set(CREATED_AT_KEY, Date.now());
+        }
+
+        reaction.set(id, 1);
+      }
     },
     [id],
   );
 
   return (
     <>
-      <AddReactionButton
-        disabled={!id}
-        onEmojiSelect={handleAddReactionClick}
-      />
+      <AddReactionButton disabled={!id} onEmojiSelect={toggleReaction} />
       <AnimatePresence initial={false}>
-        {Array.from(reactions).map(([emoji, users]) => {
-          const count = users.size;
+        {Array.from(reactions)
+          .sort(([, dataA], [, dataB]) => {
+            return (
+              (dataB.get(CREATED_AT_KEY) ?? 0) -
+              (dataA.get(CREATED_AT_KEY) ?? 0)
+            );
+          })
+          .map(([emoji, data]) => {
+            const count = data.size - DEFAULT_KEYS_COUNT;
 
-          if (count === 0) {
-            return null;
-          }
+            if (count === 0) {
+              return null;
+            }
 
-          return (
-            <ReactionButton
-              count={count}
-              emoji={emoji}
-              isActive={id ? users.has(id) : false}
-              key={emoji}
-              onClick={() => {
-                handleReactionClick(emoji);
-              }}
-            />
-          );
-        })}
+            return (
+              <ReactionButton
+                count={count}
+                emoji={emoji}
+                isActive={id ? data.has(id) : false}
+                key={emoji}
+                onClick={() => {
+                  toggleReaction(emoji);
+                }}
+              />
+            );
+          })}
       </AnimatePresence>
     </>
   );
@@ -227,17 +259,26 @@ function ServerReactions({ reactions }: { reactions: ReactionsJson }) {
     <>
       <AddReactionButton disabled />
       <AnimatePresence initial={false}>
-        {Object.entries(reactions).map(([emoji, users]) => {
-          const count = Object.keys(users).length;
+        {Object.entries(reactions)
+          .sort(([, dataA], [, dataB]) => {
+            return (dataB[CREATED_AT_KEY] ?? 0) - (dataA[CREATED_AT_KEY] ?? 0);
+          })
+          .map(([emoji, data]) => {
+            const count = Object.keys(data).length - DEFAULT_KEYS_COUNT;
 
-          if (count === 0) {
-            return null;
-          }
+            if (count === 0) {
+              return null;
+            }
 
-          return (
-            <ReactionButton count={count} disabled emoji={emoji} key={emoji} />
-          );
-        })}
+            return (
+              <ReactionButton
+                count={count}
+                disabled
+                emoji={emoji}
+                key={emoji}
+              />
+            );
+          })}
       </AnimatePresence>
     </>
   );
@@ -249,42 +290,47 @@ function LocalReactions({
   const id = "#####";
   const [reactions, setReactions] = useState<Record<string, string[]>>(() =>
     Object.fromEntries(
-      Object.entries(initialReactions).map(([emoji, users]) => [
+      Object.entries(initialReactions).map(([emoji, data]) => [
         emoji,
-        Object.keys(users),
+        Object.keys(data),
       ]),
     ),
   );
 
-  const handleReactionClick = useCallback((emoji: string) => {
+  const toggleReaction = useCallback((emoji: string) => {
     setReactions((previousReactions) => {
-      const users = previousReactions[emoji] ?? [];
-      const hasReacted = users.includes(id);
+      const reaction = previousReactions[emoji];
 
+      if (!reaction) {
+        // If the reaction doesn't exist, initialize it with self
+        return {
+          [emoji]: [...DEFAULT_KEYS, id],
+          ...previousReactions,
+        };
+      }
+
+      if (reaction.includes(id)) {
+        // If the reaction exists and is active, remove self
+        return {
+          ...previousReactions,
+          [emoji]: reaction.filter((userId) => userId !== id),
+        };
+      }
+
+      // If the reaction exists and isn't active, add self
       return {
         ...previousReactions,
-        [emoji]: hasReacted
-          ? users.filter((userId) => userId !== id)
-          : [...users, id],
-      };
-    });
-  }, []);
-
-  const handleAddReactionClick = useCallback((emoji: string) => {
-    setReactions((previousReactions) => {
-      return {
-        ...previousReactions,
-        [emoji]: [...(previousReactions[emoji] ?? []), id],
+        [emoji]: [...reaction, id],
       };
     });
   }, []);
 
   return (
     <>
-      <AddReactionButton onEmojiSelect={handleAddReactionClick} />
+      <AddReactionButton onEmojiSelect={toggleReaction} />
       <AnimatePresence initial={false}>
-        {Object.entries(reactions).map(([emoji, users]) => {
-          const count = users.length;
+        {Object.entries(reactions).map(([emoji, data]) => {
+          const count = data.length - DEFAULT_KEYS_COUNT;
 
           if (count === 0) {
             return null;
@@ -294,10 +340,10 @@ function LocalReactions({
             <ReactionButton
               count={count}
               emoji={emoji}
-              isActive={users.includes(id)}
+              isActive={data.includes(id)}
               key={emoji}
               onClick={() => {
-                handleReactionClick(emoji);
+                toggleReaction(emoji);
               }}
             />
           );
@@ -308,24 +354,12 @@ function LocalReactions({
 }
 
 const initialStorage: Liveblocks["Storage"] = {
-  reactions: new LiveMap([
-    [
-      "😊",
-      new LiveMap([
-        ["####0", true],
-        ["####1", true],
-        ["####2", true],
-      ]),
-    ],
-    ["👋", new LiveMap([["####0", true]])],
-    [
-      "🎨",
-      new LiveMap([
-        ["####0", true],
-        ["####1", true],
-      ]),
-    ],
-  ]),
+  reactions: new LiveMap(
+    Object.entries(DEFAULT_REACTIONS).map(([emoji, data]) => [
+      emoji,
+      new LiveMap(Object.entries(data)),
+    ]),
+  ),
 };
 
 export function Reactions({ roomId, serverReactions }: ReactionsProps) {
