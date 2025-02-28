@@ -6,7 +6,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto flex justify-between gap-10 pt-20 pb-8 text-secondary-foreground text-xs md:pt-32">
+    <footer className="mt-auto flex justify-between gap-10 pt-20 pb-8 text-secondary-foreground text-xs md:pt-40">
       <div className="flex flex-col gap-1">
         <span>
           © <time dateTime={currentYear.toString()}>{currentYear}</time>{" "}
