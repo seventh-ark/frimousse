@@ -13,15 +13,15 @@ interface EmojiPickerProps extends EmojiPickerRootProps {
 
 function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
   return (
-    <EmojiPickerPrimitive.Root
-      className={cn("w-fit rounded-md border bg-background", className)}
-      {...props}
-    >
-      <EmojiPickerPrimitive.Search
-        autoFocus={autoFocus}
-        className="w-full p-2 text-sm outline-hidden placeholder:text-muted-foreground"
-      />
-      <EmojiPickerPrimitive.Viewport className="h-[320px] outline-hidden">
+    <EmojiPickerPrimitive.Root className={cn("w-fit", className)} {...props}>
+      <div className="px-2 pt-2">
+        <EmojiPickerPrimitive.Search
+          autoFocus={autoFocus}
+          className="w-full rounded bg-muted p-2 text-sm outline-none placeholder:text-muted-foreground"
+          placeholder="Search…"
+        />
+      </div>
+      <EmojiPickerPrimitive.Viewport className="h-[320px]">
         <EmojiPickerPrimitive.Loading>
           <div className="flex h-full w-full flex-col items-center justify-center gap-3">
             <LoaderCircleIcon className="size-6 animate-spin" />
@@ -54,7 +54,7 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
             CategoryHeader: ({ category, ...props }) => (
               <div
                 {...props}
-                className="bg-background px-2 pt-2 pb-1.25 font-semibold text-secondary-foreground text-xs uppercase"
+                className="bg-background px-2 pt-3 pb-1.5 font-medium text-secondary-foreground text-xs"
               >
                 {category.label}
               </div>
@@ -66,7 +66,7 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
         <EmojiPickerPrimitive.ActiveEmoji>
           {({ emoji }) => (
             <>
-              <div className="flex size-8 items-center justify-center text-2xl">
+              <div className="flex size-8 items-center justify-center text-xl">
                 {emoji?.emoji}
               </div>
               <div className="flex w-0 min-w-0 flex-1 flex-col justify-center text-xs">
@@ -76,7 +76,7 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
           )}
         </EmojiPickerPrimitive.ActiveEmoji>
         <EmojiPickerPrimitive.SkinToneSelector
-          className="size-8 text-2xl"
+          className="size-8 text-xl"
           emoji="👋"
         />
       </div>

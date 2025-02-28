@@ -65,7 +65,7 @@ const ReactionButton = memo(
           buttonVariants({ variant: "secondary" }),
           "rounded-full px-2.5 py-1 text-sm tabular-nums",
           isActive
-            ? "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:bg-accent/10 focus-visible:ring-accent/20"
+            ? "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:ring-accent/20 dark:bg-accent/20 dark:focus-visible:bg-accent/20 dark:hover:bg-accent/25"
             : "text-secondary-foreground",
           className,
         )}
@@ -111,7 +111,7 @@ const AddReactionButton = memo(
             <SmilePlus />
           </motion.button>
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent sideOffset={6}>
           <EmojiPicker onEmojiSelect={onEmojiSelect} />
         </PopoverContent>
       </Popover>
