@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <>
       <Hero />
-      <section className="content mt-10 flex flex-col gap-8 md:mt-16">
+      <section className="content mt-10 flex flex-col gap-6 md:mt-16 lg:gap-8">
         <Installation />
         <Usage />
       </section>

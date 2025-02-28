@@ -13,7 +13,7 @@
   --secondary-foreground: var(--color-neutral-600);
   --muted: var(--color-neutral-100);
   --muted-foreground: var(--color-neutral-400);
-  --accent: var(--color-blue-500);
+  --accent: var(--color-amber-500);
   --accent-foreground: var(--color-neutral-50);
   --overlay: hsl(0, 0%, 0%, 0.2);
   --border: var(--color-neutral-200);
@@ -37,7 +37,7 @@
   --secondary-foreground: var(--color-neutral-400);
   --muted: var(--color-neutral-900);
   --muted-foreground: var(--color-neutral-600);
-  --accent: var(--color-blue-500);
+  --accent: var(--color-amber-500);
   --accent-foreground: var(--color-neutral-950);
   --overlay: hsl(0, 0%, 0%, 0.8);
   --border: var(--color-neutral-800);

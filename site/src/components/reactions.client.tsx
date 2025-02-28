@@ -107,7 +107,7 @@ const AddReactionButton = memo(
         title="Add reaction"
         {...props}
       >
-        <SmilePlus className="-ml-0.5" /> Try it
+        <SmilePlus className="-ml-1" /> Try it
       </button>
     );
 

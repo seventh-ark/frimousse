@@ -15,16 +15,16 @@ export async function CodeBlock(props: {
   });
 
   return (
-    <div className="group relative min-h-10 overflow-hidden rounded-md bg-muted p-3">
+    <div className="group relative min-h-10 overflow-hidden rounded-md bg-muted">
       <CopyButton
         className={cn(
-          "absolute top-1.5 right-1.5 bg-muted",
+          "absolute top-1.5 right-1.5 bg-muted/20 ring-1 ring-muted backdrop-blur-md",
           "lg:scale-95 lg:opacity-0 lg:group-hover:scale-100 lg:group-hover:opacity-100",
         )}
         text={props.children}
       />
       <div
-        className="font-mono text-secondary-foreground text-sm"
+        className="overflow-x-auto p-3 font-mono text-secondary-foreground text-sm"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: "How Shiki works"
         dangerouslySetInnerHTML={{ __html: out }}
       />

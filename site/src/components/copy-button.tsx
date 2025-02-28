@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { Check, Copy } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import * as motion from "motion/react-client";
@@ -62,7 +63,7 @@ export function CopyButton({
   return (
     <Button
       aria-label={label}
-      className={className}
+      className={cn("cursor-copy", className)}
       onClick={handleCopy}
       size="icon"
       title={label}
