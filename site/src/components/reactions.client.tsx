@@ -45,8 +45,22 @@ interface ReactionsProps {
 }
 
 const variants: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
+  hidden: {
+    opacity: 0,
+    transition: {
+      duration: 0.1,
+      ease: "easeOut",
+    },
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 800,
+      damping: 80,
+      mass: 1,
+    },
+  },
 };
 
 const ReactionButton = memo(
@@ -63,7 +77,7 @@ const ReactionButton = memo(
         animate="visible"
         className={cn(
           buttonVariants({ variant: "secondary" }),
-          "rounded-full px-2.5 py-1 text-sm tabular-nums",
+          "rounded-full px-2.5 py-1 text-sm tabular-nums will-change-transform",
           isActive
             ? "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:ring-accent/20 dark:bg-accent/20 dark:focus-visible:bg-accent/20 dark:hover:bg-accent/25"
             : "text-secondary-foreground",
@@ -78,13 +92,8 @@ const ReactionButton = memo(
           // Prevent distortion during layout animations
           borderRadius: 9999,
         }}
-        transition={{
-          type: "spring",
-          stiffness: 800,
-          damping: 80,
-          mass: 4,
-        }}
         variants={variants}
+        whileTap={{ scale: 0.96 }}
         {...props}
       >
         {emoji} <NumberFlow value={count} />
