@@ -18,7 +18,13 @@
   --border: var(--color-neutral-200);
   --input: var(--color-neutral-200);
   --ring: var(--color-neutral-200);
-  --radius: 0.625rem;
+  --shadow-popover:
+    0px 1px 1.55px 0px #00000002,
+    0px 2.39px 3.72px 0px #00000003,
+    0px 4.51px 7.01px 0px #00000004,
+    0px 8.04px 12.51px 0px #00000005,
+    0px 15.04px 23.4px 0px #00000005,
+    0px 36px 56px 0px #00000008;
 }
 
 .dark {
@@ -35,6 +41,7 @@
   --border: var(--color-neutral-800);
   --input: var(--color-neutral-800);
   --ring: var(--color-neutral-800);
+  --shadow-popover: 0 35px 35px rgba(0, 0, 0, 0.25);
 }
 
 @theme inline {
@@ -54,10 +61,8 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-popover: var(--shadow-popover);
 }
 
 @layer base {
