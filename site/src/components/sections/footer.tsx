@@ -27,7 +27,10 @@ export function Footer() {
           <Suspense>
             <Year />
           </Suspense>{" "}
-          <Link className="link" href="/">
+          <Link
+            className="link"
+            href="https://github.com/liveblocks/frimousse/blob/main/LICENSE"
+          >
             MIT License
           </Link>
         </span>
