@@ -1,6 +1,7 @@
 "use client";
 
-import { useMediaQuery } from "@/hooks/use-media-query";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMounted } from "@/hooks/use-mounted";
 import { cn } from "@/lib/utils";
 import { LiveMap } from "@liveblocks/client";
 import {
@@ -22,13 +23,7 @@ import {
   type ReactionsJson,
 } from "liveblocks.config";
 import { SmilePlus } from "lucide-react";
-import {
-  type ComponentProps,
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { type ComponentProps, memo, useCallback, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { buttonVariants } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "./ui/drawer";
@@ -86,12 +81,8 @@ const ReactionButton = memo(
 const AddReactionButton = memo(
   ({ onEmojiSelect, ...props }: AddReactionButtonProps) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isMounted, setIsMounted] = useState(false);
-    const { isMobile } = useMediaQuery();
-
-    useEffect(() => {
-      setIsMounted(true);
-    }, []);
+    const isMounted = useIsMounted();
+    const isMobile = useIsMobile();
 
     const handleEmojiSelect = useCallback(
       (emoji: string) => {
@@ -100,7 +91,7 @@ const AddReactionButton = memo(
       [onEmojiSelect],
     );
 
-    const renderTrigger = () => (
+    const trigger = (
       <button
         aria-label="Add reaction"
         className={cn(buttonVariants({ variant: "default" }), "rounded-full")}
@@ -110,8 +101,7 @@ const AddReactionButton = memo(
         <SmilePlus className="-ml-1" /> Try it
       </button>
     );
-
-    const renderEmojiPicker = () => (
+    const emojiPicker = (
       <EmojiPicker
         autoFocus
         onEmojiSelect={(emoji) => {
@@ -122,21 +112,21 @@ const AddReactionButton = memo(
     );
 
     if (!isMounted) {
-      return renderTrigger();
+      return trigger;
     }
 
     return isMobile ? (
       <Drawer onOpenChange={setIsOpen} open={isOpen}>
-        <DrawerTrigger asChild>{renderTrigger()}</DrawerTrigger>
+        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
         <DrawerContent>
-          <DrawerTitle className="sr-only">Pick a reaction</DrawerTitle>
-          {renderEmojiPicker()}
+          <DrawerTitle className="sr-only">Select an emoji</DrawerTitle>
+          {emojiPicker}
         </DrawerContent>
       </Drawer>
     ) : (
       <Popover onOpenChange={setIsOpen} open={isOpen}>
-        <PopoverTrigger asChild>{renderTrigger()}</PopoverTrigger>
-        <PopoverContent sideOffset={6}>{renderEmojiPicker()}</PopoverContent>
+        <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+        <PopoverContent sideOffset={6}>{emojiPicker}</PopoverContent>
       </Popover>
     );
   },

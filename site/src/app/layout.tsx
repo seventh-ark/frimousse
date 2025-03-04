@@ -9,7 +9,7 @@ import { AnimatedFavicon } from "@/components/animated-favicon";
 import { JetBrains_Mono } from "next/font/google";
 
 const inter = localFont({
-  src: "./InterVariable.woff2",
+  src: "./inter-variable.woff2",
   variable: "--font-inter",
 });
 

@@ -7,7 +7,7 @@ import {
   type ReactionsJson,
 } from "liveblocks.config";
 import { unstable_cacheLife as cachelife } from "next/cache";
-import { type ComponentProps, Suspense } from "react";
+import { type CSSProperties, type ComponentProps, Suspense } from "react";
 import {
   Reactions as ClientReactions,
   FallbackReactions,
@@ -25,12 +25,8 @@ async function ServerReactions() {
   let reactions: ReactionsJson;
 
   try {
-    const storage = (await liveblocks.getStorageDocument(
-      ROOM_ID,
-      "json",
-    )) as unknown as Liveblocks["StorageJson"];
-
-    reactions = storage.reactions;
+    reactions = (await liveblocks.getStorageDocument(ROOM_ID, "json"))
+      .reactions;
   } catch (error) {
     reactions = DEFAULT_REACTIONS;
   }
@@ -44,11 +40,16 @@ export function Reactions({
 }: Omit<ComponentProps<"div">, "children">) {
   return (
     <div
-      className={cn("flex flex-wrap gap-1.5", className)}
-      style={{
-        height: `calc(var(--spacing) * 8 * ${MAX_ROWS} + var(--spacing) * 1.5 * ${MAX_ROWS - 1})`,
-        clipPath: "inset(-3px -3px -3px -3px)",
-      }}
+      className={cn(
+        "[--button-height:calc(var(--spacing)*8)] [--gap:calc(var(--spacing)*1.5)]",
+        "flex h-[calc(var(--button-height)_*_var(--rows)_+_var(--gap)_*_(var(--rows)_-_1))] flex-wrap gap-(--gap) [clip-path:inset(-3px)]",
+        className,
+      )}
+      style={
+        {
+          "--rows": MAX_ROWS,
+        } as CSSProperties
+      }
       {...props}
     >
       <Suspense fallback={<FallbackReactions />}>

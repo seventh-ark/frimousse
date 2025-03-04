@@ -6,7 +6,7 @@ import type { Emoji, SkinTone, SkinToneVariation } from "./types";
 import { getSkinToneVariations } from "./utils/get-skin-tone-variations";
 import { useSelector, useSelectorKey } from "./utils/store";
 
-// biome-ignore lint/correctness/noUnusedImports: This import is only used to create @link tags in JSDoc comments.
+// biome-ignore lint/correctness/noUnusedImports: This import is only used to create @link tags in JSDoc comments
 import type * as EmojiPicker from "./components/emoji-picker";
 
 /**

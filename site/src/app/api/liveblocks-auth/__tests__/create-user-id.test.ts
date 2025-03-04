@@ -26,8 +26,6 @@ describe("createUserId", () => {
   });
 
   it("should generate different user IDs for the same IP with different salts", () => {
-    process.env.LIVEBLOCKS_USER_ID_SALT = "123";
-
     const ip = "127.0.0.1";
 
     const userId1 = createUserId(ip, "123");

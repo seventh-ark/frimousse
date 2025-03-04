@@ -54,6 +54,11 @@
       }
     }
   },
+  "css": {
+    "parser": {
+      "cssModules": true
+    }
+  },
   "vcs": {
     "enabled": true,
     "clientKind": "git",

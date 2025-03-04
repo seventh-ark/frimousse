@@ -1,16 +1,15 @@
 "use client";
 
+import { useIsMounted } from "@/hooks/use-mounted";
 import { cn } from "@/lib/utils";
 import { Check, Copy } from "lucide-react";
-import { AnimatePresence } from "motion/react";
-import * as motion from "motion/react-client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, type Variants, motion } from "motion/react";
+import { useCallback, useRef, useState } from "react";
 import { Button } from "./ui/button";
 
 const COPY_ANIMATION_DURATION = 2000;
-const CLIPBOARD_RESET_DELAY = 3000;
 
-const variants = {
+const variants: Variants = {
   visible: {
     opacity: 1,
     scale: 1,
@@ -25,7 +24,7 @@ const variants = {
 
 function CopyButtonIcon({ isAnimating }: { isAnimating: boolean }) {
   return (
-    <AnimatePresence initial={false} mode="wait">
+    <AnimatePresence mode="wait">
       {isAnimating ? (
         <motion.div
           animate="visible"
@@ -61,27 +60,15 @@ export function CopyButton({
   label?: string;
 }) {
   const timeout = useRef(0);
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useIsMounted();
   const [isAnimating, setIsAnimating] = useState(false);
-  const [, setHasCopied] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const copyToClipboard = useCallback(async (text: string) => {
     window.clearTimeout(timeout.current);
 
     try {
       await navigator.clipboard.writeText(text);
-      setHasCopied(true);
-
-      timeout.current = window.setTimeout(() => {
-        setHasCopied(false);
-      }, CLIPBOARD_RESET_DELAY);
-    } catch (error) {
-      console.error("Failed to copy text:", error);
-    }
+    } catch {}
   }, []);
 
   const handleCopy = useCallback(() => {
