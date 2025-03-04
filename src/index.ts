@@ -10,6 +10,7 @@ export type {
   EmojiPickerListProps,
   EmojiPickerListCategoryHeaderProps,
   EmojiPickerListEmojiProps,
+  EmojiPickerListRowProps,
   EmojiPickerListComponents,
   Emoji,
   Category,
