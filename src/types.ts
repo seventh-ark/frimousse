@@ -3,7 +3,7 @@ import type {
   Group as EmojibaseGroup,
   Locale as EmojibaseLocale,
   SkinToneKey as EmojibaseSkinToneKey,
-} from "emojibase";
+} from "emojibase/lib/types";
 import type { ComponentProps, ComponentType, ReactNode } from "react";
 
 type Resolve<T> = T extends (...args: unknown[]) => unknown
@@ -21,7 +21,7 @@ export type {
   Emoji as EmojibaseEmoji,
   MessagesDataset as EmojibaseMessagesDataset,
   SkinTone as EmojibaseSkinTone,
-} from "emojibase";
+} from "emojibase/lib/types";
 
 export type EmojibaseEmojiWithGroup = EmojibaseEmoji & {
   group: EmojibaseGroup;
@@ -94,19 +94,24 @@ export type EmojiPickerListComponents = {
   /**
    * The component used to render a sticky category header.
    *
-   * All category headers should be of the same height.
+   * @details
+   * All category headers should be of the same size.
    */
   CategoryHeader: ComponentType<EmojiPickerListCategoryHeaderProps>;
 
   /**
    * The component used to render a row of emojis.
    *
-   * All rows should be of the same height.
+   * @details
+   * All rows should be of the same size.
    */
   Row: ComponentType<EmojiPickerListRowProps>;
 
   /**
    * The component used to render an emoji button in the list.
+   *
+   * @details
+   * All emojis should be of the same size.
    */
   Emoji: ComponentType<EmojiPickerListEmojiProps>;
 };

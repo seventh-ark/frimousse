@@ -1136,7 +1136,7 @@ const EmojiPickerSkinToneSelector = forwardRef<
  * <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
  * ```
  */
-function EmojiPickerLoading({ children }: EmojiPickerLoadingProps) {
+function EmojiPickerLoading({ children }: EmojiPickerLoadingProps): ReactNode {
   const store = useEmojiPickerStore();
   const isLoading = useSelector(store, $isLoading);
 
@@ -1174,7 +1174,7 @@ function EmojiPickerEmptyWithSearch({
  * </EmojiPicker.Empty>
  * ```
  */
-function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps) {
+function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps): ReactNode {
   const store = useEmojiPickerStore();
   const isEmpty = useSelector(store, $isEmpty);
 
@@ -1204,7 +1204,9 @@ function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps) {
  * If you prefer to use a hook rather than a component,
  * {@link useActiveEmoji} is also available.
  */
-function EmojiPickerActiveEmoji({ children }: EmojiPickerActiveEmojiProps) {
+function EmojiPickerActiveEmoji({
+  children,
+}: EmojiPickerActiveEmojiProps): ReactNode {
   const activeEmoji = useActiveEmoji();
 
   return children({ emoji: activeEmoji });
@@ -1253,7 +1255,10 @@ function EmojiPickerActiveEmoji({ children }: EmojiPickerActiveEmojiProps) {
  * An already-built skin tone selector is also available,
  * {@link EmojiPicker.SkinToneSelector|`<EmojiPicker.SkinToneSelector />`}.
  */
-function EmojiPickerSkinTone({ children, emoji }: EmojiPickerSkinToneProps) {
+function EmojiPickerSkinTone({
+  children,
+  emoji,
+}: EmojiPickerSkinToneProps): ReactNode {
   const [skinTone, setSkinTone, skinToneVariations] = useSkinTone(emoji);
 
   return children({ skinTone, setSkinTone, skinToneVariations });
