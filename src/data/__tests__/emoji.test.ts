@@ -16,13 +16,24 @@ describe("getEmojiData", () => {
 
   it("should support aborting the request", async () => {
     const controller = new AbortController();
-    const promise = getEmojiData("en", controller.signal);
+    const promise = getEmojiData(
+      "en",
+      Number.POSITIVE_INFINITY,
+      controller.signal,
+    );
 
     controller.abort();
 
     const data = await promise;
 
     expect(data).toBeDefined();
+  });
+
+  it("should support a specific emoji version", async () => {
+    const data = await getEmojiData("en", 5);
+
+    expect(data).toBeDefined();
+    expect(data.emojis.every((emoji) => emoji.version <= 5)).toBe(true);
   });
 
   it("should save data locally", async () => {

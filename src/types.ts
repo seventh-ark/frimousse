@@ -173,6 +173,19 @@ export interface EmojiPickerRootProps extends ComponentProps<"div"> {
    * A callback invoked when an emoji is selected.
    */
   onEmojiSelect?: (emoji: string) => void;
+
+  /**
+   * Which Emoji version to use.
+   *
+   * @default The most recent version supported by the current browser
+   *
+   * This can be used to manually control which emojis are visible regardless of the
+   * current browser's supported Emoji versions.
+   *
+   * @see
+   * {@link https://emojipedia.org/emoji-versions}
+   */
+  emojiVersion?: number;
 }
 
 export type EmojiPickerViewportProps = ComponentProps<"div">;

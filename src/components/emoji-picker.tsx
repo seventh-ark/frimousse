@@ -1,6 +1,7 @@
 import {
   type CSSProperties,
   type ChangeEvent,
+  type ComponentProps,
   type FocusEvent,
   Fragment,
   type MouseEvent,
@@ -39,6 +40,7 @@ import type {
   EmojiData,
   EmojiPickerActiveEmojiProps,
   EmojiPickerCategory,
+  EmojiPickerDataCategory,
   EmojiPickerEmoji,
   EmojiPickerEmptyProps,
   EmojiPickerListCategoryHeaderProps,
@@ -61,7 +63,9 @@ import { useCreateStore, useSelector, useSelectorKey } from "../utils/store";
 import { useLayoutEffect } from "../utils/use-layout-effect";
 import { useStableCallback } from "../utils/use-stable-callback";
 
-function EmojiPickerDataHandler() {
+function EmojiPickerDataHandler({
+  emojiVersion,
+}: { emojiVersion: number | undefined }) {
   const [emojiData, setEmojiData] = useState<EmojiData | undefined>(undefined);
   const store = useEmojiPickerStore();
   const locale = useSelectorKey(store, "locale");
@@ -73,7 +77,7 @@ function EmojiPickerDataHandler() {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    getEmojiData(locale, signal)
+    getEmojiData(locale, emojiVersion, signal)
       .then((data) => {
         setEmojiData(data);
       })
@@ -86,7 +90,7 @@ function EmojiPickerDataHandler() {
     return () => {
       controller.abort();
     };
-  }, [locale]);
+  }, [emojiVersion, locale]);
 
   useEffect(() => {
     if (!emojiData) {
@@ -137,6 +141,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
       columns = 10,
       skinTone = "none",
       onEmojiSelect = noop,
+      emojiVersion,
       onFocusCapture,
       onBlurCapture,
       children,
@@ -228,9 +233,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
         );
       }
 
-      return () => {
-        unsubscribe();
-      };
+      return unsubscribe;
     }, []);
 
     useLayoutEffect(() => {
@@ -373,7 +376,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
       let previousCategoryHeaderHeight: EmojiPickerStore["categoryHeaderHeight"] =
         null;
 
-      return store.subscribe((state) => {
+      const unsubscribe = store.subscribe((state) => {
         /* v8 ignore next 3 */
         if (!ref.current) {
           return;
@@ -397,6 +400,23 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
           );
         }
       });
+
+      const { rowHeight, categoryHeaderHeight } = store.get();
+
+      if (rowHeight) {
+        ref.current.style.setProperty(
+          "--frimousse-row-height",
+          `${rowHeight}px`,
+        );
+      }
+
+      if (categoryHeaderHeight) {
+        ref.current.style.setProperty(
+          "--frimousse-category-header-height",
+          `${categoryHeaderHeight}px`,
+        );
+      }
+      return unsubscribe;
     }, []);
 
     return (
@@ -415,7 +435,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
         }
       >
         <EmojiPickerStoreProvider store={store}>
-          <EmojiPickerDataHandler />
+          <EmojiPickerDataHandler emojiVersion={emojiVersion} />
           {children}
         </EmojiPickerStoreProvider>
       </div>
@@ -649,6 +669,27 @@ function listRowProps(
   };
 }
 
+function listCategoryProps(
+  categoryIndex: number,
+  category?: EmojiPickerDataCategory,
+): WithAttributes<ComponentProps<"div">> {
+  return {
+    "frimousse-category": "",
+    style: {
+      contain: "content",
+      top: category
+        ? `calc(${categoryIndex} * var(--frimousse-category-header-height) + ${category.startRowIndex} * var(--frimousse-row-height))`
+        : undefined,
+      height: category
+        ? `calc(var(--frimousse-category-header-height) + ${category.rowsCount} * var(--frimousse-row-height))`
+        : undefined,
+      width: "100%",
+      pointerEvents: "none",
+      position: "absolute",
+    },
+  };
+}
+
 function listCategoryHeaderProps(
   category: EmojiPickerCategory,
   sizer = false,
@@ -663,6 +704,35 @@ function listCategoryHeaderProps(
       position: "sticky",
       top: 0,
     },
+  };
+}
+
+function listSizerProps(
+  rowsCount: number,
+  categoriesCount: number,
+  viewportStartRowIndex: number,
+  previousHeadersCount: number,
+): WithAttributes<ComponentProps<"div">> {
+  return {
+    "frimousse-list-sizer": "",
+    style: {
+      position: "relative",
+      boxSizing: "border-box",
+      height: `calc(${rowsCount} * var(--frimousse-row-height) + ${categoriesCount} * var(--frimousse-category-header-height))`,
+      paddingTop: `calc(${viewportStartRowIndex} * var(--frimousse-row-height) + ${previousHeadersCount} * var(--frimousse-category-header-height))`,
+    },
+  };
+}
+
+function listProps(
+  columns: number,
+  rowsCount: number,
+): WithAttributes<EmojiPickerListProps> {
+  return {
+    "aria-colcount": columns,
+    "aria-rowcount": rowsCount,
+    "frimousse-list": "",
+    role: "grid",
   };
 }
 
@@ -759,17 +829,7 @@ const EmojiPickerListCategory = memo(
     )!;
 
     return (
-      <div
-        frimousse-category=""
-        style={{
-          contain: "content",
-          height: `calc(var(--frimousse-category-header-height) + ${category.rowsCount} * var(--frimousse-row-height))`,
-          width: "100%",
-          pointerEvents: "none",
-          position: "absolute",
-          top: `calc(${categoryIndex} * var(--frimousse-category-header-height) + ${category.startRowIndex} * var(--frimousse-row-height))`,
-        }}
-      >
+      <div {...listCategoryProps(categoryIndex, category)}>
         <CategoryHeader
           {...listCategoryHeaderProps({ label: category.label })}
         />
@@ -778,12 +838,13 @@ const EmojiPickerListCategory = memo(
   },
 );
 
-const EmojiPickerListSizesHandler = memo(
+const EmojiPickerListSizers = memo(
   ({
     CategoryHeader,
     Row,
     Emoji,
   }: Pick<EmojiPickerListComponents, "CategoryHeader" | "Row" | "Emoji">) => {
+    const ref = useRef<HTMLDivElement>(null!);
     const store = useEmojiPickerStore();
     const columns = useSelectorKey(store, "columns");
     const emojis = useMemo(
@@ -804,10 +865,10 @@ const EmojiPickerListSizesHandler = memo(
     const categoryHeaderRef = useRef<HTMLDivElement>(null!);
 
     useLayoutEffect(() => {
-      const listRef = store.get().listRef;
+      const list = ref.current?.parentElement?.parentElement;
 
       /* v8 ignore next 3 */
-      if (!listRef?.current || !rowRef.current || !categoryHeaderRef.current) {
+      if (!list || !rowRef.current || !categoryHeaderRef.current) {
         return;
       }
 
@@ -815,7 +876,7 @@ const EmojiPickerListSizesHandler = memo(
         for (const entry of entries) {
           const height = entry.contentRect.height;
 
-          if (entry.target === listRef.current) {
+          if (entry.target === list) {
             store.get().onListWidthChange(entry.contentRect.width);
           }
 
@@ -835,11 +896,11 @@ const EmojiPickerListSizesHandler = memo(
         }
       });
 
-      resizeObserver.observe(listRef.current);
+      resizeObserver.observe(list);
       resizeObserver.observe(rowRef.current);
       resizeObserver.observe(categoryHeaderRef.current);
 
-      store.get().onListWidthChange(listRef.current.clientWidth);
+      store.get().onListWidthChange(list.clientWidth);
       store.get().onRowHeightChange(rowRef.current.clientHeight);
       store
         .get()
@@ -853,6 +914,7 @@ const EmojiPickerListSizesHandler = memo(
     return (
       <div
         aria-hidden
+        ref={ref}
         style={{
           height: 0,
           visibility: "hidden",
@@ -865,15 +927,7 @@ const EmojiPickerListSizesHandler = memo(
             ))}
           </Row>
         </div>
-        <div
-          frimousse-category=""
-          style={{
-            contain: "content",
-            pointerEvents: "none",
-            position: "absolute",
-            width: "100%",
-          }}
-        >
+        <div {...listCategoryProps(-1)}>
           <div frimousse-category-header-sizer="" ref={categoryHeaderRef}>
             <CategoryHeader {...listCategoryHeaderProps(category)} />
           </div>
@@ -978,34 +1032,29 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
 
     if (!rowsCount || !categoriesRowsStartIndices || categoriesCount === 0) {
       return (
-        <div {...props} style={style}>
-          <EmojiPickerListSizesHandler
-            CategoryHeader={CategoryHeader}
-            Emoji={Emoji}
-            Row={Row}
-          />
+        <div {...listProps(columns, 0)} {...props} style={style}>
+          <div {...listSizerProps(0, 0, 0, 0)}>
+            <EmojiPickerListSizers
+              CategoryHeader={CategoryHeader}
+              Emoji={Emoji}
+              Row={Row}
+            />
+          </div>
         </div>
       );
     }
 
     return (
-      <div
-        aria-colcount={columns}
-        aria-rowcount={rowsCount}
-        frimousse-list=""
-        role="grid"
-        {...props}
-        ref={callbackRef}
-      >
+      <div {...listProps(columns, rowsCount)} {...props} ref={callbackRef}>
         <div
-          frimousse-list-sizer=""
-          style={{
-            position: "relative",
-            height: `calc(${rowsCount} * var(--frimousse-row-height) + ${categoriesCount} * var(--frimousse-category-header-height))`,
-            paddingTop: `calc(${viewportStartRowIndex} * var(--frimousse-row-height) + ${previousHeadersCount} * var(--frimousse-category-header-height))`,
-          }}
+          {...listSizerProps(
+            rowsCount,
+            categoriesCount,
+            viewportStartRowIndex,
+            previousHeadersCount,
+          )}
         >
-          <EmojiPickerListSizesHandler
+          <EmojiPickerListSizers
             CategoryHeader={CategoryHeader}
             Emoji={Emoji}
             Row={Row}

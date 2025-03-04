@@ -307,6 +307,7 @@ function validateLocale(locale: string): Locale {
 
 export async function getEmojiData(
   locale: Locale,
+  maxEmojiVersion = Number.POSITIVE_INFINITY,
   signal?: AbortSignal,
 ): Promise<EmojiData> {
   const validatedLocale = validateLocale(locale);
@@ -358,7 +359,9 @@ export async function getEmojiData(
 
   // Filter out unsupported emojis
   const filteredEmojis = data.emojis.filter((emoji) => {
-    const isSupportedVersion = emoji.version <= sessionMetadata.emojiVersion;
+    const isSupportedVersion =
+      emoji.version <= sessionMetadata.emojiVersion &&
+      emoji.version <= maxEmojiVersion;
 
     return emoji.countryFlag
       ? isSupportedVersion && sessionMetadata.countryFlags
