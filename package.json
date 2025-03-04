@@ -3,7 +3,7 @@
   "description": "An emoji picker component for React.",
   "version": "0.1.0",
   "license": "MIT",
-  "packageManager": "bun@1.2.0",
+  "packageManager": "npm@11.1.0",
   "type": "module",
   "workspaces": [".", "site"],
   "sideEffects": false,
@@ -35,7 +35,7 @@
     "lint:tsc": "tsc --noEmit",
     "lint:biome": "biome lint",
     "lint:package": "publint --strict && attw --pack",
-    "release": "bun run lint:tsc && bun run lint:biome && bun run build && bun run lint:package && release-it"
+    "release": "npm run lint:tsc && npm run lint:biome && npm run build && npm run lint:package && release-it"
   },
   "peerDependencies": {
     "react": "^18 || ^19"
