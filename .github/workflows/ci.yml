@@ -11,9 +11,27 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  main:
+  lint:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
+    steps:
+      - name: Checkout commit
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+          cache: npm
+          cache-dependency-path: "**/package-lock.json"
+      - name: Install dependencies
+        run: npm ci  
+      - name: Build package
+        run: npm run build
+      - name: Run linting
+        run: npm run lint && npm run lint:package
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout commit
         uses: actions/checkout@v4
@@ -25,9 +43,7 @@ jobs:
           cache-dependency-path: "**/package-lock.json"
       - name: Install dependencies
         run: npm ci
-      - name: Build package
-        run: npm run build
-      - name: Run linting
-        run: npm run lint && npm run lint:package
+      - name: Install Playwright
+        run: npx playwright install chromium
       - name: Run tests
         run: npm run test
