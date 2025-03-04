@@ -24,6 +24,7 @@ export type EmojiPickerStore = {
   activeColumnIndex: number;
   activeRowIndex: number;
 
+  listWidth: number | null;
   rowHeight: number | null;
   categoryHeaderHeight: number | null;
   viewportHeight: number | null;
@@ -47,6 +48,7 @@ export type EmojiPickerStore = {
     activeRowIndex: number,
   ) => void;
   onActiveEmojiReset: () => void;
+  onListWidthChange: (listWidth: number) => void;
   onRowHeightChange: (rowHeight: number) => void;
   onCategoryHeaderHeightChange: (categoryHeaderHeight: number) => void;
   onViewportHeightChange: (viewportHeight: number) => void;
@@ -73,6 +75,7 @@ export function createEmojiPickerStore(
     activeColumnIndex: 0,
     activeRowIndex: 0,
 
+    listWidth: null,
     rowHeight: null,
     categoryHeaderHeight: null,
     viewportHeight: null,
@@ -268,6 +271,9 @@ export function createEmojiPickerStore(
         activeRowIndex: 0,
       });
     },
+    onListWidthChange: (listWidth: number) => {
+      set({ listWidth });
+    },
     onRowHeightChange: (rowHeight: number) => {
       get().updateViewportState({ rowHeight });
     },
@@ -325,6 +331,10 @@ export function $isLoading(state: EmojiPickerStore) {
 
 export function $rowsCount(state: EmojiPickerStore) {
   return state.data?.rows.length;
+}
+
+export function $categoriesCount(state: EmojiPickerStore) {
+  return state.data?.categories.length;
 }
 
 export function $categoriesRowsStartIndices(state: EmojiPickerStore) {
