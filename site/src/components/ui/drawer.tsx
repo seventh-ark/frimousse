@@ -51,7 +51,7 @@ const DrawerContent = forwardRef<
       ref={ref}
       {...props}
     >
-      <div className="relative mb-4 flex h-auto w-full flex-col rounded-2xl border bg-background shadow-popover">
+      <div className="relative mb-4 flex h-auto w-full flex-col rounded-2xl bg-background shadow-popover">
         <div aria-hidden className="flex flex-col items-center py-3">
           <span className="h-1.5 w-14 rounded-full bg-secondary" />
         </div>
