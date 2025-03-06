@@ -11,13 +11,22 @@ interface EmojiPickerProps extends EmojiPickerRootProps {
   autoFocus?: boolean;
 }
 
-function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
+function EmojiPicker({
+  className,
+  autoFocus,
+  columns = 9,
+  ...props
+}: EmojiPickerProps) {
   return (
-    <EmojiPickerPrimitive.Root className={cn("w-full", className)} {...props}>
-      <div className="px-outer-gutter pt-2 sm:px-2">
+    <EmojiPickerPrimitive.Root
+      className={cn("w-full", className)}
+      columns={columns}
+      {...props}
+    >
+      <div className="px-4 sm:px-2 sm:pt-2">
         <EmojiPickerPrimitive.Search
           autoFocus={autoFocus}
-          className="w-full rounded bg-muted p-2 outline-none placeholder:text-muted-foreground md:text-sm"
+          className="w-full rounded bg-muted p-2 outline-none placeholder:text-muted-foreground sm:text-sm"
         />
       </div>
       <EmojiPickerPrimitive.Viewport className="h-[320px]">
@@ -39,7 +48,7 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
             Row: ({ children, ...props }) => (
               <div
                 {...props}
-                className="scroll-mb-1 px-outer-gutter text-lg max-sm:justify-between sm:px-1"
+                className="scroll-mb-4 px-4 text-lg max-sm:justify-between sm:scroll-mb-1.5 sm:px-1.5"
               >
                 {children}
               </div>
@@ -48,7 +57,7 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
               <button
                 {...props}
                 aria-label={emoji.label}
-                className="flex size-7 items-center justify-center whitespace-nowrap rounded-md transition duration-100 data-[active]:bg-muted data-[active]:duration-0"
+                className="flex aspect-square min-w-8 flex-1 items-center justify-center whitespace-nowrap rounded-[max(2vw,var(--radius-md))] text-[max(4vw,var(--text-lg))] transition duration-100 data-[active]:bg-muted data-[active]:duration-0 sm:size-8 sm:flex-none sm:rounded-md sm:text-lg"
               >
                 {emoji.emoji}
               </button>
@@ -56,7 +65,7 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
             CategoryHeader: ({ category, ...props }) => (
               <div
                 {...props}
-                className="bg-background px-outer-gutter pt-3 pb-1.5 font-medium text-secondary-foreground text-xs sm:px-2"
+                className="bg-background px-4 pt-3 pb-1.5 font-medium text-secondary-foreground text-xs sm:px-2.5"
               >
                 {category.label}
               </div>
@@ -64,7 +73,7 @@ function EmojiPicker({ className, autoFocus, ...props }: EmojiPickerProps) {
           }}
         />
       </EmojiPickerPrimitive.Viewport>
-      <div className="flex w-full min-w-0 max-w-(--frimousse-list-width) flex-1 items-center gap-1 border-t px-outer-gutter py-2 sm:p-2">
+      <div className="flex w-full min-w-0 max-w-(--frimousse-list-width) flex-1 items-center gap-1 border-t p-2">
         <EmojiPickerPrimitive.ActiveEmoji>
           {({ emoji }) =>
             emoji ? (

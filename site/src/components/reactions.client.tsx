@@ -100,9 +100,9 @@ const ReactionButton = memo(
       <button
         className={cn(
           buttonVariants({ variant: "secondary" }),
-          "rounded-full px-2.5 py-1 text-sm tabular-nums will-change-transform",
+          "group rounded-full px-2.5 py-1 text-sm tabular-nums will-change-transform",
           isActive && !isInitialRender
-            ? "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:ring-accent/20 dark:bg-accent/20 dark:focus-visible:bg-accent/20 dark:hover:bg-accent/25"
+            ? "border-accent/80 bg-accent/10 text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:ring-accent/20 dark:bg-accent/20 dark:focus-visible:bg-accent/20 dark:hover:bg-accent/25"
             : "text-secondary-foreground",
         )}
         disabled={(type === "client" ? isInitialRender : true) || disabled}
@@ -117,7 +117,9 @@ const ReactionButton = memo(
             "animate-none opacity-100": type === "client",
           })}
         >
-          {emoji}{" "}
+          <span className="relative transition-transform will-change-transform group-active:rotate-6 group-active:scale-80">
+            {emoji}
+          </span>{" "}
           <NumberFlow
             className="inline-flex justify-center transition-[width] duration-300 ease-[cubic-bezier(0.75,0,0.175,1)]"
             opacityTiming={numberFlowTransition}
@@ -149,12 +151,16 @@ function AddReactionButton({
 
   const trigger = (
     <button
-      aria-label="Add reaction"
-      className={cn(buttonVariants({ variant: "default" }), "rounded-full")}
-      title="Add reaction"
+      aria-label="Try it"
+      className={cn(
+        buttonVariants({ variant: "default" }),
+        "group rounded-full",
+      )}
+      title="Try it"
       {...props}
     >
-      <SmilePlus className="-ml-1" /> Try it
+      <SmilePlus className="-ml-0.5 relative transition-transform will-change-transform group-active:rotate-6 group-active:scale-85" />{" "}
+      Try it
     </button>
   );
   const emojiPicker = (
