@@ -5,7 +5,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import type { PropsWithChildren } from "react";
 import "./styles.css";
-import { AnimatedFavicon } from "@/components/animated-favicon";
 import { JetBrains_Mono } from "next/font/google";
 
 const inter = localFont({
@@ -71,9 +70,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <AnimatedFavicon />
-      </head>
       <body className={cn(inter.variable, jetbrainsMono.variable)}>
         <ThemeProvider
           attribute="class"
