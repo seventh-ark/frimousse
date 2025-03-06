@@ -9,7 +9,7 @@ import {
 } from "@shikijs/transformers";
 import type { ComponentProps } from "react";
 import type { BundledLanguage } from "shiki";
-import { codeToHtml } from "shiki";
+import { codeToHtml, createCssVariablesTheme } from "shiki";
 import { CopyButton } from "../copy-button";
 
 interface CodeBlockProps extends Omit<ComponentProps<"div">, "children"> {
@@ -25,7 +25,9 @@ export async function CodeBlock({
 }: CodeBlockProps) {
   const html = await codeToHtml(code, {
     lang,
-    theme: "none",
+    theme: createCssVariablesTheme({
+      variablePrefix: "--frimousse-",
+    }),
     defaultColor: false,
     transformers: [
       transformerNotationDiff(),

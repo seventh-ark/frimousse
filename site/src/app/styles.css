@@ -21,6 +21,20 @@
   --ring: var(--color-neutral-200);
 
   --shadow-popover: 0 2px 12px rgb(0 0 0 / 6%), 0 8px 36px rgb(0 0 0 / 8%);
+
+  /* Shiki */
+  --frimousse-foreground: var(--foreground);
+  --frimousse-background: var(--muted);
+  --frimousse-token-link: var(--foreground);
+  --frimousse-token-comment: var(--secondary-foreground);
+  --frimousse-token-constant: var(--secondary-foreground);
+
+  --frimousse-token-string: var(--color-neutral-800);
+  --frimousse-token-keyword: var(--color-neutral-500);
+  --frimousse-token-parameter: var(--color-neutral-700);
+  --frimousse-token-function: var(--color-neutral-800);
+  --frimousse-token-string-expression: var(--color-neutral-800);
+  --frimousse-token-punctuation: var(--color-neutral-700);
 }
 
 .dark {
@@ -38,6 +52,14 @@
   --border: var(--color-neutral-800);
   --input: var(--color-neutral-800);
   --ring: var(--color-neutral-800);
+
+  /* Shiki */
+  --frimousse-token-string: var(--color-neutral-200);
+  --frimousse-token-keyword: var(--color-neutral-500);
+  --frimousse-token-parameter: var(--color-neutral-300);
+  --frimousse-token-function: var(--color-neutral-200);
+  --frimousse-token-string-expression: var(--color-neutral-200);
+  --frimousse-token-punctuation: var(--color-neutral-300);
 }
 
 @theme inline {
