@@ -52,6 +52,7 @@ export function Footer() {
           <Link
             aria-label="Go to GitHub repository"
             href="https://github.com/liveblocks/frimousse"
+            target="_blank"
           >
             <svg
               aria-hidden="true"
