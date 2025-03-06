@@ -51,7 +51,8 @@ const SKIN_TONE_MODIFIERS =
   /\u{1F3FB}|\u{1F3FC}|\u{1F3FD}|\u{1F3FE}|\u{1F3FF}/gu;
 
 interface ReactionButtonProps
-  extends Omit<ComponentProps<"button">, "children"> {
+  extends Pick<ComponentProps<"button">, "onClick" | "disabled"> {
+  type?: "fallback" | "server" | "client";
   emoji: string;
   count: number;
   isActive?: boolean;
@@ -85,13 +86,14 @@ const numberFlowTransition: EffectTiming = {
 
 const ReactionButton = memo(
   ({
+    type = "client",
     emoji,
     isActive,
     count,
     disabled,
-    className,
-    ...props
+    onClick,
   }: ReactionButtonProps) => {
+    const isMounted = useIsMounted();
     const isInitialRender = useInitialRender();
 
     return (
@@ -102,78 +104,88 @@ const ReactionButton = memo(
           isActive && !isInitialRender
             ? "border-accent bg-accent/10 font-medium text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:ring-accent/20 dark:bg-accent/20 dark:focus-visible:bg-accent/20 dark:hover:bg-accent/25"
             : "text-secondary-foreground",
-          className,
         )}
-        disabled={isInitialRender || disabled}
-        {...props}
+        disabled={(type === "client" ? isInitialRender : true) || disabled}
+        onClick={onClick}
+        type="button"
       >
-        {emoji}{" "}
-        <NumberFlow
-          className="inline-flex justify-center transition-[width] duration-300 ease-[cubic-bezier(0.75,0,0.175,1)]"
-          opacityTiming={numberFlowTransition}
-          style={{ width: `${count.toString().length}ch` }}
-          transformTiming={numberFlowTransition}
-          value={count}
-          willChange
-        />
+        <span
+          className={cn("inline-flex items-center gap-1.5", {
+            "opacity-0": type === "fallback",
+            "fade-in animate-in fill-mode-both duration-300 ease-out":
+              type === "server" && !isMounted && isInitialRender,
+            "animate-none opacity-100": type === "client",
+          })}
+        >
+          {emoji}{" "}
+          <NumberFlow
+            className="inline-flex justify-center transition-[width] duration-300 ease-[cubic-bezier(0.75,0,0.175,1)]"
+            opacityTiming={numberFlowTransition}
+            style={{ width: `${count.toString().length}ch` }}
+            transformTiming={numberFlowTransition}
+            value={count}
+            willChange
+          />
+        </span>
       </button>
     );
   },
 );
 
-const AddReactionButton = memo(
-  ({ onEmojiSelect, ...props }: AddReactionButtonProps) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const isMounted = useIsMounted();
-    const isMobile = useIsMobile();
+function AddReactionButton({
+  onEmojiSelect,
+  ...props
+}: AddReactionButtonProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const isMounted = useIsMounted();
+  const isMobile = useIsMobile();
 
-    const handleEmojiSelect = useCallback(
-      (emoji: string) => {
-        onEmojiSelect?.(getBaseEmoji(emoji));
-      },
-      [onEmojiSelect],
-    );
+  const handleEmojiSelect = useCallback(
+    (emoji: string) => {
+      onEmojiSelect?.(getBaseEmoji(emoji));
+    },
+    [onEmojiSelect],
+  );
 
-    const trigger = (
-      <button
-        aria-label="Add reaction"
-        className={cn(buttonVariants({ variant: "default" }), "rounded-full")}
-        title="Add reaction"
-        {...props}
-      >
-        <SmilePlus className="-ml-1" /> Try it
-      </button>
-    );
-    const emojiPicker = (
-      <EmojiPicker
-        autoFocus
-        onEmojiSelect={(emoji) => {
-          handleEmojiSelect?.(emoji);
-          setIsOpen(false);
-        }}
-      />
-    );
+  const trigger = (
+    <button
+      aria-label="Add reaction"
+      className={cn(buttonVariants({ variant: "default" }), "rounded-full")}
+      title="Add reaction"
+      {...props}
+    >
+      <SmilePlus className="-ml-1" /> Try it
+    </button>
+  );
+  const emojiPicker = (
+    <EmojiPicker
+      autoFocus
+      onEmojiSelect={(emoji) => {
+        handleEmojiSelect?.(emoji);
+        setIsOpen(false);
+      }}
+    />
+  );
 
-    if (!isMounted) {
-      return trigger;
-    }
+  if (!isMounted) {
+    return trigger;
+  }
 
-    return isMobile ? (
-      <Drawer onOpenChange={setIsOpen} open={isOpen}>
-        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-        <DrawerContent>
-          <DrawerTitle className="sr-only">Select an emoji</DrawerTitle>
-          {emojiPicker}
-        </DrawerContent>
-      </Drawer>
-    ) : (
-      <Popover onOpenChange={setIsOpen} open={isOpen}>
-        <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-        <PopoverContent sideOffset={6}>{emojiPicker}</PopoverContent>
-      </Popover>
-    );
-  },
-);
+  return isMobile ? (
+    <Drawer onOpenChange={setIsOpen} open={isOpen}>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      <DrawerContent>
+        <DrawerTitle className="sr-only">Select an emoji</DrawerTitle>
+        {emojiPicker}
+      </DrawerContent>
+    </Drawer>
+  ) : (
+    <Popover onOpenChange={setIsOpen} open={isOpen}>
+      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+      <PopoverContent sideOffset={6}>{emojiPicker}</PopoverContent>
+    </Popover>
+  );
+}
 
 function LiveblocksReactions() {
   const { id } = useSelf();
@@ -264,7 +276,7 @@ function LiveblocksReactions() {
   );
 }
 
-const ServerReactions = memo(({ reactions }: { reactions: ReactionsJson }) => {
+function ServerReactions({ reactions }: { reactions: ReactionsJson }) {
   return (
     <>
       {Object.entries(reactions)
@@ -277,12 +289,17 @@ const ServerReactions = memo(({ reactions }: { reactions: ReactionsJson }) => {
           }
 
           return (
-            <ReactionButton count={count} disabled emoji={emoji} key={emoji} />
+            <ReactionButton
+              count={count}
+              emoji={emoji}
+              key={emoji}
+              type="server"
+            />
           );
         })}
     </>
   );
-});
+}
 
 function LocalReactions({
   reactions: initialReactions,
@@ -381,7 +398,7 @@ function LocalReactions({
   );
 }
 
-export const FallbackReactions = memo(() => {
+export function FallbackReactions() {
   return (
     <>
       {Object.entries(DEFAULT_REACTIONS).map(([emoji, data]) => {
@@ -393,17 +410,16 @@ export const FallbackReactions = memo(() => {
 
         return (
           <ReactionButton
-            className="text-transparent"
             count={count}
-            disabled
             emoji={emoji}
             key={emoji}
+            type="fallback"
           />
         );
       })}
     </>
   );
-});
+}
 
 const initialStorage: Liveblocks["Storage"] = {
   reactions: new LiveMap(

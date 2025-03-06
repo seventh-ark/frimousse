@@ -19,6 +19,7 @@
   --border: var(--color-neutral-200);
   --input: var(--color-neutral-200);
   --ring: var(--color-neutral-200);
+
   --shadow-popover: 0 2px 12px rgb(0 0 0 / 6%), 0 8px 36px rgb(0 0 0 / 8%);
 }
 
