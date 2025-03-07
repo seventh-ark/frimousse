@@ -11,9 +11,9 @@ on:
           - patch
           - minor
           - major
-          - custom
-      version:
-        description: "Custom version (e.g. v1.2.3, v0.1.2-beta.0)"
+      prerelease:
+        description: "Prerelease tag (e.g. beta, alpha)"
+        required: false
         type: string
 concurrency:
   group: ${{ github.workflow }}
@@ -34,28 +34,15 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Validate inputs
-        run: |
-          if [[ "${{ github.event.inputs.increment }}" == "custom" ]]; then
-            VERSION="${{ github.event.inputs.version }}"
-            if [[ -z "$VERSION" ]]; then
-              echo "❌ A version is required with a custom increment"
-              exit 1
-            fi
-            if [[ ! "$VERSION" =~ ^v(\d+\.\d+\.\d+(?:-[a-z]+\.\d+)?)$ ]]; then
-              echo "❌ The provided version is not valid"
-              exit 1
-            fi
-            # Remove the "v" prefix and use as increment
-            INCREMENT="${VERSION:1}"
-          else
-            INCREMENT="${{ github.event.inputs.increment }}"
-          fi
-          echo "INCREMENT=$INCREMENT" >> $GITHUB_OUTPUT
       - name: Install dependencies
         run: npm ci  
       - name: Release package
-        run: npm run release -- --increment "$INCREMENT" --ci
+        run: |
+          ARGS="${{ github.event.inputs.increment }} --ci"
+          if [[ -n "${{ github.event.inputs.prerelease }}" ]]; then
+            ARGS+=" --preRelease=${{ github.event.inputs.prerelease }}"
+          fi
+          npm run release -- $ARGS
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
