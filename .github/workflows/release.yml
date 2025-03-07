@@ -1,0 +1,61 @@
+name: Release
+on: 
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: "Release increment (e.g. patch, minor, major)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - custom
+      version:
+        description: "Custom version (e.g. v1.2.3, v0.1.2-beta.0)"
+        type: string
+concurrency:
+  group: ${{ github.workflow }}
+run-name: Releasing a ${{ github.event.inputs.increment }} version
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout commit
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+          cache: npm
+          cache-dependency-path: "**/package-lock.json"
+      - name: Setup git config
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Validate inputs
+        run: |
+          if [[ "${{ github.event.inputs.increment }}" == "custom" ]]; then
+            VERSION="${{ github.event.inputs.version }}"
+            if [[ -z "$VERSION" ]]; then
+              echo "❌ A version is required with a custom increment"
+              exit 1
+            fi
+            if [[ ! "$VERSION" =~ ^v(\d+\.\d+\.\d+(?:-[a-z]+\.\d+)?)$ ]]; then
+              echo "❌ The provided version is not valid"
+              exit 1
+            fi
+            # Remove the "v" prefix and use as increment
+            INCREMENT="${VERSION:1}"
+          else
+            INCREMENT="${{ github.event.inputs.increment }}"
+          fi
+          echo "INCREMENT=$INCREMENT" >> $GITHUB_OUTPUT
+      - name: Install dependencies
+        run: npm ci  
+      - name: Release package
+        run: npm run release -- --increment "$INCREMENT" --ci
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

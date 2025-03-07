@@ -31,11 +31,11 @@
     "test:watch": "vitest watch --silent",
     "test:coverage": "npm run test -- --coverage",
     "format": "biome check --write --assists-enabled=true",
-    "lint": "turbo run lint:biome lint:tsc",
+    "lint": "npm run lint:biome && npm run lint:tsc && npm run lint:package",
     "lint:tsc": "tsc --noEmit",
     "lint:biome": "biome lint",
     "lint:package": "publint --strict && attw --pack",
-    "release": "npm run lint:tsc && npm run lint:biome && npm run build && npm run lint:package && release-it"
+    "release": "release-it"
   },
   "peerDependencies": {
     "react": "^18 || ^19"
