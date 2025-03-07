@@ -1,11 +1,14 @@
 {
   "name": "frimousse",
   "description": "An emoji picker component for React.",
-  "version": "0.1.0-beta.0",
+  "version": "0.1.0-beta.1",
   "license": "MIT",
   "packageManager": "npm@11.1.0",
   "type": "module",
-  "workspaces": [".", "site"],
+  "workspaces": [
+    ".",
+    "site"
+  ],
   "sideEffects": false,
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.cts",
@@ -21,7 +24,11 @@
       }
     }
   },
-  "files": ["dist/**", "README.md", "LICENSE"],
+  "files": [
+    "dist/**",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "dev": "tsup --watch",
     "dev:site": "turbo run dev --filter=site",
