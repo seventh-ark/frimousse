@@ -3,12 +3,14 @@ on:
   workflow_dispatch:
     inputs:
       increment:
-        description: "Release increment (e.g. patch, minor, major)"
+        description: "Release increment (e.g. patch, minor, major, none (for existing prereleases))"
+        required: false
         type: choice
         options:
           - patch
           - minor
           - major
+          - none
       prerelease:
         description: "Prerelease tag (e.g. beta, alpha)"
         required: false
@@ -35,7 +37,7 @@ jobs:
       - name: Release package
         run: |
           ARGS=""
-          if [[ -n "${{ github.event.inputs.increment }}" ]]; then
+          if [[ "${{ github.event.inputs.increment }}" != "none" ]]; then
             ARGS+="${{ github.event.inputs.increment }}"
           fi
           if [[ -n "${{ github.event.inputs.prerelease }}" ]]; then
