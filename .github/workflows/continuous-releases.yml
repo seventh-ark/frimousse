@@ -19,6 +19,8 @@ jobs:
           node-version: 23
           cache: npm
       - name: Install dependencies
-        run: npm ci  
+        run: npm ci
+      - name: Build package
+        run: npm run build
       - name: Release package on pkg.pr.new
         run: npx pkg-pr-new publish --compact --comment=off
