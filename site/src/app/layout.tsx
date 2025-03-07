@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import type { PropsWithChildren } from "react";
 import "./styles.css";
 import { JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 
 const inter = localFont({
   src: "./inter-variable.woff2",
@@ -35,7 +36,15 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL(config.url),
   description: config.description,
-  keywords: ["React", "Emoji picker", "Liveblocks"],
+  keywords: [
+    "emoji",
+    "emoji picker",
+    "react",
+    "unstyled",
+    "component",
+    "emojibase",
+    "liveblocks",
+  ],
   authors: [
     {
       name: "Liveblocks",
@@ -70,6 +79,21 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Script id="disable-zoom">{`
+        (()=>  {
+          if (!/iPad|iPhone/.test(navigator.userAgent)) return;
+          const element = document.querySelector("meta[name=viewport]");
+          if (!element) return;
+          const content = element.getAttribute("content") ?? "";
+          const scale = /maximum\-scale=[0-9\.]+/g;
+          element.setAttribute(
+            "content",
+            scale.test(content)
+              ? content.replace(scale, "maximum-scale=1.0")
+              : content + ", maximum-scale=1.0",
+          );
+        })()
+      `}</Script>
       <body className={cn(inter.variable, jetbrainsMono.variable)}>
         <ThemeProvider
           attribute="class"

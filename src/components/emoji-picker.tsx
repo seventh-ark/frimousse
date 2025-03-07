@@ -502,8 +502,13 @@ const EmojiPickerSearch = forwardRef<HTMLInputElement, EmojiPickerSearchProps>(
 
     return (
       <input
+        autoCapitalize="off"
+        autoComplete="off"
+        autoCorrect="off"
+        enterKeyHint="done"
         frimousse-search=""
         placeholder="Search…"
+        spellCheck={false}
         type="search"
         {...props}
         defaultValue={defaultValue}
@@ -727,11 +732,16 @@ function listSizerProps(
 function listProps(
   columns: number,
   rowsCount: number,
+  style: CSSProperties | undefined,
 ): WithAttributes<EmojiPickerListProps> {
   return {
     "aria-colcount": columns,
     "aria-rowcount": rowsCount,
     "frimousse-list": "",
+    style: {
+      "--frimousse-list-columns": columns,
+      ...style,
+    } as CSSProperties,
     role: "grid",
   };
 }
@@ -1032,7 +1042,7 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
 
     if (!rowsCount || !categoriesRowsStartIndices || categoriesCount === 0) {
       return (
-        <div {...listProps(columns, 0)} {...props} style={style}>
+        <div {...listProps(columns, 0, style)} {...props}>
           <div {...listSizerProps(0, 0, 0, 0)}>
             <EmojiPickerListSizers
               CategoryHeader={CategoryHeader}
@@ -1045,7 +1055,11 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
     }
 
     return (
-      <div {...listProps(columns, rowsCount)} {...props} ref={callbackRef}>
+      <div
+        {...listProps(columns, rowsCount, style)}
+        {...props}
+        ref={callbackRef}
+      >
         <div
           {...listSizerProps(
             rowsCount,

@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import {
-  type ComponentProps,
   type ComponentPropsWithoutRef,
   type ComponentRef,
   type HTMLAttributes,
@@ -10,15 +9,7 @@ import {
 } from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 
-const Drawer = ({
-  shouldScaleBackground = true,
-  ...props
-}: ComponentProps<typeof DrawerPrimitive.Root>) => (
-  <DrawerPrimitive.Root
-    shouldScaleBackground={shouldScaleBackground}
-    {...props}
-  />
-);
+const Drawer = DrawerPrimitive.Root;
 
 const DrawerTrigger = DrawerPrimitive.Trigger;
 
@@ -45,18 +36,16 @@ const DrawerContent = forwardRef<
     <DrawerOverlay />
     <DrawerPrimitive.Content
       className={cn(
-        "fixed inset-x-4 bottom-0 z-50 mt-24 after:hidden",
+        "fixed inset-x-0 bottom-0 z-50 h-fit rounded-t-xl bg-background shadow-popover outline-none",
         className,
       )}
       ref={ref}
       {...props}
     >
-      <div className="relative mb-4 flex h-auto w-full flex-col rounded-2xl bg-background shadow-popover">
-        <div aria-hidden className="flex flex-col items-center py-3">
-          <span className="h-1.5 w-14 rounded-full bg-secondary" />
-        </div>
-        {children}
+      <div aria-hidden className="flex flex-col items-center py-3">
+        <span className="h-1.5 w-14 rounded-full bg-secondary" />
       </div>
+      {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
 ));
