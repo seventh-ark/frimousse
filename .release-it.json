@@ -16,6 +16,7 @@
     "releaseName": "v${version}"
   },
   "hooks": {
-    "before:init": ["npm run build", "npm run lint"]
+    "before:init": ["npm run build", "npm run lint"],
+    "after:bump": "npm run format -- package.json"
   }
 }

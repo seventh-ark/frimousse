@@ -17,6 +17,7 @@ on:
         type: string
 concurrency:
   group: ${{ github.workflow }}
+run-name: "Release (increment: ${{ github.event.inputs.increment }}, prerelease: ${{ github.event.inputs.prerelease }})"
 jobs:
   release:
     runs-on: ubuntu-latest
