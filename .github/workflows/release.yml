@@ -4,8 +4,6 @@ on:
     inputs:
       increment:
         description: "Release increment (e.g. patch, minor, major)"
-        required: true
-        default: "patch"
         type: choice
         options:
           - patch
@@ -17,7 +15,6 @@ on:
         type: string
 concurrency:
   group: ${{ github.workflow }}
-run-name: Releasing a ${{ github.event.inputs.increment }} version
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -29,7 +26,6 @@ jobs:
         with:
           node-version: 23
           cache: npm
-          cache-dependency-path: "**/package-lock.json"
       - name: Setup git config
         run: |
           git config user.name "github-actions[bot]"
@@ -38,11 +34,14 @@ jobs:
         run: npm ci  
       - name: Release package
         run: |
-          ARGS="${{ github.event.inputs.increment }} --ci"
+          ARGS=""
+          if [[ -n "${{ github.event.inputs.increment }}" ]]; then
+            ARGS+="${{ github.event.inputs.increment }}"
+          fi
           if [[ -n "${{ github.event.inputs.prerelease }}" ]]; then
             ARGS+=" --preRelease=${{ github.event.inputs.prerelease }}"
           fi
-          npm run release -- $ARGS
+          npm run release -- $ARGS --ci
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

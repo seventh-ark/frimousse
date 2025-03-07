@@ -52,6 +52,7 @@
     "emojibase": "^16.0.0",
     "emojibase-data": "^16.0.2",
     "jsdom": "^26.0.0",
+    "pkg-pr-new": "^0.0.40",
     "playwright": "^1.50.1",
     "publint": "^0.3.6",
     "release-it": "^18.1.2",
