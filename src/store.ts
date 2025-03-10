@@ -24,9 +24,9 @@ export type EmojiPickerStore = {
   activeColumnIndex: number;
   activeRowIndex: number;
 
-  listWidth: number | null;
   rowHeight: number | null;
   categoryHeaderHeight: number | null;
+  viewportWidth: number | null;
   viewportHeight: number | null;
 
   viewportStartCategoryIndex: number;
@@ -48,10 +48,9 @@ export type EmojiPickerStore = {
     activeRowIndex: number,
   ) => void;
   onActiveEmojiReset: () => void;
-  onListWidthChange: (listWidth: number) => void;
   onRowHeightChange: (rowHeight: number) => void;
   onCategoryHeaderHeightChange: (categoryHeaderHeight: number) => void;
-  onViewportHeightChange: (viewportHeight: number) => void;
+  onViewportSizeChange: (viewportWidth: number, viewportHeight: number) => void;
   onViewportScroll: (scrollY: number) => void;
 };
 
@@ -75,9 +74,9 @@ export function createEmojiPickerStore(
     activeColumnIndex: 0,
     activeRowIndex: 0,
 
-    listWidth: null,
     rowHeight: null,
     categoryHeaderHeight: null,
+    viewportWidth: null,
     viewportHeight: null,
 
     viewportCurrentCategoryIndex: null,
@@ -271,17 +270,14 @@ export function createEmojiPickerStore(
         activeRowIndex: 0,
       });
     },
-    onListWidthChange: (listWidth: number) => {
-      set({ listWidth });
-    },
     onRowHeightChange: (rowHeight: number) => {
       get().updateViewportState({ rowHeight });
     },
     onCategoryHeaderHeightChange: (categoryHeaderHeight: number) => {
       get().updateViewportState({ categoryHeaderHeight });
     },
-    onViewportHeightChange: (viewportHeight: number) => {
-      get().updateViewportState({ viewportHeight });
+    onViewportSizeChange: (viewportWidth: number, viewportHeight: number) => {
+      get().updateViewportState({ viewportWidth, viewportHeight });
     },
     onViewportScroll: (scrollY: number) => {
       viewportScrollY = scrollY;

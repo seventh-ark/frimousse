@@ -83,7 +83,7 @@ function EmojiPicker({
           }}
         />
       </EmojiPickerPrimitive.Viewport>
-      <div className="hidden w-full min-w-0 max-w-(--frimousse-list-width) flex-none items-center gap-1 border-t p-2 sm:flex">
+      <div className="hidden w-full min-w-0 max-w-(--frimousse-viewport-width) flex-none items-center gap-1 border-t p-2 sm:flex">
         <EmojiPickerPrimitive.ActiveEmoji>
           {({ emoji }) =>
             emoji ? (

@@ -1,13 +1,13 @@
 import {
   type CSSProperties,
-  type ChangeEvent,
   type ComponentProps,
-  type FocusEvent,
   Fragment,
-  type MouseEvent,
+  type ChangeEvent as ReactChangeEvent,
+  type FocusEvent as ReactFocusEvent,
+  type MouseEvent as ReactMouseEvent,
   type ReactNode,
-  type SyntheticEvent,
-  type UIEvent,
+  type SyntheticEvent as ReactSyntheticEvent,
+  type UIEvent as ReactUIEvent,
   forwardRef,
   memo,
   useCallback,
@@ -176,7 +176,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
     }, [skinTone]);
 
     const handleFocusCapture = useCallback(
-      (event: FocusEvent<HTMLDivElement>) => {
+      (event: ReactFocusEvent<HTMLDivElement>) => {
         onFocusCapture?.(event);
 
         const { searchRef, viewportRef } = store.get();
@@ -191,13 +191,23 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
 
         if (!event.isDefaultPrevented()) {
           setFocusedWithin(isSearch || isViewport);
+
+          if (!event.isDefaultPrevented()) {
+            setFocusedWithin(isSearch || isViewport);
+
+            if (isViewport) {
+              store.get().onActiveEmojiChange("keyboard", 0, 0);
+            } else if (isSearch && store.get().search === "") {
+              store.set({ interaction: "none" });
+            }
+          }
         }
       },
       [onFocusCapture],
     );
 
     const handleBlurCapture = useCallback(
-      (event: FocusEvent<HTMLDivElement>) => {
+      (event: ReactFocusEvent<HTMLDivElement>) => {
         onBlurCapture?.(event);
 
         if (
@@ -216,20 +226,20 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
       }
 
       const unsubscribe = store.subscribe((state) => {
-        if (state.listWidth) {
+        if (state.viewportWidth) {
           ref.current.style.setProperty(
-            "--frimousse-list-width",
-            `${state.listWidth}px`,
+            "--frimousse-viewport-width",
+            `${state.viewportWidth}px`,
           );
         }
       });
 
-      const listWidth = store.get().listWidth;
+      const viewportWidth = store.get().viewportWidth;
 
-      if (listWidth) {
+      if (viewportWidth) {
         ref.current.style.setProperty(
-          "--frimousse-list-width",
-          `${listWidth}px`,
+          "--frimousse-viewport-width",
+          `${viewportWidth}px`,
         );
       }
 
@@ -488,7 +498,7 @@ const EmojiPickerSearch = forwardRef<HTMLInputElement, EmojiPickerSearchProps>(
     }, []);
 
     const handleChange = useCallback(
-      (event: ChangeEvent<HTMLInputElement>) => {
+      (event: ReactChangeEvent<HTMLInputElement>) => {
         onChange?.(event);
 
         if (!event.isDefaultPrevented()) {
@@ -567,7 +577,7 @@ const ActiveEmojiAnnouncer = memo(() => {
 const EmojiPickerViewport = forwardRef<
   HTMLDivElement,
   EmojiPickerViewportProps
->(({ children, onScroll, style, ...props }, forwardedRef) => {
+>(({ children, onScroll, onKeyDown, style, ...props }, forwardedRef) => {
   const store = useEmojiPickerStore();
   const ref = useRef<HTMLDivElement>(null!);
   const callbackRef = useCallback((element: HTMLDivElement | null) => {
@@ -580,7 +590,7 @@ const EmojiPickerViewport = forwardRef<
   const categoriesCount = useSelector(store, $categoriesCount);
 
   const handleScroll = useCallback(
-    (event: UIEvent<HTMLDivElement>) => {
+    (event: ReactUIEvent<HTMLDivElement>) => {
       onScroll?.(event);
 
       store.get().onViewportScroll(event.currentTarget.scrollTop);
@@ -595,16 +605,22 @@ const EmojiPickerViewport = forwardRef<
     }
 
     const resizeObserver = new ResizeObserver(([entry]) => {
-      const height = entry?.contentRect.height ?? 0;
+      const width = entry?.borderBoxSize[0]?.inlineSize ?? 0;
+      const height = entry?.borderBoxSize[0]?.blockSize ?? 0;
 
-      if (store.get().viewportHeight !== height) {
-        store.get().onViewportHeightChange(height);
+      const { onViewportSizeChange, viewportHeight, viewportWidth } =
+        store.get();
+
+      if (viewportHeight !== height || viewportWidth !== width) {
+        onViewportSizeChange(width, height);
       }
     });
 
     resizeObserver.observe(ref.current);
 
-    store.get().onViewportHeightChange(ref.current.clientHeight);
+    store
+      .get()
+      .onViewportSizeChange(ref.current.offsetWidth, ref.current.clientHeight);
 
     return () => {
       resizeObserver.disconnect();
@@ -620,15 +636,17 @@ const EmojiPickerViewport = forwardRef<
       onScroll={handleScroll}
       ref={callbackRef}
       style={{
+        position: "relative",
+        boxSizing: "border-box",
         contain: "layout paint",
         containIntrinsicSize:
           typeof rowsCount === "number" && typeof categoriesCount === "number"
-            ? `var(--frimousse-list-width, auto) calc(${rowsCount} * var(--frimousse-row-height) + ${categoriesCount} * var(--frimousse-category-header-height))`
+            ? `var(--frimousse-viewport-width, auto) calc(${rowsCount} * var(--frimousse-row-height) + ${categoriesCount} * var(--frimousse-category-header-height))`
             : undefined,
         overflowY: "auto",
         overscrollBehavior: "contain",
+        scrollbarGutter: "stable",
         willChange: "scroll-position",
-        position: "relative",
         ...style,
       }}
     >
@@ -746,7 +764,7 @@ function listProps(
   };
 }
 
-function preventDefault(event: SyntheticEvent) {
+function preventDefault(event: ReactSyntheticEvent) {
   event.preventDefault();
 }
 
@@ -886,22 +904,22 @@ const EmojiPickerListSizers = memo(
         for (const entry of entries) {
           const height = entry.contentRect.height;
 
-          if (entry.target === list) {
-            store.get().onListWidthChange(entry.contentRect.width);
-          }
+          const {
+            onRowHeightChange,
+            onCategoryHeaderHeightChange,
+            rowHeight,
+            categoryHeaderHeight,
+          } = store.get();
 
-          if (
-            entry.target === rowRef.current &&
-            store.get().rowHeight !== height
-          ) {
-            store.get().onRowHeightChange(height);
+          if (entry.target === rowRef.current && rowHeight !== height) {
+            onRowHeightChange(height);
           }
 
           if (
             entry.target === categoryHeaderRef.current &&
-            store.get().categoryHeaderHeight !== height
+            categoryHeaderHeight !== height
           ) {
-            store.get().onCategoryHeaderHeightChange(height);
+            onCategoryHeaderHeightChange(height);
           }
         }
       });
@@ -910,11 +928,10 @@ const EmojiPickerListSizers = memo(
       resizeObserver.observe(rowRef.current);
       resizeObserver.observe(categoryHeaderRef.current);
 
-      store.get().onListWidthChange(list.clientWidth);
-      store.get().onRowHeightChange(rowRef.current.clientHeight);
-      store
-        .get()
-        .onCategoryHeaderHeightChange(categoryHeaderRef.current.clientHeight);
+      const { onRowHeightChange, onCategoryHeaderHeightChange } = store.get();
+
+      onRowHeightChange(rowRef.current.clientHeight);
+      onCategoryHeaderHeightChange(categoryHeaderRef.current.clientHeight);
 
       return () => {
         resizeObserver.disconnect();
@@ -1163,7 +1180,7 @@ const EmojiPickerSkinToneSelector = forwardRef<
       nextSkinTone === "none" ? undefined : skinTones?.[nextSkinTone];
 
     const handleClick = useCallback(
-      (event: MouseEvent<HTMLButtonElement>) => {
+      (event: ReactMouseEvent<HTMLButtonElement>) => {
         onClick?.(event);
 
         if (!event.isDefaultPrevented()) {
