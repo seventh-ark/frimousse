@@ -1,5 +1,7 @@
 import { EMOJI_FONT_FAMILY } from "../constants";
 
+const CANVAS_SIZE = 2;
+
 let context: CanvasRenderingContext2D | null = null;
 
 export function isEmojiSupported(emoji: string): boolean {
@@ -22,31 +24,37 @@ export function isEmojiSupported(emoji: string): boolean {
     }
   });
 
-  context.canvas.width = 2;
-  context.canvas.height = 2;
-  context.font = `1px ${EMOJI_FONT_FAMILY}`;
-  context.textBaseline = "top";
+  context.canvas.width = CANVAS_SIZE;
+  context.canvas.height = CANVAS_SIZE;
+  context.font = `2px ${EMOJI_FONT_FAMILY}`;
+  context.textBaseline = "middle";
 
   // Unsupported ZWJ sequence emojis show up as separate emojis
-  if (context.measureText(emoji).width >= 2) {
+  if (context.measureText(emoji).width >= CANVAS_SIZE * 2) {
     return false;
   }
 
   context.fillStyle = "#00f";
   context.fillText(emoji, 0, 0);
 
-  const blue = context.getImageData(0, 0, 1, 1).data.slice(0, 3).join(",");
+  const blue = context.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE).data;
 
-  context.clearRect(0, 0, 1, 1);
+  context.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
   context.fillStyle = "#f00";
   context.fillText(emoji, 0, 0);
 
-  const red = context.getImageData(0, 0, 1, 1).data.slice(0, 3).join(",");
+  const red = context.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE).data;
 
   // Emojis have an immutable color so they should look the same regardless of the text color
-  if (blue !== red) {
-    return false;
+  for (let i = 0; i < CANVAS_SIZE * CANVAS_SIZE * 4; i += 4) {
+    if (
+      blue[i] !== red[i] || //         R
+      blue[i + 1] !== red[i + 1] || // G
+      blue[i + 2] !== red[i + 2] //    B
+    ) {
+      return false;
+    }
   }
 
   return true;
