@@ -15,6 +15,7 @@
   --muted-foreground: var(--color-neutral-400);
   --accent: var(--color-yellow-500);
   --accent-foreground: var(--color-neutral-50);
+  --prose: var(--color-neutral-600);
   --overlay: hsl(0, 0%, 0%, 0.2);
   --border: var(--color-neutral-200);
   --ring: var(--color-neutral-200);
@@ -33,6 +34,7 @@
     --muted-foreground: var(--color-neutral-600);
     --accent: var(--color-yellow-400);
     --accent-foreground: var(--color-neutral-950);
+    --prose: var(--color-neutral-300);
     --overlay: hsl(0, 0%, 0%, 0.8);
     --border: var(--color-neutral-800);
     --ring: var(--color-neutral-800);
@@ -73,6 +75,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-prose: var(--prose);
   --color-overlay: var(--overlay);
   --color-border: var(--border);
   --color-ring: var(--ring);
@@ -160,24 +163,44 @@
   }
 }
 
-@utility content {
-  h2 {
-    @apply font-medium mb-3;
+@utility prose {
+  :is(& > h2, & > :not(.not-prose) h2) {
+    @apply font-medium mb-3.5;
 
     &:not(:first-child) {
-      @apply mt-6 md:mt-8;
+      @apply mt-8 md:mt-10;
     }
   }
 
-  p {
-    @apply text-secondary-foreground mb-3;
+  :is(& > h3, & > :not(.not-prose) h3) {
+    @apply font-medium mb-3.5 text-sm;
+
+    &:not(:first-child) {
+      @apply mt-5 md:mt-8;
+    }
+  }
+
+  :is(& > p, & > :not(.not-prose) p) {
+    @apply text-prose mb-3 leading-[1.6];
 
     &:not(:last-child) {
-      @apply mb-3;
+      @apply mb-3.5;
     }
   }
 
-  .code-block:not(:last-child) {
-    @apply mb-3;
+  :is(& > code, & > :not(.not-prose) code) {
+    @apply font-mono text-[0.875em] bg-muted rounded-[0.375em] px-[0.375em] py-[0.25em] text-secondary-foreground box-decoration-clone;
+  }
+
+  :is(& > a, & > :not(.not-prose) a) {
+    @apply link;
+  }
+
+  .code-block {
+    @apply mt-4.5;
+
+    &:not(:last-child) {
+      @apply mb-4.5;
+    }
   }
 }

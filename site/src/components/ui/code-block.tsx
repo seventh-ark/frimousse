@@ -40,7 +40,7 @@ export async function CodeBlock({
   return (
     <div
       className={cn(
-        "code-block group relative min-h-11 overflow-hidden rounded-lg bg-muted",
+        "code-block not-prose group relative min-h-11 overflow-hidden rounded-lg bg-muted",
         className,
       )}
       {...props}
