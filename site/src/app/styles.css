@@ -85,7 +85,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring;
+    @apply border-border outline-ring selection:bg-foreground/15;
 
     &:focus-visible {
       @apply outline-2 outline-offset-0;
@@ -136,7 +136,7 @@
 }
 
 @utility link {
-  @apply transition-colors duration-150 ease-out font-medium text-foreground underline rounded-xs decoration-border decoration-dotted underline-offset-2 hover:decoration-muted-foreground focus-visible:decoration-muted-foreground;
+  @apply transition-colors duration-150 ease-out font-medium text-foreground underline rounded-xs decoration-border decoration-dotted underline-offset-2 hover:decoration-muted-foreground focus-visible:decoration-muted-foreground has-[code]:outline-none focus-visible:has-[code]:[&_code]:outline-2 has-[code]:decoration-secondary-foreground/40 hover:has-[code]:decoration-secondary-foreground/60 focus-visible:has-[code]:decoration-secondary-foreground/60;
 }
 
 @utility code-block {
@@ -181,7 +181,7 @@
   }
 
   :is(& > p, & > :not(.not-prose) p) {
-    @apply text-prose mb-3 leading-[1.6];
+    @apply text-prose text-pretty mb-3 leading-[1.6];
 
     &:not(:last-child) {
       @apply mb-3.5;

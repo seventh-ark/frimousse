@@ -460,9 +460,6 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
  * ```tsx
  * <EmojiPicker.Root>
  *   <EmojiPicker.Search />
- *   <EmojiPicker.Viewport>
- *     <EmojiPicker.List />
- *   </EmojiPicker.Viewport>
  * </EmojiPicker.Root>
  * ```
  *
@@ -470,9 +467,17 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
  *
  * @example
  * ```tsx
- * <EmojiPicker.Root>
- *   <EmojiPicker.Search value={value} onChange={handleChange} />
- * </EmojiPicker.Root>
+ * const [search, setSearch] = useState("");
+ *
+ * return (
+ *   <EmojiPicker.Root>
+ *     <EmojiPicker.Search
+ *       value={search}
+ *       onChange={(event) => setSearch(event.target.value)}
+ *     />
+ *   </EmojiPicker.Root>
+ * );
+ * ```
  */
 const EmojiPickerSearch = forwardRef<HTMLInputElement, EmojiPickerSearchProps>(
   ({ value, defaultValue, onChange, ...props }, forwardedRef) => {
@@ -999,7 +1004,7 @@ function DefaultEmojiPickerListRow({ ...props }: EmojiPickerListRowProps) {
  * </EmojiPicker.Viewport>
  * ```
  *
- * Inner components within the list can be customized.
+ * Inner components within the list can be customized via the `components` prop.
  *
  * @example
  * ```tsx
@@ -1143,6 +1148,11 @@ const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
  * ```tsx
  * <EmojiPicker.SkinToneSelector emoji="👋" />
  * ```
+ *
+ * @see
+ * If you want to build a custom skin tone selector, you can use the
+ * {@link EmojiPickerSkinTone|`<EmojiPicker.SkinTone />`} component or
+ * {@link useSkinTone|`useSkinTone`} hook.
  */
 const EmojiPickerSkinToneSelector = forwardRef<
   HTMLButtonElement,
@@ -1209,11 +1219,13 @@ const EmojiPickerSkinToneSelector = forwardRef<
 );
 
 /**
- * Renders when the emoji data is loading.
+ * Only renders when the emoji data is loading.
  *
  * @example
  * ```tsx
- * <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
+ * <EmojiPicker.Viewport>
+ *   <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
+ * </EmojiPicker.Viewport>
  * ```
  */
 function EmojiPickerLoading({ children }: EmojiPickerLoadingProps): ReactNode {
@@ -1237,15 +1249,17 @@ function EmojiPickerEmptyWithSearch({
 }
 
 /**
- * Renders when no emoji is found for the current search.
+ * Only renders when no emoji is found for the current search.
  *
  * @example
  * ```tsx
- * <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
+ * <EmojiPicker.Viewport>
+ *   <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
+ * </EmojiPicker.Viewport>
  * ```
  *
- * It can also expose the current search to build a more
- * detailed empty state.
+ * It can also expose the current search via a render callback to build
+ * a more detailed empty state.
  *
  *  @example
  * ```tsx
@@ -1271,12 +1285,29 @@ function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps): ReactNode {
 
 /**
  * Exposes the currently active emoji (either hovered or selected
- * via keyboard navigation).
+ * via keyboard navigation) via a render callback.
  *
  * @example
  * ```tsx
  * <EmojiPicker.ActiveEmoji>
  *   {({ emoji }) => <span>{emoji}</span>}
+ * </EmojiPicker.ActiveEmoji>
+ * ```
+ *
+ * It can be used to build a preview area next to the list.
+ *
+ * @example
+ * ```tsx
+ * <EmojiPicker.ActiveEmoji>
+ *   {({ emoji }) => (
+ *     <div>
+ *       {emoji ? (
+ *         <span>{emoji.emoji} {emoji.label}</span>
+ *       ) : (
+ *         <span>Select an emoji…</span>
+ *       )}
+ *     </div>
+ *   )}
  * </EmojiPicker.ActiveEmoji>
  * ```
  *
@@ -1293,7 +1324,8 @@ function EmojiPickerActiveEmoji({
 }
 
 /**
- * Exposes the current skin tone and a function to change it.
+ * Exposes the current skin tone and a function to change it via a render
+ * callback.
  *
  * @example
  * ```tsx
@@ -1307,7 +1339,7 @@ function EmojiPickerActiveEmoji({
  * </EmojiPicker.SkinTone>
  * ```
  *
- * It can also make building a custom skin tone selector easier: pass an emoji
+ * It can be used to build a custom skin tone selector: pass an emoji
  * you want to use as visual (by default, ✋) and it will return its skin tone
  * variations.
  *
@@ -1349,9 +1381,9 @@ export {
   EmojiPickerSearch as Search, //                     <EmojiPicker.Search />
   EmojiPickerViewport as Viewport, //                 <EmojiPicker.Viewport />
   EmojiPickerList as List, //                         <EmojiPicker.List />
-  EmojiPickerSkinToneSelector as SkinToneSelector, // <EmojiPicker.SkinToneSelector />
   EmojiPickerLoading as Loading, //                   <EmojiPicker.Loading />
   EmojiPickerEmpty as Empty, //                       <EmojiPicker.Empty />
+  EmojiPickerSkinToneSelector as SkinToneSelector, // <EmojiPicker.SkinToneSelector />
   EmojiPickerActiveEmoji as ActiveEmoji, //           <EmojiPicker.ActiveEmoji />
   EmojiPickerSkinTone as SkinTone, //                 <EmojiPicker.SkinTone />
 };

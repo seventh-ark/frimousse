@@ -118,7 +118,7 @@ const ReactionButton = memo(
           buttonVariants({ variant: "none" }),
           "group rounded-full border border-transparent bg-muted px-2.5 py-1 text-sm tabular-nums will-change-transform hover:border-border hover:bg-background focus-visible:border-border focus-visible:bg-background data-[state=open]:border-border data-[state=open]:bg-background",
           active && !isInitialRender
-            ? "border-accent/80 bg-accent/10 text-accent outline-accent/20 hover:border-accent hover:bg-accent/20 focus-visible:border-accent dark:bg-accent/20 dark:focus-visible:bg-accent/20 dark:hover:bg-accent/30"
+            ? "border-accent/80 bg-accent/10 text-accent outline-accent/20 selection:bg-accent/30 hover:border-accent hover:bg-accent/20 focus-visible:border-accent dark:bg-accent/20 dark:focus-visible:bg-accent/20 dark:hover:bg-accent/30 dark:selection:bg-accent/40"
             : "text-secondary-foreground focus-visible:border-muted-foreground/80",
         )}
         data-count={count}

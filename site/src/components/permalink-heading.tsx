@@ -21,7 +21,7 @@ export function PermalinkHeading({
 }: PermalinkHeadingProps) {
   const Heading = as;
   const slug = useMemo(() => {
-    return customSlug ?? slugify(getTextContent(children), { lower: true });
+    return customSlug ?? slugify(getTextContent(children));
   }, [customSlug, children]);
 
   return (

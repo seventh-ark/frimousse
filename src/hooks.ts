@@ -18,6 +18,21 @@ import type * as EmojiPicker from "./components/emoji-picker";
  * const activeEmoji = useActiveEmoji();
  * ```
  *
+ * It can be used to build a preview area next to the list.
+ *
+ * @example
+ * ```tsx
+ * const activeEmoji = useActiveEmoji();
+ *
+ * <div>
+ *   {activeEmoji ? (
+ *     <span>{activeEmoji.emoji} {activeEmoji.label}</span>
+ *   ) : (
+ *     <span>Select an emoji…</span>
+ *   )}
+ * </div>
+ * ```
+ *
  * @see
  * If you prefer to use a component rather than a hook,
  * {@link EmojiPicker.ActiveEmoji|`<EmojiPicker.ActiveEmoji />`} is also available.
@@ -37,7 +52,7 @@ export function useActiveEmoji(): Emoji | undefined {
  * const [skinTone, setSkinTone] = useSkinTone();
  * ```
  *
- * It can also make building a custom skin tone selector easier: pass an emoji
+ * It can be used to build a custom skin tone selector: pass an emoji
  * you want to use as visual (by default, ✋) and it will return its skin tone
  * variations.
  *

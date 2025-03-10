@@ -48,14 +48,13 @@ export function MyEmojiPicker() {
 }
 ```
 
-Apart from a few sizing and overflow defaults, the parts don’t have any styles out-of-the-box. Being composable, you can bring your own styles and apply them however you want: [Tailwind CSS](https://tailwindcss.com/), CSS-in-JS, vanilla CSS via inline styles, custom classes, or by targeting the `[frimousse-*]` data attributes present on each part.
+Apart from a few sizing and overflow defaults, the parts don’t have any styles out-of-the-box. Being composable, you can bring your own styles and apply them however you want: [Tailwind CSS](https://tailwindcss.com/), CSS-in-JS, vanilla CSS via inline styles, classes, or by targeting the `[frimousse-*]` data attributes present on each part.
 
 Now that your emoji picker component is styled, you might want to use it in a popover rather than on its own. Frimousse only provides the emoji picker itself so if you don’t have a popover component in your app yet, there are several libraries you could use: [Radix UI](https://www.radix-ui.com/primitives/docs/components/popover), [Base UI](https://base-ui.com/react/components/popover), [Headless UI](https://headlessui.com/react/popover), and [React Aria](https://react-spectrum.adobe.com/react-aria/Popover.html), to name a few.
 
 ### shadcn/ui
 
-If you are using [shadcn/ui](https://ui.shadcn.com/), you can install a pre-built component which integrates with the
-        existing [shadcn/ui](https://ui.shadcn.com/) themes and components (e.g. [Popover](https://ui.shadcn.com/docs/components/popover)).
+If you are using [shadcn/ui](https://ui.shadcn.com/), you can install a pre-built component which integrates with the existing [shadcn/ui](https://ui.shadcn.com/) themes and components (e.g. [Popover](https://ui.shadcn.com/docs/components/popover)).
 
 ```bash
 npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker

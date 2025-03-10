@@ -13,9 +13,18 @@ import type { BundledLanguage } from "shiki";
 import { codeToHtml, createCssVariablesTheme } from "shiki";
 import { CopyButton } from "../copy-button";
 
+const TRANSFORMERS_ANNOTATION_REGEX = /\[!code(?:\s+\w+(:\w+)?)?\]/;
+
 interface CodeBlockProps extends Omit<ComponentProps<"div">, "children"> {
   lang: BundledLanguage;
   children: string;
+}
+
+function removeTransformersAnnotations(code: string): string {
+  return code
+    .split("\n")
+    .filter((line) => !TRANSFORMERS_ANNOTATION_REGEX.test(line))
+    .join("\n");
 }
 
 export async function CodeBlock({
@@ -58,10 +67,14 @@ export async function CodeBlock({
           "absolute top-1.5 right-1.5 bg-muted/20 outline-muted-foreground/40 backdrop-blur-md",
           "lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100",
         )}
-        text={code}
+        text={removeTransformersAnnotations(code)}
       />
       <div
-        className="flex overflow-x-auto p-3 font-mono text-secondary-foreground text-sm **:[pre,span]:text-(--shiki-light) dark:**:[pre,span]:text-(--shiki-dark) **:[pre]:cursor-text **:[pre]:outline-none **:[pre]:has-[&_.line:only-child]:pt-0.25"
+        className={cn(
+          "flex overflow-x-auto font-mono text-secondary-foreground text-sm",
+          "**:[code]:block **:[pre,code,.line]:w-full **:[pre,span]:text-(--shiki-light) dark:**:[pre,span]:text-(--shiki-dark) **:[pre]:cursor-text **:[pre]:outline-none",
+          "**:[.line.highlighted]:bg-secondary/60 **:[.line:first-child]:mt-3 **:[.line:last-child]:mb-3 **:[.line:only-child]:pt-0.25 **:[.line]:inline-block **:[.line]:px-3",
+        )}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: This is safe with Shiki
         dangerouslySetInnerHTML={{ __html: html }}
       />
