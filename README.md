@@ -1,4 +1,11 @@
-# Frimousse
+<h1>
+  <a href="https://frimousse.liveblocks.io#gh-light-mode-only">
+    <img src="https://raw.githubusercontent.com/liveblocks/frimousse/main/.github/assets/logo-light.svg" width="107" height="24" alt="Frimousse"   />
+  </a>
+  <a href="https://frimousse.liveblocks.io#gh-dark-mode-only">
+    <img src="https://raw.githubusercontent.com/liveblocks/frimousse/main/.github/assets/logo-dark.svg" width="107" height="24" alt="Frimousse"   />
+  </a>
+</h1>
 
 [![npm](https://img.shields.io/npm/v/frimousse?color=%23fc0)](https://www.npmjs.com/package/frimousse)
 [![installs](https://img.shields.io/npm/dm/frimousse?color=%23fc0&label=npm)](https://www.npmjs.com/package/frimousse)
@@ -40,3 +47,42 @@ export function MyEmojiPicker() {
   );
 }
 ```
+
+## Contributing
+
+All contributions are welcome! If you find a bug or have a feature request, feel free to create an [issue](https://github.com/liveblocks/frimousse/issues) or a [PR](https://github.com/liveblocks/frimousse/pulls).
+
+The project is setup as a monorepo with the `frimousse` package at the root and [frimousse.liveblocks.io](https://frimousse.liveblocks.io) in the `site` directory.
+
+### Development
+
+Install dependencies and start development builds from the root.
+
+```bash
+npm i
+npm run dev
+```
+
+The site can be used as a development playground since it’s built with the root package via [Turborepo](https://turbo.build/repo).
+
+```bash
+npm run dev:site
+```
+
+### Tests
+
+The package has ~99% test coverage with [Vitest](https://vitest.dev/). Some tests use Vitest’s [browser mode](https://vitest.dev/guide/browser-testing) with [Playwright](https://playwright.dev/), make sure to install the required browser first.
+
+```bash
+npx playwright install chromium
+```
+
+Run the tests.
+
+```bash
+npm run test:coverage
+```
+
+### Releases
+
+Releases are triggered from [a GitHub action](.github/workflows/release.yml) via [release-it](https://github.com/release-it/release-it), and continuous releases are automatically triggered for every commit in PRs via [pkg.pr.new](https://github.com/stackblitz-labs/pkg.pr.new).
