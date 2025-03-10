@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { type ComponentProps, useEffect, useState } from "react";
 
 const ICONS = [Face, Heart, Flash];
@@ -47,14 +48,13 @@ export function Flash(props: ComponentProps<"svg">) {
   );
 }
 
-export function Logo() {
+export function Logo({
+  className,
+  ...props
+}: Omit<ComponentProps<"div">, "children">) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if (ICONS.length <= 1) {
-      return;
-    }
-
     const interval = setInterval(() => {
       setCurrentIndex((previousIndex) => (previousIndex + 1) % ICONS.length);
     }, INTERVAL);
@@ -64,14 +64,20 @@ export function Logo() {
     };
   }, []);
 
-  if (!ICONS[currentIndex]) {
+  const Icon = ICONS[currentIndex];
+
+  if (!Icon) {
     return null;
   }
 
-  const Icon = ICONS[currentIndex];
-
   return (
-    <div className="relative size-6 [&>svg]:absolute [&>svg]:top-0 [&>svg]:left-0 [&>svg]:size-full">
+    <div
+      className={cn(
+        "relative size-6 [&>svg]:absolute [&>svg]:inset-0 [&>svg]:size-full",
+        className,
+      )}
+      {...props}
+    >
       <Icon />
     </div>
   );

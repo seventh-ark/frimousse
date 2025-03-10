@@ -1,8 +1,9 @@
 "use client";
 
-import { useInitialRender } from "@/hooks/use-initial-render";
+import { useIsInitialRender } from "@/hooks/use-initial-render";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useIsMounted } from "@/hooks/use-mounted";
+import { getFastBoundingRects } from "@/lib/get-fast-bounding-rects";
 import { cn } from "@/lib/utils";
 import { LiveMap } from "@liveblocks/client";
 import {
@@ -35,6 +36,7 @@ import {
   memo,
   use,
   useCallback,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -42,20 +44,28 @@ import {
 } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { buttonVariants } from "./ui/button";
-import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "./ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
+} from "./ui/drawer";
 import { EmojiPicker } from "./ui/emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 const ZWJ = "\u200D";
 const SKIN_TONE_MODIFIERS =
   /\u{1F3FB}|\u{1F3FC}|\u{1F3FD}|\u{1F3FE}|\u{1F3FF}/gu;
+const REACTIONS_HIDING_DEBOUNCE_DELAY = 500;
 
 interface ReactionButtonProps
   extends Pick<ComponentProps<"button">, "onClick" | "disabled"> {
   type?: "fallback" | "server" | "client";
   emoji: string;
   count: number;
-  isActive?: boolean;
+  active?: boolean;
+  hidden?: boolean;
 }
 
 interface AddReactionButtonProps
@@ -67,6 +77,10 @@ interface ReactionsProps {
   roomId: string;
   serverReactions: ReactionsJson;
 }
+
+const LastVisibleReactionContext = createContext<number>(
+  Number.POSITIVE_INFINITY,
+);
 
 const AddReactionContext = createContext<RefObject<(emoji: string) => void>>({
   current: () => {},
@@ -88,25 +102,30 @@ const ReactionButton = memo(
   ({
     type = "client",
     emoji,
-    isActive,
+    active,
     count,
+    hidden,
     disabled,
     onClick,
   }: ReactionButtonProps) => {
     const isMounted = useIsMounted();
-    const isInitialRender = useInitialRender();
+    const isInitialRender = useIsInitialRender();
 
     return (
       <button
+        aria-hidden={hidden}
         className={cn(
-          buttonVariants({ variant: "secondary" }),
-          "group rounded-full px-2.5 py-1 text-sm tabular-nums will-change-transform",
-          isActive && !isInitialRender
-            ? "border-accent/80 bg-accent/10 text-accent hover:border-accent hover:bg-accent/15 focus-visible:border-accent focus-visible:ring-accent/20 dark:bg-accent/20 dark:focus-visible:bg-accent/20 dark:hover:bg-accent/25"
-            : "text-secondary-foreground",
+          buttonVariants({ variant: "none" }),
+          "group rounded-full border border-transparent bg-muted px-2.5 py-1 text-sm tabular-nums will-change-transform hover:border-border hover:bg-background focus-visible:border-border focus-visible:bg-background data-[state=open]:border-border data-[state=open]:bg-background",
+          active && !isInitialRender
+            ? "border-accent/80 bg-accent/10 text-accent outline-accent/20 hover:border-accent hover:bg-accent/20 focus-visible:border-accent dark:bg-accent/20 dark:focus-visible:bg-accent/20 dark:hover:bg-accent/30"
+            : "text-secondary-foreground focus-visible:border-muted-foreground/80",
         )}
+        data-count={count}
+        data-reaction={emoji}
         disabled={(type === "client" ? isInitialRender : true) || disabled}
         onClick={onClick}
+        tabIndex={hidden ? -1 : undefined}
         type="button"
       >
         <span
@@ -178,10 +197,13 @@ function AddReactionButton({
   }
 
   return isMobile ? (
-    <Drawer onOpenChange={setIsOpen} open={isOpen}>
+    <Drawer fixed onOpenChange={setIsOpen} open={isOpen}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent>
-        <DrawerTitle className="sr-only">Select an emoji</DrawerTitle>
+        <DrawerTitle className="sr-only">Emoji picker</DrawerTitle>
+        <DrawerDescription className="sr-only">
+          Select an emoji
+        </DrawerDescription>
         {emojiPicker}
       </DrawerContent>
     </Drawer>
@@ -196,6 +218,7 @@ function AddReactionButton({
 function LiveblocksReactions() {
   const { id } = useSelf();
   const onEmojiSelectRef = use(AddReactionContext);
+  const lastVisibleReaction = use(LastVisibleReactionContext);
   const reactions = useStorage((storage) => storage.reactions);
   const sortedReactions = useMemo(() => {
     return Array.from(reactions).sort(sortReactions);
@@ -258,7 +281,7 @@ function LiveblocksReactions() {
 
   return (
     <>
-      {sortedReactions.map(([emoji, data]) => {
+      {sortedReactions.map(([emoji, data], index) => {
         const count = data.size - DEFAULT_KEYS_COUNT;
 
         if (count === 0) {
@@ -267,10 +290,11 @@ function LiveblocksReactions() {
 
         return (
           <ReactionButton
+            active={id ? data.has(id) : false}
             count={count}
             disabled={!id}
             emoji={emoji}
-            isActive={id ? data.has(id) : false}
+            hidden={index > lastVisibleReaction}
             key={emoji}
             onClick={() => {
               toggleReaction(emoji);
@@ -318,7 +342,7 @@ function LocalReactions({
   const sortedReactions = useMemo(() => {
     return Object.entries(reactions).sort(sortReactionsEntries);
   }, [reactions]);
-
+  const lastVisibleReaction = use(LastVisibleReactionContext);
   const toggleReaction = useCallback((emoji: string) => {
     setReactions((reactions) => {
       const reaction = reactions[emoji];
@@ -381,7 +405,7 @@ function LocalReactions({
 
   return (
     <>
-      {sortedReactions.map(([emoji, data]) => {
+      {sortedReactions.map(([emoji, data], index) => {
         const count = Object.keys(data).length - DEFAULT_KEYS_COUNT;
 
         if (count === 0) {
@@ -390,9 +414,10 @@ function LocalReactions({
 
         return (
           <ReactionButton
+            active={id in data}
             count={count}
             emoji={emoji}
-            isActive={id in data}
+            hidden={index > lastVisibleReaction}
             key={emoji}
             onClick={() => {
               toggleReaction(emoji);
@@ -459,10 +484,78 @@ export function ReactionsList({
   className,
   ...props
 }: ComponentProps<"div">) {
+  const ref = useRef<HTMLDivElement>(null!);
   const onEmojiSelectRef = useRef<(emoji: string) => void>(() => {});
+  const [lastVisibleReaction, setLastVisibleReaction] = useState<number>(
+    Number.POSITIVE_INFINITY,
+  );
 
   const handleEmojiSelect = useCallback((emoji: string) => {
     onEmojiSelectRef.current(emoji);
+  }, []);
+
+  useEffect(() => {
+    let debounceTimeout: ReturnType<typeof setTimeout>;
+
+    const updateLastVisibleReaction = () => {
+      const reactions = Array.from(
+        ref.current.querySelectorAll("[data-reaction]"),
+      );
+
+      getFastBoundingRects(reactions).then((rects) => {
+        const rows = new Map<number, number>();
+        let index = 0;
+
+        for (const rect of rects.values()) {
+          if (!rows.has(rect.top)) {
+            rows.set(rect.top, index);
+          }
+
+          index++;
+        }
+
+        if (rows.size <= MAX_ROWS) {
+          setLastVisibleReaction(Number.POSITIVE_INFINITY);
+        } else {
+          const firstInvisibleReaction = Array.from(rows.values())[MAX_ROWS];
+
+          setLastVisibleReaction(
+            firstInvisibleReaction
+              ? firstInvisibleReaction - 1
+              : Number.POSITIVE_INFINITY,
+          );
+        }
+      });
+    };
+
+    const debouncedUpdateLastVisibleReaction = () => {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(
+        updateLastVisibleReaction,
+        REACTIONS_HIDING_DEBOUNCE_DELAY,
+      );
+    };
+
+    const resizeObserver = new ResizeObserver(
+      debouncedUpdateLastVisibleReaction,
+    );
+    const mutationObserver = new MutationObserver(
+      debouncedUpdateLastVisibleReaction,
+    );
+
+    resizeObserver.observe(ref.current);
+    mutationObserver.observe(ref.current, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-count"],
+    });
+
+    return () => {
+      clearTimeout(debounceTimeout);
+      resizeObserver.disconnect();
+      mutationObserver.disconnect();
+    };
   }, []);
 
   return (
@@ -472,6 +565,7 @@ export function ReactionsList({
         "flex max-h-[calc(var(--button-height)_*_var(--rows)_+_var(--gap)_*_(var(--rows)_-_1))] min-h-(--button-height) flex-wrap gap-(--gap) [clip-path:inset(-3px)]",
         className,
       )}
+      ref={ref}
       style={
         {
           "--rows": MAX_ROWS,
@@ -481,7 +575,9 @@ export function ReactionsList({
     >
       <AddReactionContext.Provider value={onEmojiSelectRef}>
         <AddReactionButton onEmojiSelect={handleEmojiSelect} />
-        {children}
+        <LastVisibleReactionContext.Provider value={lastVisibleReaction}>
+          {children}
+        </LastVisibleReactionContext.Provider>
       </AddReactionContext.Provider>
     </div>
   );

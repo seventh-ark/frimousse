@@ -7,6 +7,7 @@ import {
   transformerNotationHighlight,
   transformerNotationWordHighlight,
 } from "@shikijs/transformers";
+import dedent from "dedent";
 import type { ComponentProps } from "react";
 import type { BundledLanguage } from "shiki";
 import { codeToHtml, createCssVariablesTheme } from "shiki";
@@ -18,16 +19,15 @@ interface CodeBlockProps extends Omit<ComponentProps<"div">, "children"> {
 }
 
 export async function CodeBlock({
-  children: code,
+  children,
   lang,
   className,
   ...props
 }: CodeBlockProps) {
+  const code = dedent(children);
   const html = await codeToHtml(code, {
     lang,
-    theme: createCssVariablesTheme({
-      variablePrefix: "--frimousse-",
-    }),
+    theme: createCssVariablesTheme(),
     defaultColor: false,
     transformers: [
       transformerNotationDiff(),
@@ -40,7 +40,7 @@ export async function CodeBlock({
   return (
     <div
       className={cn(
-        "group relative min-h-11 overflow-hidden rounded-lg bg-muted",
+        "code-block group relative min-h-11 overflow-hidden rounded-lg bg-muted",
         className,
       )}
       {...props}
@@ -55,7 +55,7 @@ export async function CodeBlock({
       />
       <CopyButton
         className={cn(
-          "absolute top-1.5 right-1.5 bg-muted/20 ring-1 ring-muted backdrop-blur-md",
+          "absolute top-1.5 right-1.5 bg-muted/20 outline-muted-foreground/40 backdrop-blur-md",
           "lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100",
         )}
         text={code}

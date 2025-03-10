@@ -36,13 +36,13 @@ const DrawerContent = forwardRef<
     <DrawerOverlay />
     <DrawerPrimitive.Content
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 h-fit rounded-t-xl bg-background shadow-popover outline-none",
+        "elevation fixed inset-x-0 bottom-0 z-50 h-full max-h-[85vh] rounded-t-xl bg-background shadow-elevation outline-none",
         className,
       )}
       ref={ref}
       {...props}
     >
-      <div aria-hidden className="flex flex-col items-center py-3">
+      <div aria-hidden className="flex h-8 items-center justify-center">
         <span className="h-1.5 w-14 rounded-full bg-secondary" />
       </div>
       {children}

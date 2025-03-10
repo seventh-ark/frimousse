@@ -1,15 +1,11 @@
-import { Hero } from "@/components/sections/hero";
-import { Installation } from "@/components/sections/installation";
-import { Usage } from "@/components/sections/usage";
+import { Docs } from "@/components/sections/docs";
+import { Header } from "@/components/sections/header";
 
 export default function Page() {
   return (
     <>
-      <Hero />
-      <section className="content mt-10 flex flex-col gap-6 md:mt-16 lg:gap-8">
-        <Installation />
-        <Usage />
-      </section>
+      <Header />
+      <Docs />
     </>
   );
 }

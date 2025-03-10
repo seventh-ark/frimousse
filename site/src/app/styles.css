@@ -2,7 +2,7 @@
 
 @plugin "tailwindcss-animate";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(&.dark, .dark *));
 
 :root {
   --background: var(--color-white);
@@ -17,52 +17,43 @@
   --accent-foreground: var(--color-neutral-50);
   --overlay: hsl(0, 0%, 0%, 0.2);
   --border: var(--color-neutral-200);
-  --input: var(--color-neutral-200);
   --ring: var(--color-neutral-200);
 
-  --shadow-popover: 0 2px 12px rgb(0 0 0 / 6%), 0 8px 36px rgb(0 0 0 / 8%);
+  --shadow-elevation: 0 0 0 1px rgb(0 0 0 / 4%), 0 2px 12px rgb(0 0 0 / 6%), 0
+    8px 36px rgb(0 0 0 / 6%);
 
-  /* Shiki */
-  --frimousse-foreground: var(--foreground);
-  --frimousse-background: var(--muted);
-  --frimousse-token-link: var(--foreground);
-  --frimousse-token-comment: var(--secondary-foreground);
-  --frimousse-token-constant: var(--secondary-foreground);
+  @variant dark {
+    --background: var(--color-black);
+    --foreground: var(--color-neutral-50);
+    --primary: var(--color-neutral-50);
+    --primary-foreground: var(--color-neutral-950);
+    --secondary: var(--color-neutral-800);
+    --secondary-foreground: var(--color-neutral-400);
+    --muted: var(--color-neutral-900);
+    --muted-foreground: var(--color-neutral-600);
+    --accent: var(--color-yellow-400);
+    --accent-foreground: var(--color-neutral-950);
+    --overlay: hsl(0, 0%, 0%, 0.8);
+    --border: var(--color-neutral-800);
+    --ring: var(--color-neutral-800);
 
-  --frimousse-token-string: var(--color-neutral-800);
-  --frimousse-token-keyword: var(--color-neutral-500);
-  --frimousse-token-parameter: var(--color-neutral-700);
-  --frimousse-token-function: var(--color-neutral-800);
-  --frimousse-token-string-expression: var(--color-neutral-800);
-  --frimousse-token-punctuation: var(--color-neutral-700);
-}
+    --shadow-elevation: 0 2px 12px rgb(0 0 0 / 18%), 0 8px 36px rgb(0 0 0 / 32%);
 
-.dark {
-  --background: var(--color-black);
-  --foreground: var(--color-neutral-50);
-  --primary: var(--color-neutral-50);
-  --primary-foreground: var(--color-neutral-950);
-  --secondary: var(--color-neutral-800);
-  --secondary-foreground: var(--color-neutral-400);
-  --muted: var(--color-neutral-900);
-  --muted-foreground: var(--color-neutral-600);
-  --accent: var(--color-yellow-400);
-  --accent-foreground: var(--color-neutral-950);
-  --overlay: hsl(0, 0%, 0%, 0.8);
-  --border: var(--color-neutral-800);
-  --input: var(--color-neutral-800);
-  --ring: var(--color-neutral-800);
-
-  /* Shiki */
-  --frimousse-token-string: var(--color-neutral-200);
-  --frimousse-token-keyword: var(--color-neutral-500);
-  --frimousse-token-parameter: var(--color-neutral-300);
-  --frimousse-token-function: var(--color-neutral-200);
-  --frimousse-token-string-expression: var(--color-neutral-200);
-  --frimousse-token-punctuation: var(--color-neutral-300);
+    &.elevation,
+    & .elevation {
+      --background: var(--color-neutral-900);
+      --muted: var(--color-neutral-800);
+      --muted-foreground: var(--color-neutral-500);
+      --secondary: var(--color-neutral-700);
+      --border: var(--color-neutral-800);
+      --ring: var(--color-neutral-700);
+    }
+  }
 }
 
 @theme inline {
+  --breakpoint-xs: 30rem;
+
   --font-sans: var(--font-inter), sans-serif;
   --font-sans-feature-settings: "liga" 1, "calt" 1;
   --font-mono: var(--font-jetbrains-mono), monospace;
@@ -84,19 +75,22 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-overlay: var(--overlay);
   --color-border: var(--border);
-  --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --shadow-popover: var(--shadow-popover);
+  --shadow-elevation: var(--shadow-elevation);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring;
+
+    &:focus-visible {
+      @apply outline-2 outline-offset-0;
+    }
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased text-base;
+    @apply bg-background text-foreground font-sans antialiased text-base overflow-x-hidden;
   }
 
   strong {
@@ -139,9 +133,51 @@
 }
 
 @utility link {
-  @apply transition-colors duration-150 ease-out font-medium text-foreground underline decoration-border decoration-dotted underline-offset-2 hover:decoration-muted-foreground focus-visible:decoration-muted-foreground;
+  @apply transition-colors duration-150 ease-out font-medium text-foreground underline rounded-xs decoration-border decoration-dotted underline-offset-2 hover:decoration-muted-foreground focus-visible:decoration-muted-foreground;
+}
+
+@utility code-block {
+  --shiki-foreground: var(--foreground);
+  --shiki-background: var(--muted);
+  --shiki-token-link: var(--foreground);
+  --shiki-token-comment: var(--secondary-foreground);
+  --shiki-token-constant: var(--secondary-foreground);
+
+  --shiki-token-string: var(--color-neutral-800);
+  --shiki-token-keyword: var(--color-neutral-500);
+  --shiki-token-parameter: var(--color-neutral-700);
+  --shiki-token-function: var(--color-neutral-800);
+  --shiki-token-string-expression: var(--color-neutral-800);
+  --shiki-token-punctuation: var(--color-neutral-700);
+
+  @variant dark {
+    --shiki-token-string: var(--color-neutral-200);
+    --shiki-token-keyword: var(--color-neutral-500);
+    --shiki-token-parameter: var(--color-neutral-300);
+    --shiki-token-function: var(--color-neutral-200);
+    --shiki-token-string-expression: var(--color-neutral-200);
+    --shiki-token-punctuation: var(--color-neutral-300);
+  }
 }
 
 @utility content {
-  @apply [&_h2]:font-medium [&_h2]:mb-3 [&_p]:text-secondary-foreground [&_p]:mb-[1em];
+  h2 {
+    @apply font-medium mb-3;
+
+    &:not(:first-child) {
+      @apply mt-6 md:mt-8;
+    }
+  }
+
+  p {
+    @apply text-secondary-foreground mb-3;
+
+    &:not(:last-child) {
+      @apply mb-3;
+    }
+  }
+
+  .code-block:not(:last-child) {
+    @apply mb-3;
+  }
 }

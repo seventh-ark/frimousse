@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useInitialRender() {
+export function useIsInitialRender() {
   const [isInitialRender, setIsInitialRender] = useState(true);
 
   useEffect(() => {

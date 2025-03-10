@@ -57,7 +57,7 @@ function ThemeSwitcher({
         return (
           <button
             aria-label={`Switch to ${label}`}
-            className="relative size-6 rounded-full"
+            className="group relative size-6 rounded-full transition duration-200 ease-out"
             key={type}
             onClick={() => setTheme(type)}
             title={`Switch to ${label}`}
@@ -81,7 +81,7 @@ function ThemeSwitcher({
                 "transition duration-200 ease-out",
                 isActive
                   ? "text-foreground"
-                  : "text-secondary-foreground hover:text-foreground focus-visible:text-foreground",
+                  : "text-secondary-foreground group-hover:text-foreground group-focus-visible:text-foreground",
               )}
             />
           </button>
