@@ -1,9 +1,9 @@
 <h1>
   <a href="https://frimousse.liveblocks.io#gh-light-mode-only">
-    <img src="https://raw.githubusercontent.com/liveblocks/frimousse/main/.github/assets/logo-light.svg" width="107" height="24" alt="Frimousse"   />
+    <img src=".github/assets/logo-light.svg" width="107" height="24" alt="Frimousse"   />
   </a>
   <a href="https://frimousse.liveblocks.io#gh-dark-mode-only">
-    <img src="https://raw.githubusercontent.com/liveblocks/frimousse/main/.github/assets/logo-dark.svg" width="107" height="24" alt="Frimousse"   />
+    <img src=".github/assets/logo-dark.svg" width="107" height="24" alt="Frimousse"   />
   </a>
 </h1>
 
@@ -37,7 +37,7 @@ import { EmojiPicker } from "frimousse";
 export function MyEmojiPicker() {
   return (
     <EmojiPicker.Root>
-      <EmojiPicker.Search  />
+      <EmojiPicker.Search />
       <EmojiPicker.Viewport>
         <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
         <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>

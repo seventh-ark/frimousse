@@ -21,7 +21,7 @@ export function Docs({
         export function MyEmojiPicker() {
           return (
             <EmojiPicker.Root>
-              <EmojiPicker.Search  />
+              <EmojiPicker.Search />
               <EmojiPicker.Viewport>
                 <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
                 <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
