@@ -14,6 +14,7 @@ function DefaultPage({
   locale,
   columns,
   skinTone,
+  emojiVersion = 12,
   listComponents,
   viewportHeight = 400,
   searchDefaultValue,
@@ -26,6 +27,7 @@ function DefaultPage({
   locale?: EmojiPickerRootProps["locale"];
   columns?: EmojiPickerRootProps["columns"];
   skinTone?: EmojiPickerRootProps["skinTone"];
+  emojiVersion?: EmojiPickerRootProps["emojiVersion"];
   listComponents?: EmojiPickerListProps["components"];
   viewportHeight?: number;
   searchDefaultValue?: EmojiPickerSearchProps["defaultValue"];
@@ -46,6 +48,7 @@ function DefaultPage({
         <EmojiPicker.Root
           columns={columns}
           data-testid="root"
+          emojiVersion={emojiVersion}
           locale={locale}
           onEmojiSelect={setSelectedEmoji}
           skinTone={skinTone}
@@ -215,7 +218,7 @@ describe("EmojiPicker", () => {
 
     await expect
       .element(page.getByTestId("selected-emoji"))
-      .toHaveTextContent("😶");
+      .toHaveTextContent("🤥");
 
     await userEvent.keyboard("{ArrowUp>5/}");
     await userEvent.keyboard("{Enter}");
@@ -230,7 +233,7 @@ describe("EmojiPicker", () => {
 
     await expect
       .element(page.getByTestId("selected-emoji"))
-      .toHaveTextContent("🦔");
+      .toHaveTextContent("🍇");
 
     await userEvent.keyboard("{ArrowRight}");
     await userEvent.keyboard("{ArrowUp>80/}");
@@ -322,7 +325,11 @@ describe("EmojiPicker.Root", () => {
         useState<EmojiPickerRootProps["skinTone"]>("dark");
 
       return (
-        <DefaultPage skinTone={skinTone} viewportHeight={2000}>
+        <DefaultPage
+          searchDefaultValue="holding"
+          skinTone={skinTone}
+          viewportHeight={2000}
+        >
           <button
             data-testid="set-skin-tone-none"
             onClick={() => setSkinTone("none")}
@@ -395,7 +402,7 @@ describe("EmojiPicker.Search", () => {
 
     await page.getByTestId("search").fill("cat");
 
-    await expect.element(page.getByText("🐈‍⬛")).toBeInTheDocument();
+    await expect.element(page.getByText("🐈")).toBeInTheDocument();
   });
 
   it("should support a default search value", async () => {
@@ -580,8 +587,8 @@ describe("EmojiPicker.List", () => {
     );
 
     await expect
-      .element(page.getByTestId("custom-emoji: 🥲"))
-      .toHaveTextContent("Smiling face with tear");
+      .element(page.getByTestId("custom-emoji: 😊"))
+      .toHaveTextContent("Smiling face with smiling eyes");
     await expect
       .element(page.getByRole("row").nth(10))
       .toHaveAccessibleName("Custom row");
