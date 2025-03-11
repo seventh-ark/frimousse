@@ -1,5 +1,4 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { Locale } from "../../types";
 import { LOCAL_DATA_KEY, SESSION_METADATA_KEY, getEmojiData } from "../emoji";
 
 describe("getEmojiData", () => {
@@ -77,11 +76,5 @@ describe("getEmojiData", () => {
 
     expect(localStorageData).not.toBe("{}");
     expect(sessionStorageData).not.toBe("{}");
-  });
-
-  it("should fallback to the default locale when receiving an unsupported locale", async () => {
-    const data = await getEmojiData("unsupported-locale" as Locale);
-
-    expect(data).toBeDefined();
   });
 });

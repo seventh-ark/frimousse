@@ -6,6 +6,8 @@ import type {
   EmojiPickerListProps,
   EmojiPickerRootProps,
   EmojiPickerSearchProps,
+  Locale,
+  SkinTone,
 } from "../../types";
 import * as EmojiPicker from "../emoji-picker";
 
@@ -301,6 +303,23 @@ describe("EmojiPicker", () => {
     await expect
       .element(page.getByTestId("active-emoji"))
       .not.toBeInTheDocument();
+  });
+
+  it("should fallback to default values for unsupported locales and skin tones", async () => {
+    page.render(
+      <DefaultPage
+        locale={"unsupported" as Locale}
+        skinTone={"unsupported" as SkinTone}
+      />,
+    );
+
+    await expect
+      .element(page.getByText("Smileys & Emotion"))
+      .toBeInTheDocument();
+
+    await page.getByTestId("search").fill("holding");
+
+    await expect.element(page.getByText("🧑‍🤝‍🧑")).toBeInTheDocument();
   });
 });
 

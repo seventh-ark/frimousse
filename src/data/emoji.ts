@@ -293,24 +293,11 @@ const validateLocalData = $.object<LocalData>({
   }),
 });
 
-function validateLocale(locale: string): Locale {
-  if (!EMOJIBASE_LOCALES.includes(locale as Locale)) {
-    console.warn(
-      `Locale "${locale}" is not supported, using "${EMOJIBASE_DEFAULT_LOCALE}" instead.`,
-    );
-
-    return EMOJIBASE_DEFAULT_LOCALE;
-  }
-
-  return locale as Locale;
-}
-
 export async function getEmojiData(
   locale: Locale,
   maxEmojiVersion = Number.POSITIVE_INFINITY,
   signal?: AbortSignal,
 ): Promise<EmojiData> {
-  const validatedLocale = validateLocale(locale);
   let sessionMetadata = getStorage<SessionMetadata>(
     sessionStorage,
     SESSION_METADATA_KEY,
@@ -318,7 +305,7 @@ export async function getEmojiData(
   );
   const localData = getStorage<LocalData>(
     localStorage,
-    LOCAL_DATA_KEY(validatedLocale),
+    LOCAL_DATA_KEY(locale),
     validateLocalData,
   );
 
@@ -326,7 +313,7 @@ export async function getEmojiData(
 
   if (!localData) {
     // No local data
-    data = await fetchEmojiData(validatedLocale, signal);
+    data = await fetchEmojiData(locale, signal);
   } else if (sessionMetadata) {
     // ETags are used to check if the data is up-to-date but only
     // once per session, so if the session metadata is already set,
@@ -337,7 +324,7 @@ export async function getEmojiData(
     // but if that fails, the possibly-stale local data is used
     try {
       const { emojisEtag, messagesEtag } = await fetchEmojibaseEtags(
-        validatedLocale,
+        locale,
         signal,
       );
 
@@ -346,7 +333,7 @@ export async function getEmojiData(
         !messagesEtag ||
         emojisEtag !== localData.metadata.emojisEtag ||
         messagesEtag !== localData.metadata.messagesEtag
-          ? await fetchEmojiData(validatedLocale, signal)
+          ? await fetchEmojiData(locale, signal)
           : localData.data;
     } catch {
       data = localData.data;
@@ -369,9 +356,31 @@ export async function getEmojiData(
   });
 
   return {
-    locale: validatedLocale,
+    locale,
     emojis: filteredEmojis,
     categories: data.categories,
     skinTones: data.skinTones,
   };
+}
+
+export function validateLocale(locale: string): Locale {
+  if (!EMOJIBASE_LOCALES.includes(locale as Locale)) {
+    console.warn(
+      `Locale "${locale}" is not supported, using "${EMOJIBASE_DEFAULT_LOCALE}" instead.`,
+    );
+
+    return EMOJIBASE_DEFAULT_LOCALE;
+  }
+
+  return locale as Locale;
+}
+
+export function validateSkinTone(skinTone: string): SkinTone {
+  if (!SKIN_TONES.includes(skinTone as SkinTone)) {
+    console.warn(`Skin tone "${skinTone}" is not valid, using "none" instead.`);
+
+    return "none";
+  }
+
+  return skinTone as SkinTone;
 }

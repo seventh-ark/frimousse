@@ -18,7 +18,7 @@ import {
   useState,
 } from "react";
 import { EMOJI_FONT_FAMILY } from "../constants";
-import { getEmojiData } from "../data/emoji";
+import { getEmojiData, validateLocale, validateSkinTone } from "../data/emoji";
 import { getEmojiPickerData } from "../data/emoji-picker";
 import { useActiveEmoji, useSkinTone } from "../hooks";
 import {
@@ -152,7 +152,12 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
   ) => {
     const stableOnEmojiSelect = useStableCallback(onEmojiSelect);
     const store = useCreateStore(() =>
-      createEmojiPickerStore(stableOnEmojiSelect, locale, columns, skinTone),
+      createEmojiPickerStore(
+        stableOnEmojiSelect,
+        validateLocale(locale),
+        columns,
+        validateSkinTone(skinTone),
+      ),
     );
     const [isFocusedWithin, setFocusedWithin] = useState(false);
     const ref = useRef<HTMLDivElement>(null!);
@@ -164,7 +169,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
     }, []);
 
     useLayoutEffect(() => {
-      store.set({ locale });
+      store.set({ locale: validateLocale(locale) });
     }, [locale]);
 
     useLayoutEffect(() => {
@@ -172,7 +177,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
     }, [columns]);
 
     useLayoutEffect(() => {
-      store.set({ skinTone });
+      store.set({ skinTone: validateSkinTone(skinTone) });
     }, [skinTone]);
 
     const handleFocusCapture = useCallback(
