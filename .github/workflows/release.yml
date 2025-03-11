@@ -47,7 +47,7 @@ jobs:
             ARGS+="${{ github.event.inputs.increment }}"
           fi
           if [[ -n "${{ github.event.inputs.prerelease }}" ]]; then
-            ARGS+=" --preRelease=${{ github.event.inputs.prerelease }} --no-plugins.@release-it/keep-a-changelog.addUnreleased"
+            ARGS+=" --preRelease=${{ github.event.inputs.prerelease }}"
           fi
           npm run release -- $ARGS --ci
         env:
