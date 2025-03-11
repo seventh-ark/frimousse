@@ -43,4 +43,12 @@ jobs:
       - name: Install Playwright’s browser
         run: npx playwright install chromium
       - name: Run tests
-        run: npm run test
+        run: npm run test:coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: |
+            **/__tests__/__screenshots__/
+            coverage/
+          retention-days: 7
