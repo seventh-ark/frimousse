@@ -51,7 +51,7 @@ export function PropertiesTableRow({
 }: PropertiesTableRowProps) {
   return (
     <li className={cn("flex flex-col gap-1", className)} {...props}>
-      <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1">
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
         <code className="flex-none font-medium font-mono text-[0.875em]">
           {name}
         </code>
@@ -61,12 +61,12 @@ export function PropertiesTableRow({
           </code>
         )}
         {required && (
-          <span className="truncate text-accent text-product-brand text-xs">
+          <span className="text-accent text-product-brand text-xs">
             Required
           </span>
         )}
         {defaultValue && (
-          <span className="truncate text-product-brand text-secondary-foreground/80 text-xs">
+          <span className="text-product-brand text-secondary-foreground/80 text-xs leading-[1.6]">
             Default is {defaultValue}
           </span>
         )}

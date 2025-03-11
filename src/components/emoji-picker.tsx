@@ -113,7 +113,7 @@ function EmojiPickerDataHandler({
 }
 
 /**
- * Contains all the parts of the emoji picker.
+ * Surrounds all the emoji picker parts.
  *
  * @example
  * ```tsx
@@ -125,8 +125,8 @@ function EmojiPickerDataHandler({
  * </EmojiPicker.Root>
  * ```
  *
- * Options affecting the entire emoji picker (e.g. locale, columns, skin
- * tone, etc) are available on this component.
+ * Options affecting the entire emoji picker are available on this
+ * component as props.
  *
  * @example
  * ```tsx
@@ -1230,7 +1230,8 @@ const EmojiPickerSkinToneSelector = forwardRef<
 );
 
 /**
- * Only renders when the emoji data is loading.
+ * Only renders when the emoji data is loading. The content is rendered
+ * without any surrounding DOM element.
  *
  * @example
  * ```tsx
@@ -1260,7 +1261,8 @@ function EmojiPickerEmptyWithSearch({
 }
 
 /**
- * Only renders when no emoji is found for the current search.
+ * Only renders when no emoji is found for the current search. The content is
+ * rendered without any surrounding DOM element.
  *
  * @example
  * ```tsx

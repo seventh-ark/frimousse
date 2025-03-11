@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { CircleHelp } from "lucide-react";
 import type { ComponentProps } from "react";
 import { PermalinkHeading } from "../permalink-heading";
 import { CodeBlock } from "../ui/code-block";
@@ -119,7 +120,7 @@ export function Docs({
       </p>
 
       <PermalinkHeading as="h3">EmojiPicker.Root</PermalinkHeading>
-      <p>Contains all the parts of the emoji picker.</p>
+      <p>Surrounds all the emoji picker parts.</p>
       <CodeBlock lang="tsx">{`
         <EmojiPicker.Root onEmojiSelect={(emoji) => console.log(emoji)}>
           <EmojiPicker.Search />
@@ -129,8 +130,8 @@ export function Docs({
         </EmojiPicker.Root>
       `}</CodeBlock>
       <p>
-        Options affecting the entire emoji picker (e.g. locale, columns, skin
-        tone, etc) are available on this component.
+        Options affecting the entire emoji picker are available on this
+        component as props.
       </p>
       <CodeBlock lang="tsx">{`
         <EmojiPicker.Root locale="fr" columns={8} skinTone="medium">
@@ -169,11 +170,8 @@ export function Docs({
             >
               Emoji version
             </a>{" "}
-            to use.
-          </p>
-          <p>
-            This can be used to manually control which emojis are visible
-            regardless of the current browser's supported Emoji versions.
+            to use, to manually control which emojis are visible regardless of
+            the current browser's supported Emoji versions.
           </p>
         </PropertiesTableRow>
         <PropertiesTableBasicRow>
@@ -326,9 +324,50 @@ export function Docs({
           <p>Can be targeted in CSS for styling.</p>
         </PropertiesTableRow>
       </PropertiesTable>
+      <h4>Inner components</h4>
+      <PropertiesTable>
+        <PropertiesTableRow
+          name="CategoryHeader"
+          type="EmojiPickerListCategoryHeaderProps"
+        >
+          <p>
+            The component used to render a sticky category header in the list.
+          </p>
+          <p className="text-secondary-foreground/60!">
+            <CircleHelp
+              aria-hidden
+              className="-mt-0.5 mr-1.5 inline-block size-3.5"
+            />
+            <span>All category headers should be of the same size.</span>
+          </p>
+        </PropertiesTableRow>
+        <PropertiesTableRow name="Row" type="EmojiPickerListRowProps">
+          <p>The component used to render a row of emojis in the list.</p>
+          <p className="text-secondary-foreground/60!">
+            <CircleHelp
+              aria-hidden
+              className="-mt-0.5 mr-1.5 inline-block size-3.5"
+            />
+            <span>All rows should be of the same size.</span>
+          </p>
+        </PropertiesTableRow>
+        <PropertiesTableRow name="Emoji" type="EmojiPickerListEmojiProps">
+          <p>The component used to render an emoji button in the list.</p>
+          <p className="text-secondary-foreground/60!">
+            <CircleHelp
+              aria-hidden
+              className="-mt-0.5 mr-1.5 inline-block size-3.5"
+            />
+            <span>All emojis should be of the same size.</span>
+          </p>
+        </PropertiesTableRow>
+      </PropertiesTable>
 
       <PermalinkHeading as="h3">EmojiPicker.Loading</PermalinkHeading>
-      <p>Only renders when the emoji data is loading.</p>
+      <p>
+        Only renders when the emoji data is loading. The content is rendered
+        without any surrounding DOM element.
+      </p>
       <CodeBlock lang="tsx">{`
         <EmojiPicker.Viewport>
           <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
@@ -342,7 +381,10 @@ export function Docs({
       </PropertiesTable>
 
       <PermalinkHeading as="h3">EmojiPicker.Empty</PermalinkHeading>
-      <p>Only renders when no emoji is found for the current search.</p>
+      <p>
+        Only renders when no emoji is found for the current search. The content
+        is rendered without any surrounding DOM element.
+      </p>
       <CodeBlock lang="tsx">{`
         <EmojiPicker.Viewport>
           <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>

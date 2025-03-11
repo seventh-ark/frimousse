@@ -92,7 +92,7 @@ export type EmojiPickerData = {
 
 export type EmojiPickerListComponents = {
   /**
-   * The component used to render a sticky category header.
+   * The component used to render a sticky category header in the list.
    *
    * @details
    * All category headers should be of the same size.
@@ -100,7 +100,7 @@ export type EmojiPickerListComponents = {
   CategoryHeader: ComponentType<EmojiPickerListCategoryHeaderProps>;
 
   /**
-   * The component used to render a row of emojis.
+   * The component used to render a row of emojis in the list.
    *
    * @details
    * All rows should be of the same size.
@@ -175,12 +175,11 @@ export interface EmojiPickerRootProps extends ComponentProps<"div"> {
   columns?: number;
 
   /**
-   * Which Emoji version to use.
+   * Which Emoji version to use, to manually control which
+   * emojis are visible regardless of the current browser's supported Emoji
+   * versions.
    *
    * @default The most recent version supported by the current browser
-   *
-   * This can be used to manually control which emojis are visible regardless of the
-   * current browser's supported Emoji versions.
    *
    * @see
    * {@link https://emojipedia.org/emoji-versions}
