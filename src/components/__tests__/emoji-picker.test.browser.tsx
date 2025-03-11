@@ -9,6 +9,8 @@ import type {
 } from "../../types";
 import * as EmojiPicker from "../emoji-picker";
 
+const EMOJI_BUTTON_HEIGHT = 28;
+
 function DefaultPage({
   children,
   locale,
@@ -67,7 +69,20 @@ function DefaultPage({
             data-testid="viewport"
             style={{ height: viewportHeight }}
           >
-            <EmojiPicker.List components={listComponents} data-testid="list" />
+            <EmojiPicker.List
+              components={{
+                Emoji: ({ emoji, style, ...props }) => (
+                  <button
+                    style={{ height: EMOJI_BUTTON_HEIGHT, ...style }}
+                    {...props}
+                  >
+                    {emoji.emoji}
+                  </button>
+                ),
+                ...listComponents,
+              }}
+              data-testid="list"
+            />
           </EmojiPicker.Viewport>
           {rootChildren}
         </EmojiPicker.Root>
@@ -122,9 +137,10 @@ describe("EmojiPicker", () => {
     page.render(
       <DefaultPage
         listComponents={{
-          Emoji: ({ emoji, isActive, ...props }) => (
+          Emoji: ({ emoji, isActive, style, ...props }) => (
             <button
               data-testid={`emoji: ${emoji.emoji}`}
+              style={{ height: EMOJI_BUTTON_HEIGHT, ...style }}
               type="button"
               {...props}
             >
@@ -200,6 +216,7 @@ describe("EmojiPicker", () => {
               {...props}
               style={{
                 ...style,
+                height: EMOJI_BUTTON_HEIGHT,
                 background: isActive ? "red" : undefined,
               }}
             >
@@ -567,8 +584,13 @@ describe("EmojiPicker.List", () => {
     page.render(
       <DefaultPage
         listComponents={{
-          Emoji: ({ emoji }) => (
-            <button data-testid={`custom-emoji: ${emoji.emoji}`} type="button">
+          Emoji: ({ emoji, style, ...props }) => (
+            <button
+              data-testid={`custom-emoji: ${emoji.emoji}`}
+              style={{ height: EMOJI_BUTTON_HEIGHT, ...style }}
+              type="button"
+              {...props}
+            >
               {emoji.label}
             </button>
           ),
