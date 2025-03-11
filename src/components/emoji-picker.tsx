@@ -1389,6 +1389,16 @@ function EmojiPickerSkinTone({
   return children({ skinTone, setSkinTone, skinToneVariations });
 }
 
+EmojiPickerRoot.displayName = "EmojiPicker.Root";
+EmojiPickerSearch.displayName = "EmojiPicker.Search";
+EmojiPickerViewport.displayName = "EmojiPicker.Viewport";
+EmojiPickerList.displayName = "EmojiPicker.List";
+EmojiPickerLoading.displayName = "EmojiPicker.Loading";
+EmojiPickerEmpty.displayName = "EmojiPicker.Empty";
+EmojiPickerSkinToneSelector.displayName = "EmojiPicker.SkinToneSelector";
+EmojiPickerActiveEmoji.displayName = "EmojiPicker.ActiveEmoji";
+EmojiPickerSkinTone.displayName = "EmojiPicker.SkinTone";
+
 export {
   EmojiPickerRoot as Root, //                         <EmojiPicker.Root />
   EmojiPickerSearch as Search, //                     <EmojiPicker.Search />
