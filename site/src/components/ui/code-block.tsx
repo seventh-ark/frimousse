@@ -49,18 +49,18 @@ export async function CodeBlock({
   return (
     <div
       className={cn(
-        "code-block not-prose group relative min-h-11 overflow-hidden rounded-lg bg-muted",
+        "code-block not-prose group relative isolate min-h-11 overflow-hidden rounded-lg bg-muted",
         className,
       )}
       {...props}
     >
       <span
         aria-hidden
-        className="absolute inset-y-0 right-0 w-3 bg-gradient-to-l from-muted"
+        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-4 bg-gradient-to-l from-muted"
       />
       <span
         aria-hidden
-        className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-muted"
+        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-4 bg-gradient-to-r from-muted"
       />
       <CopyButton
         className={cn(
@@ -72,8 +72,12 @@ export async function CodeBlock({
       <div
         className={cn(
           "flex overflow-x-auto font-mono text-secondary-foreground text-sm",
-          "**:[code]:block **:[pre,code,.line]:w-full **:[pre,span]:text-(--shiki-light) dark:**:[pre,span]:text-(--shiki-dark) **:[pre]:cursor-text **:[pre]:outline-none",
-          "**:[.line.highlighted]:bg-secondary/60 **:[.line:first-child]:mt-3 **:[.line:last-child]:mb-3 **:[.line:only-child]:pt-0.25 **:[.line]:inline-block **:[.line]:px-3",
+          "**:[code:has(.line:only-child)]:h-full **:[code:has(.line:only-child)]:pt-3.25 **:[code:has(.line:only-child)]:pb-3 **:[code]:table **:[code]:py-3.5 **:[pre,code,.line]:w-full **:[pre,span]:text-(--shiki-light) dark:**:[pre,span]:text-(--shiki-dark) **:[pre]:cursor-text **:[pre]:outline-none",
+          "**:[.line]:table-row *:[.line]:after:w-0 **:[.line]:after:content-['\\00A0'] **:[.line_:first-child]:ml-4 **:[.line_:last-child]:mr-12 lg:**:[.line_:last-child]:mr-4",
+          "**:[.line.highlighted]:bg-secondary/60 dark:**:[.line.highlighted]:bg-secondary/80",
+          "**:[.line.diff.add]:bg-lime-500/15 dark:**:[.line.diff.add]:bg-lime-400/10",
+          "**:[.line.diff.remove]:bg-rose-500/20 **:[.line.diff.remove]:opacity-50 dark:**:[.line.diff.remove]:bg-rose-400/20",
+          "**:[.highlighted-word]:before:-inset-px **:[.highlighted-word]:pointer-events-none **:[.highlighted-word]:relative **:[.highlighted-word]:before:absolute **:[.highlighted-word]:before:rounded-sm **:[.highlighted-word]:before:border **:[.highlighted-word]:before:border-secondary-foreground/40 **:[.highlighted-word]:before:border-dotted",
         )}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: This is safe with Shiki
         dangerouslySetInnerHTML={{ __html: html }}

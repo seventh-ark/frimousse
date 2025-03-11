@@ -210,7 +210,9 @@ function AddReactionButton({
   ) : (
     <Popover onOpenChange={setIsOpen} open={isOpen}>
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-      <PopoverContent sideOffset={6}>{emojiPicker}</PopoverContent>
+      <PopoverContent side="bottom" sideOffset={6}>
+        {emojiPicker}
+      </PopoverContent>
     </Popover>
   );
 }

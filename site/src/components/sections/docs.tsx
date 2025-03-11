@@ -2,6 +2,11 @@ import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
 import { PermalinkHeading } from "../permalink-heading";
 import { CodeBlock } from "../ui/code-block";
+import {
+  PropertiesTable,
+  PropertiesTableBasicRow,
+  PropertiesTableRow,
+} from "../ui/properties-table";
 
 export function Docs({
   className,
@@ -11,6 +16,7 @@ export function Docs({
     <section className={cn("prose mt-10 md:mt-16", className)} {...props}>
       <PermalinkHeading as="h2">Installation</PermalinkHeading>
       <CodeBlock lang="bash">npm i frimousse</CodeBlock>
+
       <PermalinkHeading as="h2">Usage</PermalinkHeading>
       <p>
         Import the <code>EmojiPicker</code> parts and create your own component
@@ -80,6 +86,7 @@ export function Docs({
         </a>
         , to name a few.
       </p>
+
       <PermalinkHeading as="h3">shadcn/ui</PermalinkHeading>
       <p>
         If you are using{" "}
@@ -104,8 +111,13 @@ export function Docs({
       <CodeBlock lang="bash">
         npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
       </CodeBlock>
+
       <PermalinkHeading as="h2">API Reference</PermalinkHeading>
-      <p>All parts and hooks that are available.</p>
+      <p>
+        All parts and hooks along their props, parameters, data attributes, and
+        CSS variables.
+      </p>
+
       <PermalinkHeading as="h3">EmojiPicker.Root</PermalinkHeading>
       <p>Contains all the parts of the emoji picker.</p>
       <CodeBlock lang="tsx">{`
@@ -125,6 +137,84 @@ export function Docs({
           {/* … */}
         </EmojiPicker.Root>
       `}</CodeBlock>
+      <h4>Props</h4>
+      <PropertiesTable>
+        <PropertiesTableRow name="onEmojiSelect" type="(emoji: string) => void">
+          <p>A callback invoked when an emoji is selected.</p>
+        </PropertiesTableRow>
+        <PropertiesTableRow defaultValue={`"en"`} name="locale" type="Locale">
+          <p>The locale of the emoji picker.</p>
+        </PropertiesTableRow>
+        <PropertiesTableRow
+          defaultValue={`"none"`}
+          name="skinTone"
+          type="SkinTone"
+        >
+          <p>The skin tone of the emoji picker.</p>
+        </PropertiesTableRow>
+        <PropertiesTableRow defaultValue="10" name="columns" type="number">
+          <p>The number of columns in the list.</p>
+        </PropertiesTableRow>
+        <PropertiesTableRow
+          defaultValue="the most recent version supported by the current browser"
+          name="emojiVersion"
+          type="number"
+        >
+          <p>
+            Which{" "}
+            <a
+              href="https://emojipedia.org/emoji-versions"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Emoji version
+            </a>{" "}
+            to use.
+          </p>
+          <p>
+            This can be used to manually control which emojis are visible
+            regardless of the current browser's supported Emoji versions.
+          </p>
+        </PropertiesTableRow>
+        <PropertiesTableBasicRow>
+          <p>
+            All built-in <code>div</code> props.
+          </p>
+        </PropertiesTableBasicRow>
+      </PropertiesTable>
+      <h4>Attributes</h4>
+      <PropertiesTable>
+        <PropertiesTableRow name="[frimousse-root]">
+          <p>Can be targeted in CSS for styling.</p>
+        </PropertiesTableRow>
+        <PropertiesTableRow name="[data-focused]">
+          <p>
+            Present when the emoji picker or its inner elements are focused.
+          </p>
+        </PropertiesTableRow>
+      </PropertiesTable>
+      <h4>CSS Variables</h4>
+      <PropertiesTable>
+        <PropertiesTableRow name="--frimousse-emoji-font" type="<string>">
+          <p>A list of font families to use when rendering emojis.</p>
+        </PropertiesTableRow>
+        <PropertiesTableRow name="--frimousse-viewport-width" type="<length>">
+          <p>The measured width of the viewport.</p>
+        </PropertiesTableRow>
+        <PropertiesTableRow name="--frimousse-viewport-height" type="<length>">
+          <p>The measured height of the viewport.</p>
+        </PropertiesTableRow>
+        <PropertiesTableRow name="--frimousse-row-height" type="<length>">
+          <p>The measured height of a row in the list.</p>
+        </PropertiesTableRow>
+        <PropertiesTableRow
+          name="--frimousse-category-header-height"
+          type="<length>"
+        >
+          <p>The measured height of a category header in the list.</p>
+        </PropertiesTableRow>
+      </PropertiesTable>
+
       <PermalinkHeading as="h3">EmojiPicker.Search</PermalinkHeading>
       <p>A search input to filter the list of emojis.</p>
       <CodeBlock lang="tsx">{`
@@ -145,6 +235,21 @@ export function Docs({
           </EmojiPicker.Root>
         );
       `}</CodeBlock>
+      <h4>Props</h4>
+      <PropertiesTable>
+        <PropertiesTableBasicRow>
+          <p>
+            All built-in <code>input</code> props.
+          </p>
+        </PropertiesTableBasicRow>
+      </PropertiesTable>
+      <h4>Attributes</h4>
+      <PropertiesTable>
+        <PropertiesTableRow name="[frimousse-search]">
+          <p>Can be targeted in CSS for styling.</p>
+        </PropertiesTableRow>
+      </PropertiesTable>
+
       <PermalinkHeading as="h3">EmojiPicker.Viewport</PermalinkHeading>
       <p>The scrolling container of the emoji picker.</p>
       <CodeBlock lang="tsx">{`
@@ -158,6 +263,21 @@ export function Docs({
           <EmojiPicker.List />
         </EmojiPicker.Viewport>
       `}</CodeBlock>
+      <h4>Props</h4>
+      <PropertiesTable>
+        <PropertiesTableBasicRow>
+          <p>
+            All built-in <code>div</code> props.
+          </p>
+        </PropertiesTableBasicRow>
+      </PropertiesTable>
+      <h4>Attributes</h4>
+      <PropertiesTable>
+        <PropertiesTableRow name="[frimousse-viewport]">
+          <p>Can be targeted in CSS for styling.</p>
+        </PropertiesTableRow>
+      </PropertiesTable>
+
       <PermalinkHeading as="h3">EmojiPicker.List</PermalinkHeading>
       <p>The list of emojis.</p>
       <CodeBlock lang="tsx">{`
@@ -186,6 +306,27 @@ export function Docs({
           />
         </EmojiPicker.Viewport>
       `}</CodeBlock>
+      <h4>Props</h4>
+      <PropertiesTable>
+        <PropertiesTableRow
+          name="components"
+          type="Partial<EmojiPickerListComponents>"
+        >
+          <p>The inner components of the list.</p>
+        </PropertiesTableRow>
+        <PropertiesTableBasicRow>
+          <p>
+            All built-in <code>div</code> props.
+          </p>
+        </PropertiesTableBasicRow>
+      </PropertiesTable>
+      <h4>Attributes</h4>
+      <PropertiesTable>
+        <PropertiesTableRow name="[frimousse-list]">
+          <p>Can be targeted in CSS for styling.</p>
+        </PropertiesTableRow>
+      </PropertiesTable>
+
       <PermalinkHeading as="h3">EmojiPicker.Loading</PermalinkHeading>
       <p>Only renders when the emoji data is loading.</p>
       <CodeBlock lang="tsx">{`
@@ -193,6 +334,13 @@ export function Docs({
           <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
         </EmojiPicker.Viewport>
       `}</CodeBlock>
+      <h4>Props</h4>
+      <PropertiesTable>
+        <PropertiesTableRow name="children" type="ReactNode">
+          <p>The content to render when the emoji data is loading.</p>
+        </PropertiesTableRow>
+      </PropertiesTable>
+
       <PermalinkHeading as="h3">EmojiPicker.Empty</PermalinkHeading>
       <p>Only renders when no emoji is found for the current search.</p>
       <CodeBlock lang="tsx">{`
@@ -209,6 +357,19 @@ export function Docs({
           {({ search }) => <>No emoji found for "{search}"</>}
         </EmojiPicker.Empty>
       `}</CodeBlock>
+      <h4>Props</h4>
+      <PropertiesTable>
+        <PropertiesTableRow
+          name="children"
+          type="ReactNode | ((props: EmojiPickerEmptyRenderProps) => ReactNode)"
+        >
+          <p>
+            The content to render when no emoji is found for the current search,
+            or a render callback which receives the current search value.
+          </p>
+        </PropertiesTableRow>
+      </PropertiesTable>
+
       <PermalinkHeading as="h3">EmojiPicker.SkinToneSelector</PermalinkHeading>
       <p>
         A button to change the current skin tone by cycling through the
@@ -217,7 +378,7 @@ export function Docs({
       <CodeBlock lang="tsx">{`
         <EmojiPicker.SkinToneSelector />
       `}</CodeBlock>
-      <p>The emoji used as visual can be customized (by default, ✋).</p>
+      <p>The emoji used as visual can be customized.</p>
       <CodeBlock lang="tsx">{`
         <EmojiPicker.SkinToneSelector emoji="👋" />
       `}</CodeBlock>
@@ -232,6 +393,24 @@ export function Docs({
         </a>{" "}
         hook.
       </p>
+      <h4>Props</h4>
+      <PropertiesTable>
+        <PropertiesTableRow defaultValue={`"✋"`} name="emoji" type="string">
+          <p>The emoji to use as visual for the skin tone variations.</p>
+        </PropertiesTableRow>
+        <PropertiesTableBasicRow>
+          <p>
+            All built-in <code>button</code> props.
+          </p>
+        </PropertiesTableBasicRow>
+      </PropertiesTable>
+      <h4>Attributes</h4>
+      <PropertiesTable>
+        <PropertiesTableRow name="[frimousse-skin-tone-selector]">
+          <p>Can be targeted in CSS for styling.</p>
+        </PropertiesTableRow>
+      </PropertiesTable>
+
       <PermalinkHeading as="h3">EmojiPicker.SkinTone</PermalinkHeading>
       <p>
         Exposes the current skin tone and a function to change it via a render
@@ -249,8 +428,7 @@ export function Docs({
       `}</CodeBlock>
       <p>
         It can be used to build a custom skin tone selector: pass an emoji you
-        want to use as visual (by default, ✋) and it will return its skin tone{" "}
-        variations.
+        want to use as visual and it will return its skin tone variations.
       </p>
       <CodeBlock lang="tsx">{`
         const [skinTone, setSkinTone, skinToneVariations] = useSkinTone("👋");
@@ -280,6 +458,13 @@ export function Docs({
         </a>
         .
       </p>
+      <h4>Props</h4>
+      <PropertiesTable>
+        <PropertiesTableRow defaultValue={`"✋"`} name="emoji" type="string">
+          <p>The emoji to use as visual for the skin tone variations.</p>
+        </PropertiesTableRow>
+      </PropertiesTable>
+
       <PermalinkHeading as="h3">EmojiPicker.ActiveEmoji</PermalinkHeading>
       <p>
         Exposes the currently active emoji (either hovered or selected via
@@ -311,6 +496,7 @@ export function Docs({
         </a>{" "}
         is also available.
       </p>
+
       <PermalinkHeading as="h3">useSkinTone</PermalinkHeading>
       <p>Returns the current skin tone and a function to change it.</p>
       <CodeBlock lang="tsx">{`
@@ -318,8 +504,7 @@ export function Docs({
       `}</CodeBlock>
       <p>
         It can be used to build a custom skin tone selector: pass an emoji you
-        want to use as visual (by default, ✋) and it will return its skin tone
-        variations.
+        want to use as visual and it will return its skin tone variations.
       </p>
       <CodeBlock lang="tsx">{`
         const [skinTone, setSkinTone, skinToneVariations] = useSkinTone("👋");
@@ -345,6 +530,13 @@ export function Docs({
         </a>
         .
       </p>
+      <h4>Parameters</h4>
+      <PropertiesTable>
+        <PropertiesTableRow defaultValue={`"✋"`} name="emoji" type="string">
+          <p>The emoji to use as visual for the skin tone variations.</p>
+        </PropertiesTableRow>
+      </PropertiesTable>
+
       <PermalinkHeading as="h3">useActiveEmoji</PermalinkHeading>
       <p>
         Returns the currently active emoji (either hovered or selected via

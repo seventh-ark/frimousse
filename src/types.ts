@@ -149,6 +149,11 @@ export interface EmojiPickerListProps extends ComponentProps<"div"> {
 
 export interface EmojiPickerRootProps extends ComponentProps<"div"> {
   /**
+   * A callback invoked when an emoji is selected.
+   */
+  onEmojiSelect?: (emoji: string) => void;
+
+  /**
    * The locale of the emoji picker.
    *
    * @default "en"
@@ -168,11 +173,6 @@ export interface EmojiPickerRootProps extends ComponentProps<"div"> {
    * @default 10
    */
   columns?: number;
-
-  /**
-   * A callback invoked when an emoji is selected.
-   */
-  onEmojiSelect?: (emoji: string) => void;
 
   /**
    * Which Emoji version to use.

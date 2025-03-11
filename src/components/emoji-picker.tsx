@@ -221,32 +221,6 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
     );
 
     useLayoutEffect(() => {
-      if (!ref.current) {
-        return;
-      }
-
-      const unsubscribe = store.subscribe((state) => {
-        if (state.viewportWidth) {
-          ref.current.style.setProperty(
-            "--frimousse-viewport-width",
-            `${state.viewportWidth}px`,
-          );
-        }
-      });
-
-      const viewportWidth = store.get().viewportWidth;
-
-      if (viewportWidth) {
-        ref.current.style.setProperty(
-          "--frimousse-viewport-width",
-          `${viewportWidth}px`,
-        );
-      }
-
-      return unsubscribe;
-    }, []);
-
-    useLayoutEffect(() => {
       if (!isFocusedWithin) {
         store.get().onActiveEmojiReset();
       }
@@ -382,6 +356,8 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
     }, [isFocusedWithin]);
 
     useLayoutEffect(() => {
+      let previousViewportWidth: EmojiPickerStore["viewportWidth"] = null;
+      let previousViewportHeight: EmojiPickerStore["viewportHeight"] = null;
       let previousRowHeight: EmojiPickerStore["rowHeight"] = null;
       let previousCategoryHeaderHeight: EmojiPickerStore["categoryHeaderHeight"] =
         null;
@@ -390,6 +366,24 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
         /* v8 ignore next 3 */
         if (!ref.current) {
           return;
+        }
+
+        if (previousViewportWidth !== state.viewportWidth) {
+          previousViewportWidth = state.viewportWidth;
+
+          ref.current.style.setProperty(
+            "--frimousse-viewport-width",
+            `${state.viewportWidth}px`,
+          );
+        }
+
+        if (previousViewportHeight !== state.viewportHeight) {
+          previousViewportHeight = state.viewportHeight;
+
+          ref.current.style.setProperty(
+            "--frimousse-viewport-height",
+            `${state.viewportHeight}px`,
+          );
         }
 
         if (previousRowHeight !== state.rowHeight) {
@@ -411,7 +405,22 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
         }
       });
 
-      const { rowHeight, categoryHeaderHeight } = store.get();
+      const { viewportWidth, viewportHeight, rowHeight, categoryHeaderHeight } =
+        store.get();
+
+      if (viewportWidth) {
+        ref.current.style.setProperty(
+          "--frimousse-viewport-width",
+          `${viewportWidth}px`,
+        );
+      }
+
+      if (viewportHeight) {
+        ref.current.style.setProperty(
+          "--frimousse-viewport-height",
+          `${viewportHeight}px`,
+        );
+      }
 
       if (rowHeight) {
         ref.current.style.setProperty(
@@ -426,6 +435,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
           `${categoryHeaderHeight}px`,
         );
       }
+
       return unsubscribe;
     }, []);
 
@@ -439,7 +449,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
         ref={callbackRef}
         style={
           {
-            "--frimousse-font-family": EMOJI_FONT_FAMILY,
+            "--frimousse-emoji-font": EMOJI_FONT_FAMILY,
             ...style,
           } as CSSProperties
         }
@@ -675,7 +685,7 @@ function listEmojiProps(
     "data-active": isActive ? "" : undefined,
     "frimousse-emoji": "",
     style: {
-      fontFamily: "var(--frimousse-font-family)",
+      fontFamily: "var(--frimousse-emoji-font)",
     },
     tabIndex: -1,
   };
@@ -1209,6 +1219,7 @@ const EmojiPickerSkinToneSelector = forwardRef<
         }
         aria-live="polite"
         aria-valuetext={skinToneLabel}
+        frimousse-skin-tone-selector=""
         onClick={handleClick}
         ref={forwardedRef}
       >

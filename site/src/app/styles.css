@@ -140,26 +140,31 @@
 }
 
 @utility code-block {
-  --shiki-foreground: var(--foreground);
   --shiki-background: var(--muted);
-  --shiki-token-link: var(--foreground);
-  --shiki-token-comment: var(--secondary-foreground);
-  --shiki-token-constant: var(--secondary-foreground);
 
-  --shiki-token-string: var(--color-neutral-800);
-  --shiki-token-keyword: var(--color-neutral-500);
-  --shiki-token-parameter: var(--color-neutral-700);
-  --shiki-token-function: var(--color-neutral-800);
-  --shiki-token-string-expression: var(--color-neutral-800);
-  --shiki-token-punctuation: var(--color-neutral-700);
+  --shiki-foreground: var(--color-neutral-700);
+  --shiki-token-comment: var(--color-neutral-400);
+
+  --shiki-color-1: oklch(0.54 0.16 242);
+  --shiki-color-2: oklch(0.62 0.14 78);
+  --shiki-color-3: oklch(0.58 0.16 296);
+
+  --shiki-token-string: var(--shiki-color-1);
+  --shiki-token-link: var(--shiki-color-1);
+  --shiki-token-punctuation: var(--shiki-color-1);
+  --shiki-token-keyword: var(--shiki-color-1);
+  --shiki-token-string-expression: var(--shiki-color-2);
+  --shiki-token-constant: var(--shiki-color-2);
+  --shiki-token-function: var(--shiki-color-3);
+  --shiki-token-parameter: var(--shiki-color-3);
 
   @variant dark {
-    --shiki-token-string: var(--color-neutral-200);
-    --shiki-token-keyword: var(--color-neutral-500);
-    --shiki-token-parameter: var(--color-neutral-300);
-    --shiki-token-function: var(--color-neutral-200);
-    --shiki-token-string-expression: var(--color-neutral-200);
-    --shiki-token-punctuation: var(--color-neutral-300);
+    --shiki-foreground: var(--color-neutral-300);
+    --shiki-token-comment: var(--color-neutral-500);
+
+    --shiki-color-1: oklch(0.74 0.12 242);
+    --shiki-color-2: oklch(0.78 0.1 78);
+    --shiki-color-3: oklch(0.72 0.14 296);
   }
 }
 
@@ -173,15 +178,23 @@
   }
 
   :is(& > h3, & > :not(.not-prose) h3) {
-    @apply font-medium mb-3.5 text-sm;
+    @apply font-medium mb-3.5;
 
     &:not(:first-child) {
       @apply mt-5 md:mt-8;
     }
   }
 
+  :is(& > h4, & > :not(.not-prose) h4) {
+    @apply font-medium mb-3.5 text-sm;
+
+    &:not(:first-child) {
+      @apply mt-3.5 md:mt-6;
+    }
+  }
+
   :is(& > p, & > :not(.not-prose) p) {
-    @apply text-prose text-pretty mb-3 leading-[1.6];
+    @apply text-prose text-pretty leading-[1.6];
 
     &:not(:last-child) {
       @apply mb-3.5;
@@ -189,18 +202,29 @@
   }
 
   :is(& > code, & > :not(.not-prose) code) {
-    @apply font-mono text-[0.875em] bg-muted rounded-[0.375em] px-[0.375em] py-[0.25em] text-secondary-foreground box-decoration-clone;
+    @apply font-mono text-[0.875em] bg-muted rounded-[0.325em] px-[0.375em] pb-[0.225em] pt-[0.2em] text-secondary-foreground box-decoration-clone;
   }
 
   :is(& > a, & > :not(.not-prose) a) {
     @apply link;
   }
 
-  .code-block {
+  .code-block,
+  .properties-table {
     @apply mt-4.5;
 
     &:not(:last-child) {
       @apply mb-4.5;
+    }
+  }
+}
+
+@utility prose-sm {
+  :is(& > p, & > :not(.not-prose) p) {
+    @apply text-sm;
+
+    &:not(:last-child) {
+      @apply mb-1;
     }
   }
 }

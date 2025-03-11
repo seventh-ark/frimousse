@@ -65,7 +65,7 @@ function EmojiPickerCategoryHeader({
 function EmojiPicker({
   className,
   autoFocus,
-  columns = 9,
+  columns,
   ...props
 }: EmojiPickerProps) {
   const skinToneSelector = (
@@ -74,6 +74,7 @@ function EmojiPicker({
         buttonVariants({ variant: "secondary", size: "icon" }),
         "rounded-md",
       )}
+      title="Change skin tone"
     />
   );
 

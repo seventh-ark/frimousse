@@ -16,7 +16,7 @@ const buttonVariants = cva(
       variant: {
         none: "",
         default:
-          "bg-primary text-primary-foreground hover:bg-primary/80 focus-visible:bg-primary/80 data-[state=open]:bg-primary/80",
+          "bg-primary text-primary-foreground hover:bg-primary/80 focus-visible:bg-primary/80 data-[state=open]:bg-primary/80 selection:bg-primary-foreground/20",
         secondary:
           "bg-muted text-secondary-foreground hover:bg-secondary/60 focus-visible:bg-secondary/60 data-[state=open]:bg-secondary/60 outline-secondary",
         ghost:
