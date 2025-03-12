@@ -83,7 +83,7 @@ async function fetchEtag(url: string, signal?: AbortSignal) {
     const response = await fetch(url, { method: "HEAD", signal });
 
     return response.headers.get("etag");
-  } catch (error) {
+  } catch (_) {
     return null;
   }
 }

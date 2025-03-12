@@ -20,6 +20,8 @@
     "rules": {
       "recommended": true,
       "correctness": {
+        "noUnusedFunctionParameters": "error",
+        "noUnusedVariables": "error",
         "noUnusedImports": "error",
         "useExhaustiveDependencies": {
           "level": "error",
