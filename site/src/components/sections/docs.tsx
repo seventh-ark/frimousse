@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import { CircleHelp } from "lucide-react";
 import type { ComponentProps } from "react";
+import { ColorfulButtonsAlternate } from "../../examples/colorful-buttons-alternate";
+import { ColorfulButtonsBlur } from "../../examples/colorful-buttons-blur";
 import { PermalinkHeading } from "../permalink-heading";
-import { ColorfulBackgroundsAlternate } from "../playgrounds/colorful-backgrounds-alternate";
-import { ColorfulBackgroundsBlur } from "../playgrounds/colorful-backgrounds-blur";
 import { CodeBlock } from "../ui/code-block";
 import {
   PropertiesList,
@@ -129,8 +129,8 @@ export function Docs({
         supports dynamically adapting to the contents (e.g. the number of
         columns, the size of the rows, the padding within the sticky category
         headers, etc). One aspect to keep in mind is that{" "}
-        <a href="#EmojiPicker.List-Inner-Components">inner components</a> within{" "}
-        <a href="#EmojiPicker.List">
+        <a href="#emojipicker.list-inner-components">inner components</a> within{" "}
+        <a href="#emojipicker.list">
           <code>EmojiPicker.List</code>
         </a>{" "}
         should be of the same size (e.g. all rows should be of the same height)
@@ -141,7 +141,7 @@ export function Docs({
       </figure>
       <p>
         The{" "}
-        <a href="#EmojiPicker.Root-CSS-Variables">
+        <a href="#emojipicker.root-css-variables">
           <code>--frimousse-viewport-width</code>
         </a>{" "}
         CSS variable can be used as a <code>max-width</code> to prevent some
@@ -157,15 +157,15 @@ export function Docs({
       <PermalinkHeading as="h3">List Padding</PermalinkHeading>
       <p>
         Because of its virtualized nature, adding padding to{" "}
-        <a href="#EmojiPicker.List">
+        <a href="#emojipicker.list">
           <code>EmojiPicker.List</code>
         </a>{" "}
         can be tricky. We recommend adding horizontal padding to{" "}
-        <a href="#EmojiPicker.List-Inner-Components">rows</a> and{" "}
-        <a href="#EmojiPicker.List-Inner-Components">category headers</a>, and
-        vertical padding on the <a href="#EmojiPicker.List">list</a> itself.
+        <a href="#emojipicker.list-inner-components">rows</a> and{" "}
+        <a href="#emojipicker.list-inner-components">category headers</a>, and
+        vertical padding on the <a href="#emojipicker.list">list</a> itself.
         Finally, to apply the same vertical padding to the{" "}
-        <a href="#EmojiPicker.Viewport">viewport</a> when keyboard navigating
+        <a href="#emojipicker.viewport">viewport</a> when keyboard navigating
         (which automatically scrolls to out-of-view rows), you can set the same
         value as{" "}
         <a
@@ -175,7 +175,7 @@ export function Docs({
         >
           <code>scroll-margin-block</code>
         </a>{" "}
-        on <a href="#EmojiPicker.List-Inner-Components">rows</a>.
+        on <a href="#emojipicker.list-inner-components">rows</a>.
       </p>
       <figure className="not-prose aspect-16/10 rounded-lg bg-muted p-4">
         Placeholder: Padding example
@@ -193,38 +193,38 @@ export function Docs({
         >
           <code>:nth-child</code>
         </a>{" "}
-        selectors on <a href="#EmojiPicker.List-Inner-Components">rows</a> and{" "}
-        <a href="#EmojiPicker.List-Inner-Components">emojis</a> to alternate
+        selectors on <a href="#emojipicker.list-inner-components">rows</a> and{" "}
+        <a href="#emojipicker.list-inner-components">emojis</a> to alternate
         through a list of colors. In the example below, a row’s first emoji has
         a{" "}
-        <span className="inline-block rounded-[0.3em] bg-rose-100 px-[0.375em] py-[0.275em] leading-none dark:bg-rose-950">
+        <span className="inline-block rounded-[0.3em] bg-rose-500/12 px-[0.375em] pt-[0.245em] pb-[0.265em] leading-none dark:bg-rose-400/26">
           red
         </span>{" "}
         background, the second{" "}
-        <span className="inline-block rounded-[0.3em] bg-lime-100 px-[0.375em] py-[0.275em] leading-none dark:bg-lime-950">
+        <span className="inline-block rounded-[0.3em] bg-lime-500/18 px-[0.375em] pt-[0.245em] pb-[0.265em] leading-none dark:bg-lime-400/28">
           green
         </span>
         , the third{" "}
-        <span className="inline-block rounded-[0.3em] bg-sky-100 px-[0.375em] py-[0.275em] leading-none dark:bg-sky-950">
+        <span className="inline-block rounded-[0.3em] bg-sky-500/12 px-[0.375em] pt-[0.245em] pb-[0.265em] leading-none dark:bg-sky-400/22">
           blue
         </span>
         , then{" "}
-        <span className="inline-block rounded-[0.3em] bg-rose-100 px-[0.375em] py-[0.275em] leading-none dark:bg-rose-950">
+        <span className="inline-block rounded-[0.3em] bg-rose-500/12 px-[0.375em] pt-[0.245em] pb-[0.265em] leading-none dark:bg-rose-400/26">
           red
         </span>{" "}
         again, and so on. All <strong>odd</strong> rows will follow the same
         pattern, while <strong>even</strong> rows offset it by one to avoid
         every column using the same color, starting with{" "}
-        <span className="inline-block rounded-[0.3em] bg-sky-100 px-[0.375em] py-[0.275em] leading-none dark:bg-sky-950">
+        <span className="inline-block rounded-[0.3em] bg-sky-500/12 px-[0.375em] pt-[0.245em] pb-[0.265em] leading-none dark:bg-sky-400/22">
           blue
         </span>{" "}
         instead of{" "}
-        <span className="inline-block rounded-[0.3em] bg-rose-100 px-[0.375em] py-[0.275em] leading-none dark:bg-rose-950">
+        <span className="inline-block rounded-[0.3em] bg-rose-500/12 px-[0.375em] pt-[0.245em] pb-[0.265em] leading-none dark:bg-rose-400/26">
           red
         </span>
         .
       </p>
-      <ColorfulBackgroundsAlternate />
+      <ColorfulButtonsAlternate />
       <p>
         Some other emoji pickers like Linear’s use the main color from the
         button’s emoji as background color instead. Extracting colors from
@@ -232,7 +232,7 @@ export function Docs({
         easily by duplicating the emoji and scaling it to fill the background,
         then blurring it.
       </p>
-      <ColorfulBackgroundsBlur />
+      <ColorfulButtonsBlur />
 
       <PermalinkHeading as="h2">API Reference</PermalinkHeading>
       <p>All parts and hooks, along their usage and options.</p>
@@ -257,7 +257,7 @@ export function Docs({
         </EmojiPicker.Root>
       `}</CodeBlock>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.Root-Props">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Root">
         Props
       </PermalinkHeading>
       <PropertiesList>
@@ -302,7 +302,7 @@ export function Docs({
         </PropertiesListBasicRow>
       </PropertiesList>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.Root-Attributes">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Root">
         Attributes
       </PermalinkHeading>
       <PropertiesList>
@@ -316,7 +316,7 @@ export function Docs({
         </PropertiesListRow>
       </PropertiesList>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.Root-CSS-Variables">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Root">
         CSS Variables
       </PermalinkHeading>
       <PropertiesList>
@@ -361,7 +361,7 @@ export function Docs({
         );
       `}</CodeBlock>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.Search-Props">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Search">
         Props
       </PermalinkHeading>
       <PropertiesList>
@@ -372,7 +372,7 @@ export function Docs({
         </PropertiesListBasicRow>
       </PropertiesList>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.Search-Attributes">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Search">
         Attributes
       </PermalinkHeading>
       <PropertiesList>
@@ -395,7 +395,7 @@ export function Docs({
         </EmojiPicker.Viewport>
       `}</CodeBlock>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.Viewport-Props">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Viewport">
         Props
       </PermalinkHeading>
       <PropertiesList>
@@ -406,7 +406,7 @@ export function Docs({
         </PropertiesListBasicRow>
       </PropertiesList>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.Viewport-Attributes">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Viewport">
         Attributes
       </PermalinkHeading>
       <PropertiesList>
@@ -444,7 +444,7 @@ export function Docs({
         </EmojiPicker.Viewport>
       `}</CodeBlock>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.List-Props">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.List">
         Props
       </PermalinkHeading>
       <PropertiesList>
@@ -461,7 +461,7 @@ export function Docs({
         </PropertiesListBasicRow>
       </PropertiesList>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.List-Attributes">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.List">
         Attributes
       </PermalinkHeading>
       <PropertiesList>
@@ -470,7 +470,7 @@ export function Docs({
         </PropertiesListRow>
       </PropertiesList>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.List-Inner-Components">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.List">
         Inner Components
       </PermalinkHeading>
       <PropertiesList>
@@ -558,7 +558,7 @@ export function Docs({
         </EmojiPicker.Viewport>
       `}</CodeBlock>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.Loading-Props">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Loading">
         Props
       </PermalinkHeading>
       <PropertiesList>
@@ -587,7 +587,7 @@ export function Docs({
         </EmojiPicker.Empty>
       `}</CodeBlock>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.Empty-Props">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Empty">
         Props
       </PermalinkHeading>
       <PropertiesList>
@@ -616,17 +616,17 @@ export function Docs({
       `}</CodeBlock>
       <p>
         If you want to build a custom skin tone selector, you can use the{" "}
-        <a href="#EmojiPicker.SkinTone">
+        <a href="#emojipicker.skintone">
           <code>EmojiPicker.SkinTone</code>
         </a>{" "}
         component or the{" "}
-        <a href="#useSkinTone">
+        <a href="#useskintone">
           <code>useSkinTone</code>
         </a>{" "}
         hook.
       </p>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.SkinToneSelector-Props">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.SkinToneSelector">
         Props
       </PermalinkHeading>
       <PropertiesList>
@@ -640,7 +640,7 @@ export function Docs({
         </PropertiesListBasicRow>
       </PropertiesList>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.SkinToneSelector-Attributes">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.SkinToneSelector">
         Attributes
       </PermalinkHeading>
       <PropertiesList>
@@ -684,20 +684,20 @@ export function Docs({
       `}</CodeBlock>
       <p>
         If you prefer to use a hook rather than a component,{" "}
-        <a href="#useSkinTone">
+        <a href="#useskintone">
           <code>useSkinTone</code>
         </a>{" "}
         is also available.
       </p>
       <p>
         An already-built skin tone selector is also available,{" "}
-        <a href="#EmojiPicker.SkinToneSelector">
+        <a href="#emojipicker.skintoneselector">
           <code>EmojiPicker.SkinToneSelector</code>
         </a>
         .
       </p>
 
-      <PermalinkHeading as="h4" slug="EmojiPicker.SkinTone-Props">
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.SkinTone">
         Props
       </PermalinkHeading>
       <PropertiesList>
@@ -732,7 +732,7 @@ export function Docs({
       `}</CodeBlock>
       <p>
         If you prefer to use a hook rather than a component,{" "}
-        <a href="#useActiveEmoji">
+        <a href="#useactiveemoji">
           <code>useActiveEmoji</code>
         </a>{" "}
         is also available.
@@ -759,20 +759,20 @@ export function Docs({
       `}</CodeBlock>
       <p>
         If you prefer to use a component rather than a hook,{" "}
-        <a href="#EmojiPicker.SkinTone">
+        <a href="#emojipicker.skintone">
           <code>EmojiPicker.SkinTone</code>
         </a>{" "}
         is also available.
       </p>
       <p>
         An already-built skin tone selector is also available,{" "}
-        <a href="#EmojiPicker.SkinToneSelector">
+        <a href="#emojipicker.skintoneselector">
           <code>EmojiPicker.SkinToneSelector</code>
         </a>
         .
       </p>
 
-      <PermalinkHeading as="h4" slug="useSkinTone-Parameters">
+      <PermalinkHeading as="h4" slugPrefix="useSkinTone">
         Parameters
       </PermalinkHeading>
       <PropertiesList>
@@ -803,7 +803,7 @@ export function Docs({
       `}</CodeBlock>
       <p>
         If you prefer to use a component rather than a hook,{" "}
-        <a href="#EmojiPicker.ActiveEmoji">
+        <a href="#emojipicker.activeemoji">
           <code>EmojiPicker.ActiveEmoji</code>
         </a>{" "}
         is also available.

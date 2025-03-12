@@ -10,19 +10,25 @@ type Heading = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 interface PermalinkHeadingProps extends ComponentProps<Heading> {
   as?: Heading;
   slug?: string;
+  slugPrefix?: string;
 }
 
 export function PermalinkHeading({
   as = "h1",
   slug: customSlug,
+  slugPrefix,
   className,
   children,
   ...props
 }: PermalinkHeadingProps) {
   const Heading = as;
   const slug = useMemo(() => {
-    return customSlug ?? slugify(getTextContent(children));
-  }, [customSlug, children]);
+    return slugify(
+      (slugPrefix ? `${slugPrefix} ` : "") +
+        (customSlug ?? getTextContent(children)),
+      { lower: true },
+    );
+  }, [customSlug, slugPrefix, children]);
 
   return (
     <Heading

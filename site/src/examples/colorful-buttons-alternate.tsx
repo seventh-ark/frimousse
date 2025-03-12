@@ -1,6 +1,8 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import type { Emoji as EmojiObject } from "frimousse";
-import type { ComponentProps } from "react";
+import { type ComponentProps, type PointerEvent, useCallback } from "react";
 
 interface ListProps extends ComponentProps<"div"> {
   rows: number;
@@ -17,6 +19,27 @@ interface EmojiProps extends ComponentProps<"button"> {
 }
 
 function List({ rows, columns, children, ...props }: ListProps) {
+  const clearActiveEmojis = useCallback(() => {
+    const emojis = Array.from(document.querySelectorAll("[frimousse-emoji]"));
+
+    for (const emoji of emojis) {
+      emoji.removeAttribute("data-active");
+    }
+  }, []);
+
+  const setActiveEmoji = useCallback(
+    (event: PointerEvent<HTMLDivElement>) => {
+      clearActiveEmojis();
+
+      const emoji = document.elementFromPoint(event.clientX, event.clientY);
+
+      if (emoji?.hasAttribute("frimousse-emoji")) {
+        emoji.setAttribute("data-active", "");
+      }
+    },
+    [clearActiveEmojis],
+  );
+
   return (
     <div
       aria-colcount={columns}
@@ -24,6 +47,10 @@ function List({ rows, columns, children, ...props }: ListProps) {
       frimousse-list=""
       role="grid"
       {...props}
+      onPointerCancel={clearActiveEmojis}
+      onPointerDown={setActiveEmoji}
+      onPointerLeave={clearActiveEmojis}
+      onPointerMove={setActiveEmoji}
     >
       {children}
     </div>
@@ -64,10 +91,10 @@ function Emoji({
       aria-label={emoji.label}
       className={cn(
         "group relative size-12 rounded-[20%] text-2xl outline-none transition duration-200 ease-out",
-        "hover:bg-(--color) hover:duration-0 focus-visible:bg-(--color) focus-visible:duration-0",
-        "[--color-red:var(--color-rose-100)] dark:[--color-red:var(--color-rose-950)]",
-        "[--color-green:var(--color-lime-100)] dark:[--color-green:var(--color-lime-950)]",
-        "[--color-blue:var(--color-sky-100)] dark:[--color-blue:var(--color-sky-950)]",
+        "focus-visible:bg-(--color) focus-visible:duration-0 data-[active]:bg-(--color) data-[active]:duration-0",
+        "[--color-red:--alpha(var(--color-rose-500)/12%)] dark:[--color-red:--alpha(var(--color-rose-400)/26%)]",
+        "[--color-green:--alpha(var(--color-lime-500)/18%)] dark:[--color-green:--alpha(var(--color-lime-400)/28%)]",
+        "[--color-blue:--alpha(var(--color-sky-500)/12%)] dark:[--color-blue:--alpha(var(--color-sky-400)/22%)]",
         "group-odd:nth-[3n+1]:[--color:var(--color-red)] group-even:nth-[3n+2]:[--color:var(--color-red)]",
         "group-odd:nth-[3n+2]:[--color:var(--color-green)] group-even:nth-[3n+3]:[--color:var(--color-green)]",
         "group-odd:nth-[3n+3]:[--color:var(--color-blue)] group-even:nth-[3n+1]:[--color:var(--color-blue)]",
@@ -88,19 +115,19 @@ function Emoji({
   );
 }
 
-export function ColorfulBackgroundsAlternate({
+export function ColorfulButtonsAlternate({
   className,
   ...props
 }: Omit<ComponentProps<"figure">, "children">) {
   return (
     <figure
       className={cn(
-        "not-prose flex aspect-16/9 items-center justify-center rounded-lg border border-dotted bg-background p-4",
+        "not-prose relative flex h-[320px] items-center justify-center rounded-lg border border-dotted bg-background py-14",
         className,
       )}
       {...props}
     >
-      <List className="w-fit" columns={4} rows={3}>
+      <List className="w-fit touch-none select-none" columns={4} rows={3}>
         <Row index={0}>
           <Emoji
             emoji={{ emoji: "😊", label: "Smiling face with smiling eyes" }}
@@ -117,12 +144,15 @@ export function ColorfulBackgroundsAlternate({
           <Emoji emoji={{ emoji: "💛", label: "Yellow heart" }} index={3} />
         </Row>
         <Row index={2}>
-          <Emoji emoji={{ emoji: "💚", label: "Green heart" }} index={0} />
-          <Emoji emoji={{ emoji: "💙", label: "Blue heart" }} index={1} />
-          <Emoji emoji={{ emoji: "💜", label: "Purple heart" }} index={2} />
-          <Emoji emoji={{ emoji: "🩷", label: "Pink heart" }} index={3} />
+          <Emoji emoji={{ emoji: "🤍", label: "White heart" }} index={0} />
+          <Emoji emoji={{ emoji: "💚", label: "Green heart" }} index={1} />
+          <Emoji emoji={{ emoji: "💙", label: "Blue heart" }} index={2} />
+          <Emoji emoji={{ emoji: "💜", label: "Purple heart" }} index={3} />
         </Row>
       </List>
+      <span className="pointer-events-none absolute inset-x-4 bottom-6 select-none truncate text-center text-foreground/50 text-sm">
+        Hover or focus to see the colors
+      </span>
     </figure>
   );
 }

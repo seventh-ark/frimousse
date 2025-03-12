@@ -64,7 +64,7 @@ export async function CodeBlock({
       />
       <CopyButton
         className={cn(
-          "absolute top-1.5 right-1.5 bg-muted/20 outline-muted-foreground/40 backdrop-blur-md",
+          "absolute top-1.5 right-1.5 z-10 bg-muted/20 outline-muted-foreground/40 backdrop-blur-md",
           "lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100",
         )}
         text={removeTransformersAnnotations(code)}

@@ -41,7 +41,7 @@ function EmojiPickerEmoji({
         aria-hidden
         className="absolute inset-0 hidden items-center justify-center overflow-hidden rounded-[inherit] opacity-0 transition-[display,opacity] transition-discrete duration-200 ease-out group-data-[active]:flex group-data-[active]:opacity-100 group-data-[active]:duration-0"
       >
-        <span className="text-8xl opacity-20 blur-lg saturate-150">
+        <span className="text-[2.5em] opacity-20 blur-lg saturate-200">
           {emoji.emoji}
         </span>
       </span>

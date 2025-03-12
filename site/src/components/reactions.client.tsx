@@ -21,7 +21,6 @@ import {
   DEFAULT_KEYS_COUNT,
   DEFAULT_REACTIONS,
   MAX_REACTIONS,
-  MAX_ROWS,
   type ReactionsJson,
   UPDATED_AT_KEY,
   sortReactions,
@@ -29,7 +28,6 @@ import {
 } from "liveblocks.config";
 import { SmilePlus } from "lucide-react";
 import {
-  type CSSProperties,
   type ComponentProps,
   type RefObject,
   createContext,
@@ -78,7 +76,7 @@ interface ReactionsProps {
   serverReactions: ReactionsJson;
 }
 
-const LastVisibleReactionContext = createContext<number>(
+const FirstHiddenReactionIndexContext = createContext<number>(
   Number.POSITIVE_INFINITY,
 );
 
@@ -220,7 +218,7 @@ function AddReactionButton({
 function LiveblocksReactions() {
   const { id } = useSelf();
   const onEmojiSelectRef = use(AddReactionContext);
-  const lastVisibleReaction = use(LastVisibleReactionContext);
+  const firstHiddenReactionIndex = use(FirstHiddenReactionIndexContext);
   const reactions = useStorage((storage) => storage.reactions);
   const sortedReactions = useMemo(() => {
     return Array.from(reactions).sort(sortReactions);
@@ -296,7 +294,7 @@ function LiveblocksReactions() {
             count={count}
             disabled={!id}
             emoji={emoji}
-            hidden={index > lastVisibleReaction}
+            hidden={index >= firstHiddenReactionIndex}
             key={emoji}
             onClick={() => {
               toggleReaction(emoji);
@@ -344,7 +342,7 @@ function LocalReactions({
   const sortedReactions = useMemo(() => {
     return Object.entries(reactions).sort(sortReactionsEntries);
   }, [reactions]);
-  const lastVisibleReaction = use(LastVisibleReactionContext);
+  const firstHiddenReactionIndex = use(FirstHiddenReactionIndexContext);
   const toggleReaction = useCallback((emoji: string) => {
     setReactions((reactions) => {
       const reaction = reactions[emoji];
@@ -419,7 +417,7 @@ function LocalReactions({
             active={id in data}
             count={count}
             emoji={emoji}
-            hidden={index > lastVisibleReaction}
+            hidden={index >= firstHiddenReactionIndex}
             key={emoji}
             onClick={() => {
               toggleReaction(emoji);
@@ -488,9 +486,8 @@ export function ReactionsList({
 }: ComponentProps<"div">) {
   const ref = useRef<HTMLDivElement>(null!);
   const onEmojiSelectRef = useRef<(emoji: string) => void>(() => {});
-  const [lastVisibleReaction, setLastVisibleReaction] = useState<number>(
-    Number.POSITIVE_INFINITY,
-  );
+  const [firstHiddenReactionIndex, setFirstHiddenReactionIndex] =
+    useState<number>(0);
 
   const handleEmojiSelect = useCallback((emoji: string) => {
     onEmojiSelectRef.current(emoji);
@@ -500,33 +497,34 @@ export function ReactionsList({
     let debounceTimeout: ReturnType<typeof setTimeout>;
 
     const updateLastVisibleReaction = () => {
-      const reactions = Array.from(
-        ref.current.querySelectorAll("[data-reaction]"),
-      );
+      const reactions = [
+        ref.current,
+        ...Array.from(ref.current.querySelectorAll("[data-reaction]")),
+      ];
 
       getFastBoundingRects(reactions).then((rects) => {
+        const [containerRect, ...reactionRects] = rects.values();
         const rows = new Map<number, number>();
         let index = 0;
 
-        for (const rect of rects.values()) {
-          if (!rows.has(rect.top)) {
-            rows.set(rect.top, index);
+        for (const reactionRect of reactionRects) {
+          if (!rows.has(reactionRect.top)) {
+            rows.set(reactionRect.top, index);
+
+            if (
+              reactionRect.top >=
+              containerRect!.top + containerRect!.height
+            ) {
+              setFirstHiddenReactionIndex(index);
+
+              return;
+            }
           }
 
           index++;
         }
 
-        if (rows.size <= MAX_ROWS) {
-          setLastVisibleReaction(Number.POSITIVE_INFINITY);
-        } else {
-          const firstInvisibleReaction = Array.from(rows.values())[MAX_ROWS];
-
-          setLastVisibleReaction(
-            firstInvisibleReaction
-              ? firstInvisibleReaction - 1
-              : Number.POSITIVE_INFINITY,
-          );
-        }
+        setFirstHiddenReactionIndex(Number.POSITIVE_INFINITY);
       });
     };
 
@@ -563,23 +561,20 @@ export function ReactionsList({
   return (
     <div
       className={cn(
-        "[--button-height:calc(var(--spacing)*8)] [--gap:calc(var(--spacing)*1.5)]",
+        "2xs:[--rows:4] [--button-height:calc(var(--spacing)*8)] [--gap:calc(var(--spacing)*1.5)] [--rows:5] xs:[--rows:3]",
         "flex max-h-[calc(var(--button-height)_*_var(--rows)_+_var(--gap)_*_(var(--rows)_-_1))] min-h-(--button-height) flex-wrap gap-(--gap) [clip-path:inset(-3px)]",
         className,
       )}
       ref={ref}
-      style={
-        {
-          "--rows": MAX_ROWS,
-        } as CSSProperties
-      }
       {...props}
     >
       <AddReactionContext.Provider value={onEmojiSelectRef}>
         <AddReactionButton onEmojiSelect={handleEmojiSelect} />
-        <LastVisibleReactionContext.Provider value={lastVisibleReaction}>
+        <FirstHiddenReactionIndexContext.Provider
+          value={firstHiddenReactionIndex}
+        >
           {children}
-        </LastVisibleReactionContext.Provider>
+        </FirstHiddenReactionIndexContext.Provider>
       </AddReactionContext.Provider>
     </div>
   );
