@@ -194,7 +194,7 @@
   }
 
   :is(& > p, & > :not(.not-prose) p) {
-    @apply text-prose text-pretty leading-[1.6];
+    @apply text-prose text-pretty leading-[1.65];
 
     &:not(:last-child) {
       @apply mb-3.5;
@@ -209,6 +209,7 @@
     @apply link;
   }
 
+  figure,
   .code-block,
   .properties-table {
     @apply mt-4.5;

@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
 
-interface PropertiesTableRowProps
+interface PropertiesListRowProps
   extends Omit<ComponentProps<"li">, "name" | "type"> {
   name: string;
   type?: string;
@@ -9,26 +9,26 @@ interface PropertiesTableRowProps
   defaultValue?: string;
 }
 
-export function PropertiesTable({
+export function PropertiesList({
   children,
   className,
   ...props
-}: ComponentProps<"div">) {
+}: ComponentProps<"ul">) {
   return (
-    <div
+    <ul
       className={cn(
-        "not-prose properties-table rounded-lg border border-border border-dotted",
+        "not-prose properties-list overflow-hidden rounded-lg border border-border border-dotted",
         "**:[li:not(:last-child)]:border-border **:[li:not(:last-child)]:border-b **:[li:not(:last-child)]:border-dotted **:[li]:px-4 **:[li]:py-3",
         className,
       )}
       {...props}
     >
-      <ul>{children}</ul>
-    </div>
+      {children}
+    </ul>
   );
 }
 
-export function PropertiesTableBasicRow({
+export function PropertiesListBasicRow({
   children,
   className,
   ...props
@@ -40,7 +40,7 @@ export function PropertiesTableBasicRow({
   );
 }
 
-export function PropertiesTableRow({
+export function PropertiesListRow({
   name,
   type,
   required,
@@ -48,7 +48,7 @@ export function PropertiesTableRow({
   children,
   className,
   ...props
-}: PropertiesTableRowProps) {
+}: PropertiesListRowProps) {
   return (
     <li className={cn("flex flex-col gap-1", className)} {...props}>
       <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
@@ -66,7 +66,7 @@ export function PropertiesTableRow({
           </span>
         )}
         {defaultValue && (
-          <span className="text-product-brand text-secondary-foreground/80 text-xs leading-[1.6]">
+          <span className="text-product-brand text-secondary-foreground/80 text-xs leading-[1.65]">
             Default is {defaultValue}
           </span>
         )}

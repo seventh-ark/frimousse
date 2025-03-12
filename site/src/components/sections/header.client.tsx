@@ -63,8 +63,14 @@ export function StickyHeader() {
         ref={stickyRef}
       >
         <span className="pointer-events-auto flex w-fit items-center gap-2 pt-px">
-          <Logo className="flex-none" />
-          <h1 className="font-medium">Frimousse</h1>
+          <a
+            className="flex items-center gap-2 rounded-sm outline-offset-2 transition duration-200 ease-out hover:opacity-60 focus-visible:opacity-60"
+            // biome-ignore lint/a11y/useValidAnchor: This link only exists to scroll to the top of the page
+            href="#"
+          >
+            <Logo className="flex-none" />
+            <h1 className="font-medium">Frimousse</h1>
+          </a>
           <a
             className={cn(
               buttonVariants({ variant: "outline", size: "sm" }),

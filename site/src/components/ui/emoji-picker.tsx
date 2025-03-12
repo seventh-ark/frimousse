@@ -19,7 +19,7 @@ function EmojiPickerRow({ children, ...props }: EmojiPickerListRowProps) {
   return (
     <div
       {...props}
-      className="scroll-mb-[2vw] px-[2vw] sm:scroll-mb-1.5 sm:px-1.5"
+      className="scroll-my-[2vw] px-[2vw] sm:scroll-my-1.5 sm:px-1.5"
     >
       {children}
     </div>
@@ -35,13 +35,15 @@ function EmojiPickerEmoji({
     <button
       {...props}
       aria-label={emoji.label}
-      className="group relative flex aspect-square min-w-8 max-w-[calc(100%/var(--frimousse-list-columns))] flex-1 items-center justify-center whitespace-nowrap rounded-[max(2vw,var(--radius-md))] text-[max(4vw,var(--text-lg))] data-[active]:bg-muted/80 sm:size-8 sm:flex-none sm:rounded-md sm:text-lg"
+      className="group relative flex aspect-square min-w-8 max-w-[calc(100%/var(--frimousse-list-columns))] flex-1 items-center justify-center whitespace-nowrap rounded-[max(2vw,var(--radius-md))] text-[max(4vw,var(--text-lg))] transition-colors duration-200 ease-out data-[active]:bg-muted/80 data-[active]:duration-0 sm:size-8 sm:flex-none sm:rounded-md sm:text-lg"
     >
       <span
         aria-hidden
-        className="absolute inset-0 hidden items-center justify-center overflow-hidden rounded-[inherit] opacity-20 group-data-[active]:flex"
+        className="absolute inset-0 hidden items-center justify-center overflow-hidden rounded-[inherit] opacity-0 transition-[display,opacity] transition-discrete duration-200 ease-out group-data-[active]:flex group-data-[active]:opacity-100 group-data-[active]:duration-0"
       >
-        <span className="text-8xl blur-lg saturate-150">{emoji.emoji}</span>
+        <span className="text-8xl opacity-20 blur-lg saturate-150">
+          {emoji.emoji}
+        </span>
       </span>
       <span className="relative">{emoji.emoji}</span>
     </button>

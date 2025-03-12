@@ -50,7 +50,7 @@ export function MyEmojiPicker() {
 
 Apart from a few sizing and overflow defaults, the parts don’t have any styles out-of-the-box. Being composable, you can bring your own styles and apply them however you want: [Tailwind CSS](https://tailwindcss.com/), CSS-in-JS, vanilla CSS via inline styles, classes, or by targeting the `[frimousse-*]` data attributes present on each part.
 
-Now that your emoji picker component is styled, you might want to use it in a popover rather than on its own. Frimousse only provides the emoji picker itself so if you don’t have a popover component in your app yet, there are several libraries you could use: [Radix UI](https://www.radix-ui.com/primitives/docs/components/popover), [Base UI](https://base-ui.com/react/components/popover), [Headless UI](https://headlessui.com/react/popover), and [React Aria](https://react-spectrum.adobe.com/react-aria/Popover.html), to name a few.
+You might want to use it in a popover rather than on its own. Frimousse only provides the emoji picker itself so if you don’t have a popover component in your app yet, there are several libraries you could use: [Radix UI](https://www.radix-ui.com/primitives/docs/components/popover), [Base UI](https://base-ui.com/react/components/popover), [Headless UI](https://headlessui.com/react/popover), and [React Aria](https://react-spectrum.adobe.com/react-aria/Popover.html), to name a few.
 
 ### shadcn/ui
 
@@ -63,6 +63,12 @@ npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
 ## Documentation
 
 Find the full documentation and examples on [frimousse.liveblocks.io](https://frimousse.liveblocks.io).
+
+## Miscellaneous
+
+The name "frimousse" is the French word for "smiley" and "emoticon".
+
+Frimousse was originally created for the [Liveblocks Comments](https://liveblocks.io/comments) components, within [`@liveblocks/react-ui`](https://github.com/liveblocks/liveblocks/tree/main/packages/liveblocks-react-ui).
 
 ## Contributing
 

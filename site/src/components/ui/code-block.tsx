@@ -73,7 +73,7 @@ export async function CodeBlock({
         className={cn(
           "flex overflow-x-auto font-mono text-secondary-foreground text-sm",
           "**:[code:has(.line:only-child)]:h-full **:[code:has(.line:only-child)]:pt-3.25 **:[code:has(.line:only-child)]:pb-3 **:[code]:table **:[code]:py-3.5 **:[pre,code,.line]:w-full **:[pre,span]:text-(--shiki-light) dark:**:[pre,span]:text-(--shiki-dark) **:[pre]:cursor-text **:[pre]:outline-none",
-          "**:[.line]:table-row *:[.line]:after:w-0 **:[.line]:after:content-['\\00A0'] **:[.line_:first-child]:ml-4 **:[.line_:last-child]:mr-12 lg:**:[.line_:last-child]:mr-4",
+          "**:[.line:empty]:before:content-['_'] **:[.line]:table-row **:[.line_:first-child]:ml-4 **:[.line_:last-child]:mr-12 lg:**:[.line_:last-child]:mr-4",
           "**:[.line.highlighted]:bg-secondary/60 dark:**:[.line.highlighted]:bg-secondary/80",
           "**:[.line.diff.add]:bg-lime-500/15 dark:**:[.line.diff.add]:bg-lime-400/10",
           "**:[.line.diff.remove]:bg-rose-500/20 **:[.line.diff.remove]:opacity-50 dark:**:[.line.diff.remove]:bg-rose-400/20",

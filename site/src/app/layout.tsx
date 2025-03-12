@@ -19,10 +19,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 const config = {
-  name: "Frimousse — An emoji picker component for React",
+  name: "Frimousse — An emoji picker for React",
   url: "https://frimousse.liveblocks.io",
   description:
-    "A modern React emoji picker: fast, lightweight, fully customizable, and always up-to-date.",
+    "A lightweight, unstyled, and composable emoji picker for React.",
   links: {
     twitter: "https://x.com/liveblocks",
     github: "https://github.com/liveblocks/frimousse",

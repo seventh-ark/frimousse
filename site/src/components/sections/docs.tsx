@@ -2,12 +2,14 @@ import { cn } from "@/lib/utils";
 import { CircleHelp } from "lucide-react";
 import type { ComponentProps } from "react";
 import { PermalinkHeading } from "../permalink-heading";
+import { ColorfulBackgroundsAlternate } from "../playgrounds/colorful-backgrounds-alternate";
+import { ColorfulBackgroundsBlur } from "../playgrounds/colorful-backgrounds-blur";
 import { CodeBlock } from "../ui/code-block";
 import {
-  PropertiesTable,
-  PropertiesTableBasicRow,
-  PropertiesTableRow,
-} from "../ui/properties-table";
+  PropertiesList,
+  PropertiesListBasicRow,
+  PropertiesListRow,
+} from "../ui/properties-list";
 
 export function Docs({
   className,
@@ -49,11 +51,13 @@ export function Docs({
         , CSS-in-JS, vanilla CSS via inline styles, classes, or by targeting the{" "}
         <code>[frimousse-*]</code> data attributes present on each part.
       </p>
+      <figure className="not-prose aspect-16/10 rounded-lg bg-muted p-4">
+        Placeholder: Tailwind and vanilla CSS examples (with code)
+      </figure>
       <p>
-        Now that your emoji picker component is styled, you might want to use it
-        in a popover rather than on its own. Frimousse only provides the emoji
-        picker itself so if you don’t have a popover component in your app yet,
-        there are several libraries you could use:{" "}
+        You might want to use it in a popover rather than on its own. Frimousse
+        only provides the emoji picker itself so if you don’t have a popover
+        component in your app yet, there are several libraries you could use:{" "}
         <a
           href="https://www.radix-ui.com/primitives/docs/components/popover"
           rel="noreferrer"
@@ -112,12 +116,126 @@ export function Docs({
       <CodeBlock lang="bash">
         npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
       </CodeBlock>
+      <figure className="not-prose aspect-16/10 rounded-lg bg-muted p-4">
+        Placeholder: shadcn/ui example (with code)
+      </figure>
+
+      <PermalinkHeading as="h2">Styling</PermalinkHeading>
+      <p>Various styling-related details and examples.</p>
+
+      <PermalinkHeading as="h3">Dimensions</PermalinkHeading>
+      <p>
+        The emoji picker doesn’t require hard-coded dimensions and instead
+        supports dynamically adapting to the contents (e.g. the number of
+        columns, the size of the rows, the padding within the sticky category
+        headers, etc). One aspect to keep in mind is that{" "}
+        <a href="#EmojiPicker.List-Inner-Components">inner components</a> within{" "}
+        <a href="#EmojiPicker.List">
+          <code>EmojiPicker.List</code>
+        </a>{" "}
+        should be of the same size (e.g. all rows should be of the same height)
+        to prevent layout shifts.
+      </p>
+      <figure className="not-prose aspect-16/10 rounded-lg bg-muted p-4">
+        Placeholder: Dynamic width example (with slider)
+      </figure>
+      <p>
+        The{" "}
+        <a href="#EmojiPicker.Root-CSS-Variables">
+          <code>--frimousse-viewport-width</code>
+        </a>{" "}
+        CSS variable can be used as a <code>max-width</code> to prevent some
+        areas from becoming wider than the automatically sized contents, when
+        showing the hovered emoji’s name below for example.
+      </p>
+      <p>
+        And although not required, it’s still possible to force the emoji picker
+        and its contents to be of a specific width, to fit the viewport on
+        mobile for example.
+      </p>
+
+      <PermalinkHeading as="h3">List Padding</PermalinkHeading>
+      <p>
+        Because of its virtualized nature, adding padding to{" "}
+        <a href="#EmojiPicker.List">
+          <code>EmojiPicker.List</code>
+        </a>{" "}
+        can be tricky. We recommend adding horizontal padding to{" "}
+        <a href="#EmojiPicker.List-Inner-Components">rows</a> and{" "}
+        <a href="#EmojiPicker.List-Inner-Components">category headers</a>, and
+        vertical padding on the <a href="#EmojiPicker.List">list</a> itself.
+        Finally, to apply the same vertical padding to the{" "}
+        <a href="#EmojiPicker.Viewport">viewport</a> when keyboard navigating
+        (which automatically scrolls to out-of-view rows), you can set the same
+        value as{" "}
+        <a
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-margin-block"
+          rel="noreferrer"
+          target="_blank"
+        >
+          <code>scroll-margin-block</code>
+        </a>{" "}
+        on <a href="#EmojiPicker.List-Inner-Components">rows</a>.
+      </p>
+      <figure className="not-prose aspect-16/10 rounded-lg bg-muted p-4">
+        Placeholder: Padding example
+      </figure>
+
+      <PermalinkHeading as="h3">Colorful Buttons</PermalinkHeading>
+      <p>
+        Some emoji pickers like Slack’s display their emoji buttons with
+        seemingly random background colors when active (either hovered or
+        selected via keyboard navigation). This can be achieved by using{" "}
+        <a
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child"
+          rel="noreferrer"
+          target="_blank"
+        >
+          <code>:nth-child</code>
+        </a>{" "}
+        selectors on <a href="#EmojiPicker.List-Inner-Components">rows</a> and{" "}
+        <a href="#EmojiPicker.List-Inner-Components">emojis</a> to alternate
+        through a list of colors. In the example below, a row’s first emoji has
+        a{" "}
+        <span className="inline-block rounded-[0.3em] bg-rose-100 px-[0.375em] py-[0.275em] leading-none dark:bg-rose-950">
+          red
+        </span>{" "}
+        background, the second{" "}
+        <span className="inline-block rounded-[0.3em] bg-lime-100 px-[0.375em] py-[0.275em] leading-none dark:bg-lime-950">
+          green
+        </span>
+        , the third{" "}
+        <span className="inline-block rounded-[0.3em] bg-sky-100 px-[0.375em] py-[0.275em] leading-none dark:bg-sky-950">
+          blue
+        </span>
+        , then{" "}
+        <span className="inline-block rounded-[0.3em] bg-rose-100 px-[0.375em] py-[0.275em] leading-none dark:bg-rose-950">
+          red
+        </span>{" "}
+        again, and so on. All <strong>odd</strong> rows will follow the same
+        pattern, while <strong>even</strong> rows offset it by one to avoid
+        every column using the same color, starting with{" "}
+        <span className="inline-block rounded-[0.3em] bg-sky-100 px-[0.375em] py-[0.275em] leading-none dark:bg-sky-950">
+          blue
+        </span>{" "}
+        instead of{" "}
+        <span className="inline-block rounded-[0.3em] bg-rose-100 px-[0.375em] py-[0.275em] leading-none dark:bg-rose-950">
+          red
+        </span>
+        .
+      </p>
+      <ColorfulBackgroundsAlternate />
+      <p>
+        Some other emoji pickers like Linear’s use the main color from the
+        button’s emoji as background color instead. Extracting colors from
+        emojis isn’t trivial, but a similar visual result can be achieved more
+        easily by duplicating the emoji and scaling it to fill the background,
+        then blurring it.
+      </p>
+      <ColorfulBackgroundsBlur />
 
       <PermalinkHeading as="h2">API Reference</PermalinkHeading>
-      <p>
-        All parts and hooks along their props, parameters, data attributes, and
-        CSS variables.
-      </p>
+      <p>All parts and hooks, along their usage and options.</p>
 
       <PermalinkHeading as="h3">EmojiPicker.Root</PermalinkHeading>
       <p>Surrounds all the emoji picker parts.</p>
@@ -135,28 +253,31 @@ export function Docs({
       </p>
       <CodeBlock lang="tsx">{`
         <EmojiPicker.Root locale="fr" columns={8} skinTone="medium">
-          {/* … */}
+          {/* ... */}
         </EmojiPicker.Root>
       `}</CodeBlock>
-      <h4>Props</h4>
-      <PropertiesTable>
-        <PropertiesTableRow name="onEmojiSelect" type="(emoji: string) => void">
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.Root-Props">
+        Props
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow name="onEmojiSelect" type="(emoji: string) => void">
           <p>A callback invoked when an emoji is selected.</p>
-        </PropertiesTableRow>
-        <PropertiesTableRow defaultValue={`"en"`} name="locale" type="Locale">
+        </PropertiesListRow>
+        <PropertiesListRow defaultValue={`"en"`} name="locale" type="Locale">
           <p>The locale of the emoji picker.</p>
-        </PropertiesTableRow>
-        <PropertiesTableRow
+        </PropertiesListRow>
+        <PropertiesListRow
           defaultValue={`"none"`}
           name="skinTone"
           type="SkinTone"
         >
           <p>The skin tone of the emoji picker.</p>
-        </PropertiesTableRow>
-        <PropertiesTableRow defaultValue="10" name="columns" type="number">
+        </PropertiesListRow>
+        <PropertiesListRow defaultValue="10" name="columns" type="number">
           <p>The number of columns in the list.</p>
-        </PropertiesTableRow>
-        <PropertiesTableRow
+        </PropertiesListRow>
+        <PropertiesListRow
           defaultValue="the most recent version supported by the current browser"
           name="emojiVersion"
           type="number"
@@ -173,45 +294,51 @@ export function Docs({
             to use, to manually control which emojis are visible regardless of
             the current browser's supported Emoji versions.
           </p>
-        </PropertiesTableRow>
-        <PropertiesTableBasicRow>
+        </PropertiesListRow>
+        <PropertiesListBasicRow>
           <p>
             All built-in <code>div</code> props.
           </p>
-        </PropertiesTableBasicRow>
-      </PropertiesTable>
-      <h4>Attributes</h4>
-      <PropertiesTable>
-        <PropertiesTableRow name="[frimousse-root]">
+        </PropertiesListBasicRow>
+      </PropertiesList>
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.Root-Attributes">
+        Attributes
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow name="[frimousse-root]">
           <p>Can be targeted in CSS for styling.</p>
-        </PropertiesTableRow>
-        <PropertiesTableRow name="[data-focused]">
+        </PropertiesListRow>
+        <PropertiesListRow name="[data-focused]">
           <p>
             Present when the emoji picker or its inner elements are focused.
           </p>
-        </PropertiesTableRow>
-      </PropertiesTable>
-      <h4>CSS Variables</h4>
-      <PropertiesTable>
-        <PropertiesTableRow name="--frimousse-emoji-font" type="<string>">
+        </PropertiesListRow>
+      </PropertiesList>
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.Root-CSS-Variables">
+        CSS Variables
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow name="--frimousse-emoji-font" type="<string>">
           <p>A list of font families to use when rendering emojis.</p>
-        </PropertiesTableRow>
-        <PropertiesTableRow name="--frimousse-viewport-width" type="<length>">
+        </PropertiesListRow>
+        <PropertiesListRow name="--frimousse-viewport-width" type="<length>">
           <p>The measured width of the viewport.</p>
-        </PropertiesTableRow>
-        <PropertiesTableRow name="--frimousse-viewport-height" type="<length>">
+        </PropertiesListRow>
+        <PropertiesListRow name="--frimousse-viewport-height" type="<length>">
           <p>The measured height of the viewport.</p>
-        </PropertiesTableRow>
-        <PropertiesTableRow name="--frimousse-row-height" type="<length>">
+        </PropertiesListRow>
+        <PropertiesListRow name="--frimousse-row-height" type="<length>">
           <p>The measured height of a row in the list.</p>
-        </PropertiesTableRow>
-        <PropertiesTableRow
+        </PropertiesListRow>
+        <PropertiesListRow
           name="--frimousse-category-header-height"
           type="<length>"
         >
           <p>The measured height of a category header in the list.</p>
-        </PropertiesTableRow>
-      </PropertiesTable>
+        </PropertiesListRow>
+      </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.Search</PermalinkHeading>
       <p>A search input to filter the list of emojis.</p>
@@ -233,20 +360,26 @@ export function Docs({
           </EmojiPicker.Root>
         );
       `}</CodeBlock>
-      <h4>Props</h4>
-      <PropertiesTable>
-        <PropertiesTableBasicRow>
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.Search-Props">
+        Props
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListBasicRow>
           <p>
             All built-in <code>input</code> props.
           </p>
-        </PropertiesTableBasicRow>
-      </PropertiesTable>
-      <h4>Attributes</h4>
-      <PropertiesTable>
-        <PropertiesTableRow name="[frimousse-search]">
+        </PropertiesListBasicRow>
+      </PropertiesList>
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.Search-Attributes">
+        Attributes
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow name="[frimousse-search]">
           <p>Can be targeted in CSS for styling.</p>
-        </PropertiesTableRow>
-      </PropertiesTable>
+        </PropertiesListRow>
+      </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.Viewport</PermalinkHeading>
       <p>The scrolling container of the emoji picker.</p>
@@ -261,20 +394,26 @@ export function Docs({
           <EmojiPicker.List />
         </EmojiPicker.Viewport>
       `}</CodeBlock>
-      <h4>Props</h4>
-      <PropertiesTable>
-        <PropertiesTableBasicRow>
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.Viewport-Props">
+        Props
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListBasicRow>
           <p>
             All built-in <code>div</code> props.
           </p>
-        </PropertiesTableBasicRow>
-      </PropertiesTable>
-      <h4>Attributes</h4>
-      <PropertiesTable>
-        <PropertiesTableRow name="[frimousse-viewport]">
+        </PropertiesListBasicRow>
+      </PropertiesList>
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.Viewport-Attributes">
+        Attributes
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow name="[frimousse-viewport]">
           <p>Can be targeted in CSS for styling.</p>
-        </PropertiesTableRow>
-      </PropertiesTable>
+        </PropertiesListRow>
+      </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.List</PermalinkHeading>
       <p>The list of emojis.</p>
@@ -304,29 +443,38 @@ export function Docs({
           />
         </EmojiPicker.Viewport>
       `}</CodeBlock>
-      <h4>Props</h4>
-      <PropertiesTable>
-        <PropertiesTableRow
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.List-Props">
+        Props
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow
           name="components"
           type="Partial<EmojiPickerListComponents>"
         >
           <p>The inner components of the list.</p>
-        </PropertiesTableRow>
-        <PropertiesTableBasicRow>
+        </PropertiesListRow>
+        <PropertiesListBasicRow>
           <p>
             All built-in <code>div</code> props.
           </p>
-        </PropertiesTableBasicRow>
-      </PropertiesTable>
-      <h4>Attributes</h4>
-      <PropertiesTable>
-        <PropertiesTableRow name="[frimousse-list]">
+        </PropertiesListBasicRow>
+      </PropertiesList>
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.List-Attributes">
+        Attributes
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow name="[frimousse-list]">
           <p>Can be targeted in CSS for styling.</p>
-        </PropertiesTableRow>
-      </PropertiesTable>
-      <h4>Inner components</h4>
-      <PropertiesTable>
-        <PropertiesTableRow
+        </PropertiesListRow>
+      </PropertiesList>
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.List-Inner-Components">
+        Inner Components
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow
           name="CategoryHeader"
           type="EmojiPickerListCategoryHeaderProps"
         >
@@ -340,8 +488,19 @@ export function Docs({
             />
             <span>All category headers should be of the same size.</span>
           </p>
-        </PropertiesTableRow>
-        <PropertiesTableRow name="Row" type="EmojiPickerListRowProps">
+        </PropertiesListRow>
+        <PropertiesListRow className="pl-8!" name="[frimousse-category-header]">
+          <p>Can be targeted in CSS for styling.</p>
+        </PropertiesListRow>
+        <PropertiesListRow className="pl-8!" name="category" type="Category">
+          <p>The category for this sticky header.</p>
+        </PropertiesListRow>
+        <PropertiesListBasicRow className="pl-8!">
+          <p>
+            All built-in <code>div</code> props.
+          </p>
+        </PropertiesListBasicRow>
+        <PropertiesListRow name="Row" type="EmojiPickerListRowProps">
           <p>The component used to render a row of emojis in the list.</p>
           <p className="text-secondary-foreground/60!">
             <CircleHelp
@@ -350,8 +509,16 @@ export function Docs({
             />
             <span>All rows should be of the same size.</span>
           </p>
-        </PropertiesTableRow>
-        <PropertiesTableRow name="Emoji" type="EmojiPickerListEmojiProps">
+        </PropertiesListRow>
+        <PropertiesListRow className="pl-8!" name="[frimousse-row]">
+          <p>Can be targeted in CSS for styling.</p>
+        </PropertiesListRow>
+        <PropertiesListBasicRow className="pl-8!">
+          <p>
+            All built-in <code>div</code> props.
+          </p>
+        </PropertiesListBasicRow>
+        <PropertiesListRow name="Emoji" type="EmojiPickerListEmojiProps">
           <p>The component used to render an emoji button in the list.</p>
           <p className="text-secondary-foreground/60!">
             <CircleHelp
@@ -360,8 +527,25 @@ export function Docs({
             />
             <span>All emojis should be of the same size.</span>
           </p>
-        </PropertiesTableRow>
-      </PropertiesTable>
+        </PropertiesListRow>
+        <PropertiesListRow className="pl-8!" name="[frimousse-emoji]">
+          <p>Can be targeted in CSS for styling.</p>
+        </PropertiesListRow>
+        <PropertiesListRow className="pl-8!" name="emoji" type="Emoji">
+          <p>The emoji for this button.</p>
+        </PropertiesListRow>
+        <PropertiesListRow className="pl-8!" name="isActive" type="boolean">
+          <p>
+            Whether the emoji is currently active (either hovered or selected
+            via keyboard navigation).
+          </p>
+        </PropertiesListRow>
+        <PropertiesListBasicRow className="pl-8!">
+          <p>
+            All built-in <code>button</code> props.
+          </p>
+        </PropertiesListBasicRow>
+      </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.Loading</PermalinkHeading>
       <p>
@@ -373,12 +557,15 @@ export function Docs({
           <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
         </EmojiPicker.Viewport>
       `}</CodeBlock>
-      <h4>Props</h4>
-      <PropertiesTable>
-        <PropertiesTableRow name="children" type="ReactNode">
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.Loading-Props">
+        Props
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow name="children" type="ReactNode">
           <p>The content to render when the emoji data is loading.</p>
-        </PropertiesTableRow>
-      </PropertiesTable>
+        </PropertiesListRow>
+      </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.Empty</PermalinkHeading>
       <p>
@@ -399,9 +586,12 @@ export function Docs({
           {({ search }) => <>No emoji found for "{search}"</>}
         </EmojiPicker.Empty>
       `}</CodeBlock>
-      <h4>Props</h4>
-      <PropertiesTable>
-        <PropertiesTableRow
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.Empty-Props">
+        Props
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow
           name="children"
           type="ReactNode | ((props: EmojiPickerEmptyRenderProps) => ReactNode)"
         >
@@ -409,8 +599,8 @@ export function Docs({
             The content to render when no emoji is found for the current search,
             or a render callback which receives the current search value.
           </p>
-        </PropertiesTableRow>
-      </PropertiesTable>
+        </PropertiesListRow>
+      </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.SkinToneSelector</PermalinkHeading>
       <p>
@@ -435,23 +625,29 @@ export function Docs({
         </a>{" "}
         hook.
       </p>
-      <h4>Props</h4>
-      <PropertiesTable>
-        <PropertiesTableRow defaultValue={`"✋"`} name="emoji" type="string">
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.SkinToneSelector-Props">
+        Props
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow defaultValue={`"✋"`} name="emoji" type="string">
           <p>The emoji to use as visual for the skin tone variations.</p>
-        </PropertiesTableRow>
-        <PropertiesTableBasicRow>
+        </PropertiesListRow>
+        <PropertiesListBasicRow>
           <p>
             All built-in <code>button</code> props.
           </p>
-        </PropertiesTableBasicRow>
-      </PropertiesTable>
-      <h4>Attributes</h4>
-      <PropertiesTable>
-        <PropertiesTableRow name="[frimousse-skin-tone-selector]">
+        </PropertiesListBasicRow>
+      </PropertiesList>
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.SkinToneSelector-Attributes">
+        Attributes
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow name="[frimousse-skin-tone-selector]">
           <p>Can be targeted in CSS for styling.</p>
-        </PropertiesTableRow>
-      </PropertiesTable>
+        </PropertiesListRow>
+      </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.SkinTone</PermalinkHeading>
       <p>
@@ -500,12 +696,15 @@ export function Docs({
         </a>
         .
       </p>
-      <h4>Props</h4>
-      <PropertiesTable>
-        <PropertiesTableRow defaultValue={`"✋"`} name="emoji" type="string">
+
+      <PermalinkHeading as="h4" slug="EmojiPicker.SkinTone-Props">
+        Props
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow defaultValue={`"✋"`} name="emoji" type="string">
           <p>The emoji to use as visual for the skin tone variations.</p>
-        </PropertiesTableRow>
-      </PropertiesTable>
+        </PropertiesListRow>
+      </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.ActiveEmoji</PermalinkHeading>
       <p>
@@ -572,12 +771,15 @@ export function Docs({
         </a>
         .
       </p>
-      <h4>Parameters</h4>
-      <PropertiesTable>
-        <PropertiesTableRow defaultValue={`"✋"`} name="emoji" type="string">
+
+      <PermalinkHeading as="h4" slug="useSkinTone-Parameters">
+        Parameters
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow defaultValue={`"✋"`} name="emoji" type="string">
           <p>The emoji to use as visual for the skin tone variations.</p>
-        </PropertiesTableRow>
-      </PropertiesTable>
+        </PropertiesListRow>
+      </PropertiesList>
 
       <PermalinkHeading as="h3">useActiveEmoji</PermalinkHeading>
       <p>
