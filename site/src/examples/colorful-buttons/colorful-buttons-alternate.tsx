@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 import type { Emoji as EmojiObject } from "frimousse";
 import { type ComponentProps, type PointerEvent, useCallback } from "react";
@@ -109,6 +110,9 @@ function Emoji({
       }}
       type="button"
       {...props}
+      onClick={() => {
+        toast(emoji.emoji, emoji.label);
+      }}
     >
       {emoji.emoji}
     </button>

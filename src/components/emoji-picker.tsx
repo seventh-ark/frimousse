@@ -262,7 +262,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
           if (activeEmoji) {
             event.preventDefault();
 
-            onEmojiSelect(activeEmoji.emoji);
+            onEmojiSelect(activeEmoji.emoji, activeEmoji.label);
           }
         }
 
@@ -806,8 +806,8 @@ const EmojiPickerListEmoji = memo(
     );
 
     const handleSelect = useCallback(() => {
-      store.get().onEmojiSelect(emoji.emoji);
-    }, [emoji.emoji]);
+      store.get().onEmojiSelect(emoji.emoji, emoji.label);
+    }, [emoji.emoji, emoji.label]);
 
     const handlePointerEnter = useCallback(() => {
       store.get().onActiveEmojiChange("pointer", columnIndex, rowIndex);

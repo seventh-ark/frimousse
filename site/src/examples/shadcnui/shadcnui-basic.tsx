@@ -1,3 +1,6 @@
+"use client";
+
+import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
 import {
@@ -19,7 +22,12 @@ export function ShadcnUiBasic({
       {...props}
     >
       <div className="not-base shadcnui flex size-full items-center justify-center">
-        <EmojiPicker className="h-[320px] rounded-lg border shadow-md">
+        <EmojiPicker
+          className="h-[320px] rounded-lg border shadow-md"
+          onEmojiSelect={(emoji, label) => {
+            toast(emoji, label);
+          }}
+        >
           <EmojiPickerSearch />
           <EmojiPickerContent />
         </EmojiPicker>

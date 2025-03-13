@@ -151,7 +151,7 @@ export interface EmojiPickerRootProps extends ComponentProps<"div"> {
   /**
    * A callback invoked when an emoji is selected.
    */
-  onEmojiSelect?: (emoji: string) => void;
+  onEmojiSelect?: (emoji: string, label: string) => void;
 
   /**
    * The locale of the emoji picker.

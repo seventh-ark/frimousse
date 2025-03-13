@@ -3,6 +3,7 @@ import type {
   EmojiPickerData,
   EmojiPickerDataRow,
   EmojiPickerEmoji,
+  EmojiPickerRootProps,
   Locale,
   SkinTone,
 } from "./types";
@@ -16,7 +17,7 @@ export type EmojiPickerStore = {
   locale: Locale;
   columns: number;
   skinTone: SkinTone;
-  onEmojiSelect: (emoji: string) => void;
+  onEmojiSelect: NonNullable<EmojiPickerRootProps["onEmojiSelect"]>;
 
   data: EmojiPickerData | null | undefined;
   search: string;
@@ -55,7 +56,7 @@ export type EmojiPickerStore = {
 };
 
 export function createEmojiPickerStore(
-  onEmojiSelect: (emoji: string) => void,
+  onEmojiSelect: NonNullable<EmojiPickerRootProps["onEmojiSelect"]>,
   initialLocale: Locale,
   initialColumns: number,
   initialSkinTone: SkinTone,

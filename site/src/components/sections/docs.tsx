@@ -269,7 +269,10 @@ export function Docs({
         Props
       </PermalinkHeading>
       <PropertiesList>
-        <PropertiesListRow name="onEmojiSelect" type="(emoji: string) => void">
+        <PropertiesListRow
+          name="onEmojiSelect"
+          type="(emoji: string, label: string) => void"
+        >
           <p>A callback invoked when an emoji is selected.</p>
         </PropertiesListRow>
         <PropertiesListRow defaultValue={`"en"`} name="locale" type="Locale">

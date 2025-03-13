@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import type { PropsWithChildren } from "react";
+import { Toaster } from "sonner";
 import { DynamicMaximumScaleMeta } from "./layout.client";
 import "./styles.css";
 
@@ -87,6 +88,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           enableSystem
         >
           <DynamicMaximumScaleMeta />
+          <Toaster mobileOffset={26} />
           <div
             className={cn(
               "container relative flex min-h-dvh flex-col",

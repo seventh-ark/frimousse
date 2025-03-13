@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 import { type ComponentProps, useState } from "react";
 import { Button } from "./ui/button";
@@ -33,9 +34,9 @@ export function ShadcnUiPopover({
           <PopoverContent className="w-fit p-0" side="bottom">
             <EmojiPicker
               className="h-[320px]"
-              onEmojiSelect={(emoji) => {
+              onEmojiSelect={(emoji, label) => {
                 setIsOpen(false);
-                console.log(emoji);
+                toast(emoji, label);
               }}
             >
               <EmojiPickerSearch />
