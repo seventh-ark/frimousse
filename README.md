@@ -66,9 +66,9 @@ Find the full documentation and examples on [frimousse.liveblocks.io](https://fr
 
 ## Miscellaneous
 
-The name "frimousse" is the French word for "smiley" and "emoticon".
+The name “frimousse” is the French word for “smiley” and “emoticon”.
 
-Frimousse was originally created for the [Liveblocks Comments](https://liveblocks.io/comments) components, within [`@liveblocks/react-ui`](https://github.com/liveblocks/liveblocks/tree/main/packages/liveblocks-react-ui).
+The emoji picker component was originally created for the [Liveblocks Comments](https://liveblocks.io/comments) components, within [`@liveblocks/react-ui`](https://github.com/liveblocks/liveblocks/tree/main/packages/liveblocks-react-ui).
 
 ## Contributing
 

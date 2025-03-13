@@ -808,6 +808,30 @@ export function Docs({
         </a>{" "}
         is also available.
       </p>
+      <PermalinkHeading as="h2">Miscellaneous</PermalinkHeading>
+
+      <p>
+        The name “frimousse” is the French word for “smiley” and “emoticon”.
+      </p>
+      <p>
+        The emoji picker component was originally created for the{" "}
+        <a
+          href="https://liveblocks.io/comments"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Liveblocks Comments
+        </a>{" "}
+        components, within{" "}
+        <a
+          href="https://github.com/liveblocks/liveblocks/tree/main/packages/liveblocks-react-ui"
+          rel="noreferrer"
+          target="_blank"
+        >
+          <code>@liveblocks/react-ui</code>
+        </a>
+        .
+      </p>
     </section>
   );
 }
