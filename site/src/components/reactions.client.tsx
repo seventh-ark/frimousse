@@ -26,7 +26,6 @@ import {
   sortReactions,
   sortReactionsEntries,
 } from "liveblocks.config";
-import { SmilePlus } from "lucide-react";
 import {
   type ComponentProps,
   type RefObject,
@@ -178,6 +177,28 @@ function ReactionPlaceholder({
   );
 }
 
+function EmojiPlusIcon(props: ComponentProps<"svg">) {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <title>Add emoji</title>
+      <path d="M9 1.07A7 7 0 1 0 14.93 7" />
+      <path d="M5.5 9.5S6.25 11 8 11s2.5-1.5 2.5-1.5M6 6h0" />
+      <circle cx="6" cy="6" r=".25" />
+      <path d="M10 6h0" />
+      <circle cx="10" cy="6" r=".25" />
+      <path d="M11 3h4m-2-2v4" />
+    </svg>
+  );
+}
+
 function AddReactionButton({
   onEmojiSelect,
   ...props
@@ -203,7 +224,7 @@ function AddReactionButton({
       title="Try it"
       {...props}
     >
-      <SmilePlus className="-ml-0.5 relative transition-transform will-change-transform group-active:rotate-6 group-active:scale-85" />{" "}
+      <EmojiPlusIcon className="-ml-0.5 relative transition-transform will-change-transform group-active:rotate-6 group-active:scale-85" />{" "}
       Try it
     </button>
   );

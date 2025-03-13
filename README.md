@@ -54,7 +54,7 @@ You might want to use it in a popover rather than on its own. Frimousse only pro
 
 ### shadcn/ui
 
-If you are using [shadcn/ui](https://ui.shadcn.com/), you can install a pre-built component which integrates with the existing [shadcn/ui](https://ui.shadcn.com/) themes and components (e.g. [Popover](https://ui.shadcn.com/docs/components/popover)).
+If you are using [shadcn/ui](https://ui.shadcn.com/), you can install a pre-built component which integrates with the existing [shadcn/ui](https://ui.shadcn.com/) variables.
 
 ```bash
 npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker

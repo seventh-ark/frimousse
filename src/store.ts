@@ -253,7 +253,7 @@ export function createEmojiPickerStore(
           // Align to the viewport's top or bottom based on the row's position
           top: Math.max(
             rowY < viewportStartY + categoryHeaderHeight
-              ? rowY - categoryHeaderHeight - rowScrollMarginTop
+              ? rowY - Math.max(categoryHeaderHeight, rowScrollMarginTop)
               : rowY - viewportHeight + rowHeight + rowScrollMarginBottom,
             0,
           ),

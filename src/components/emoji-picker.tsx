@@ -130,7 +130,7 @@ function EmojiPickerDataHandler({
  *
  * @example
  * ```tsx
- * <EmojiPicker.Root locale="fr" columns={8} skinTone="medium">
+ * <EmojiPicker.Root locale="fr" columns={10} skinTone="medium">
  *   …
  * </EmojiPicker.Root>
  */
@@ -138,7 +138,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
   (
     {
       locale = "en",
-      columns = 10,
+      columns = 9,
       skinTone = "none",
       onEmojiSelect = noop,
       emojiVersion,
@@ -843,7 +843,12 @@ const EmojiPickerListRow = memo(
       store,
       (state) => state.data?.rows[rowIndex],
       sameEmojiPickerRow,
-    )!;
+    );
+
+    /* v8 ignore next 3 */
+    if (!row) {
+      return null;
+    }
 
     return (
       <Row {...listRowProps(rowIndex)}>
@@ -874,7 +879,12 @@ const EmojiPickerListCategory = memo(
       store,
       (state) => state.data?.categories[categoryIndex],
       shallow,
-    )!;
+    );
+
+    /* v8 ignore next 3 */
+    if (!category) {
+      return null;
+    }
 
     return (
       <div {...listCategoryProps(categoryIndex, category)}>

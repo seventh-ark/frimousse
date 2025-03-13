@@ -26,8 +26,8 @@ function PopoverContent({
       <PopoverPrimitive.Content
         align={align}
         className={cn(
-          "elevation relative z-50 origin-(--radix-popover-content-transform-origin) overflow-hidden rounded-xl bg-background shadow-elevation outline-none",
-          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-[0.96] data-[state=open]:zoom-in-[0.96] data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=open]:animate-in",
+          "elevation relative isolate z-50 origin-(--radix-popover-content-transform-origin) overflow-hidden rounded-xl bg-background shadow-elevation outline-none",
+          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-[0.96] data-[state=open]:zoom-in-[0.96] data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 after:pointer-events-none after:absolute after:inset-0 after:z-10 after:rounded-[inherit] data-[state=closed]:animate-out data-[state=open]:animate-in dark:after:shadow-[inset_0_0_0_1px_var(--color-neutral-800)]",
           className,
         )}
         collisionPadding={8}

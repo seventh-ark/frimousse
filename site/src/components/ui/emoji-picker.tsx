@@ -8,18 +8,59 @@ import {
   EmojiPicker as EmojiPickerPrimitive,
   type EmojiPickerRootProps,
 } from "frimousse";
-import { Frown, LoaderCircle, Search } from "lucide-react";
+import type { ComponentProps } from "react";
 import { buttonVariants } from "./button";
 
 interface EmojiPickerProps extends EmojiPickerRootProps {
   autoFocus?: boolean;
 }
 
-function EmojiPickerRow({ children, ...props }: EmojiPickerListRowProps) {
+function SearchIcon(props: ComponentProps<"svg">) {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <title>Search</title>
+      <path d="M7 12.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Zm7 1.5-3-3" />
+    </svg>
+  );
+}
+
+function SpinnerIcon(props: ComponentProps<"svg">) {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <title>Spinner</title>
+      <path d="M3 10a7 7 0 0 1 7-7" />
+    </svg>
+  );
+}
+
+function EmojiPickerRow({
+  children,
+  className,
+  ...props
+}: EmojiPickerListRowProps) {
   return (
     <div
       {...props}
-      className="scroll-my-[2vw] px-[2vw] sm:scroll-my-1.5 sm:px-1.5"
+      className={cn(
+        "scroll-my-[2vw] px-[2vw] sm:scroll-my-1.5 sm:px-1.5",
+        className,
+      )}
     >
       {children}
     </div>
@@ -29,13 +70,17 @@ function EmojiPickerRow({ children, ...props }: EmojiPickerListRowProps) {
 function EmojiPickerEmoji({
   emoji,
   isActive,
+  className,
   ...props
 }: EmojiPickerListEmojiProps) {
   return (
     <button
       {...props}
       aria-label={emoji.label}
-      className="group relative flex aspect-square min-w-8 max-w-[calc(100%/var(--frimousse-list-columns))] flex-1 items-center justify-center whitespace-nowrap rounded-[max(2vw,var(--radius-md))] text-[max(4vw,var(--text-lg))] transition-colors duration-200 ease-out data-[active]:bg-muted/80 data-[active]:duration-0 sm:size-8 sm:flex-none sm:rounded-md sm:text-lg"
+      className={cn(
+        "group relative flex aspect-square min-w-8 max-w-[calc(100%/var(--frimousse-list-columns))] flex-1 items-center justify-center whitespace-nowrap rounded-[max(2vw,var(--radius-md))] text-[max(4vw,var(--text-lg))] transition-colors duration-200 ease-out data-[active]:bg-muted/80 data-[active]:duration-0 sm:size-8 sm:flex-none sm:rounded-md sm:text-lg",
+        className,
+      )}
     >
       <span
         aria-hidden
@@ -52,12 +97,16 @@ function EmojiPickerEmoji({
 
 function EmojiPickerCategoryHeader({
   category,
+  className,
   ...props
 }: EmojiPickerListCategoryHeaderProps) {
   return (
     <div
       {...props}
-      className="bg-background px-4 pt-3 pb-1.5 font-medium text-secondary-foreground text-xs sm:px-3"
+      className={cn(
+        "bg-background px-4 pt-3 pb-1.5 font-medium text-secondary-foreground text-xs sm:px-3",
+        className,
+      )}
     >
       {category.label}
     </div>
@@ -91,23 +140,22 @@ function EmojiPicker({
     >
       <div className="relative z-10 flex flex-none items-center gap-2 px-4 sm:px-2 sm:pt-2">
         <div className="relative flex-1">
-          <Search className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2 size-4 text-muted-foreground" />
+          <SearchIcon className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2 size-4 text-muted-foreground" />
           <EmojiPickerPrimitive.Search
             autoFocus={autoFocus}
-            className="focusable h-8 w-full appearance-none rounded-md bg-muted py-1.5 pr-2.5 pl-7.5 transition duration-200 ease-out placeholder:text-muted-foreground sm:text-sm"
+            className="focusable h-9 w-full appearance-none rounded-md bg-muted py-1.5 pr-2.5 pl-7.5 transition duration-200 ease-out placeholder:text-muted-foreground sm:text-sm"
           />
         </div>
         <div className="flex-none sm:hidden">{skinToneSelector}</div>
       </div>
       <EmojiPickerPrimitive.Viewport className="relative flex-1 outline-none">
         <EmojiPickerPrimitive.Loading>
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground">
-            <LoaderCircle className="size-5 animate-spin" />
+          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+            <SpinnerIcon className="size-4 animate-spin" />
           </div>
         </EmojiPickerPrimitive.Loading>
         <EmojiPickerPrimitive.Empty>
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-muted-foreground">
-            <Frown className="size-5" />
+          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
             <span className="text-sm">No emoji found.</span>
           </div>
         </EmojiPickerPrimitive.Empty>
@@ -120,7 +168,7 @@ function EmojiPicker({
           }}
         />
       </EmojiPickerPrimitive.Viewport>
-      <div className="hidden w-full min-w-0 max-w-(--frimousse-viewport-width) flex-none items-center gap-1 border-border/80 border-t p-2 sm:flex dark:border-border">
+      <div className="z-10 hidden w-full min-w-0 max-w-(--frimousse-viewport-width) flex-none items-center gap-1 p-2 shadow-[0_-1px_--alpha(var(--color-neutral-200)/65%)] sm:flex dark:shadow-[0_-1px_var(--color-neutral-800)]">
         <EmojiPickerPrimitive.ActiveEmoji>
           {({ emoji }) =>
             emoji ? (

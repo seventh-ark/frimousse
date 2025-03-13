@@ -16,7 +16,7 @@ const EMOJI_BUTTON_HEIGHT = 28;
 function DefaultPage({
   children,
   locale,
-  columns,
+  columns = 10,
   skinTone,
   emojiVersion = 12,
   listComponents,

@@ -1,8 +1,10 @@
+import { ColorfulButtonsAlternate } from "@/examples/colorful-buttons/colorful-buttons-alternate";
+import { ColorfulButtonsBlur } from "@/examples/colorful-buttons/colorful-buttons-blur";
+import { ShadcnUiBasic } from "@/examples/shadcnui/shadcnui-basic";
+import { ShadcnUiPopover } from "@/examples/shadcnui/shadcnui-popover";
 import { cn } from "@/lib/utils";
 import { CircleHelp } from "lucide-react";
 import type { ComponentProps } from "react";
-import { ColorfulButtonsAlternate } from "../../examples/colorful-buttons-alternate";
-import { ColorfulButtonsBlur } from "../../examples/colorful-buttons-blur";
 import { PermalinkHeading } from "../permalink-heading";
 import { CodeBlock } from "../ui/code-block";
 import {
@@ -103,7 +105,18 @@ export function Docs({
         <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
           shadcn/ui
         </a>{" "}
-        themes and components (e.g.{" "}
+        variables.
+      </p>
+      <CodeBlock lang="bash">
+        npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
+      </CodeBlock>
+      <ShadcnUiBasic />
+      <p>
+        It can be combined with other{" "}
+        <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
+          shadcn/ui
+        </a>{" "}
+        components like{" "}
         <a
           href="https://ui.shadcn.com/docs/components/popover"
           rel="noreferrer"
@@ -111,14 +124,9 @@ export function Docs({
         >
           Popover
         </a>
-        ).
+        .
       </p>
-      <CodeBlock lang="bash">
-        npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
-      </CodeBlock>
-      <figure className="not-prose aspect-16/10 rounded-lg bg-muted p-4">
-        Placeholder: shadcn/ui example (with code)
-      </figure>
+      <ShadcnUiPopover />
 
       <PermalinkHeading as="h2">Styling</PermalinkHeading>
       <p>Various styling-related details and examples.</p>
@@ -252,7 +260,7 @@ export function Docs({
         component as props.
       </p>
       <CodeBlock lang="tsx">{`
-        <EmojiPicker.Root locale="fr" columns={8} skinTone="medium">
+        <EmojiPicker.Root locale="fr" columns={10} skinTone="medium">
           {/* ... */}
         </EmojiPicker.Root>
       `}</CodeBlock>
