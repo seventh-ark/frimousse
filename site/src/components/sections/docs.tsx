@@ -53,9 +53,6 @@ export function Docs({
         , CSS-in-JS, vanilla CSS via inline styles, classes, or by targeting the{" "}
         <code>[frimousse-*]</code> data attributes present on each part.
       </p>
-      <figure className="not-prose aspect-16/10 rounded-lg bg-muted p-4">
-        Placeholder: Tailwind and vanilla CSS examples (with code)
-      </figure>
       <p>
         You might want to use it in a popover rather than on its own. Frimousse
         only provides the emoji picker itself so if you don’t have a popover
@@ -112,7 +109,7 @@ export function Docs({
       </CodeBlock>
       <ShadcnUiBasic />
       <p>
-        It can be combined with other{" "}
+        It can be composed and combined with other{" "}
         <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
           shadcn/ui
         </a>{" "}
@@ -185,9 +182,6 @@ export function Docs({
         </a>{" "}
         on <a href="#emojipicker.list-inner-components">rows</a>.
       </p>
-      <figure className="not-prose aspect-16/10 rounded-lg bg-muted p-4">
-        Placeholder: Padding example
-      </figure>
 
       <PermalinkHeading as="h3">Colorful Buttons</PermalinkHeading>
       <p>

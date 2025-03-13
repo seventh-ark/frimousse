@@ -159,7 +159,7 @@ export function ColorfulButtonsBlur({
         </Row>
       </List>
       <span className="pointer-events-none absolute inset-x-4 bottom-6 select-none truncate text-center text-foreground/50 text-sm">
-        Hover or focus to see the colors
+        Hover or focus to see the effect
       </span>
     </figure>
   );

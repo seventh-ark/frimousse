@@ -276,9 +276,9 @@
     @apply link;
   }
 
-  figure,
-  .code-block,
-  .properties-table {
+  :is(& > figure, & > :not(.not-prose) figure),
+  :is(& > .code-block, & > :not(.not-prose) .code-block),
+  :is(& > .properties-table, & > :not(.not-prose) .properties-table) {
     @apply mt-5;
 
     &:not(:last-child) {
