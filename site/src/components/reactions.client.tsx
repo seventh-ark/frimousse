@@ -66,6 +66,11 @@ interface ReactionButtonProps
   hidden?: boolean;
 }
 
+interface ReactionPlaceholderProps
+  extends Omit<ComponentProps<"div">, "children"> {
+  emoji: string;
+}
+
 interface AddReactionButtonProps
   extends Omit<ComponentProps<"button">, "children"> {
   onEmojiSelect?: EmojiPickerRootProps["onEmojiSelect"];
@@ -150,6 +155,28 @@ const ReactionButton = memo(
     );
   },
 );
+
+function ReactionPlaceholder({
+  emoji,
+  className,
+  ...props
+}: ReactionPlaceholderProps) {
+  return (
+    <div
+      className={cn(
+        buttonVariants({ variant: "none" }),
+        "group rounded-full border border-border border-dotted bg-background px-2.5 py-1 text-muted-foreground text-sm tabular-nums",
+        className,
+      )}
+      {...props}
+    >
+      <span className="inline-flex items-center gap-1.5">
+        <span className="relative">{emoji}</span>{" "}
+        <span className="inline-flex w-[1ch] justify-center">0</span>
+      </span>
+    </div>
+  );
+}
 
 function AddReactionButton({
   onEmojiSelect,
@@ -575,6 +602,9 @@ export function ReactionsList({
         >
           {children}
         </FirstHiddenReactionIndexContext.Provider>
+        {/* 🐰🥚 */}
+        <ReactionPlaceholder className="not-nth-[2]:hidden" emoji="🐰" />
+        <ReactionPlaceholder className="not-nth-[3]:hidden" emoji="🥚" />
       </AddReactionContext.Provider>
     </div>
   );

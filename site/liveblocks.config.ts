@@ -25,7 +25,7 @@ export const DEFAULT_KEYS = [CREATED_AT_KEY, UPDATED_AT_KEY];
 export const DEFAULT_KEYS_COUNT = DEFAULT_KEYS.length;
 
 // Roughly 3 rows of reactions on largest breakpoint
-export const MAX_REACTIONS = 26;
+export const MAX_REACTIONS = 28;
 
 export function sortReactions(
   [, dataA]: [string, LiveMap<string, number> | ReadonlyMap<string, number>],
