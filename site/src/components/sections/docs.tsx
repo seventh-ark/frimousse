@@ -59,7 +59,7 @@ export function Docs({
       <p>
         You might want to use it in a popover rather than on its own. Frimousse
         only provides the emoji picker itself so if you don’t have a popover
-        component in your app yet, there are several libraries you could use:{" "}
+        component in your app yet, there are several libraries available:{" "}
         <a
           href="https://www.radix-ui.com/primitives/docs/components/popover"
           rel="noreferrer"
