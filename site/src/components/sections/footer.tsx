@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 import { type ComponentProps, Suspense } from "react";
-import { Heart } from "../logo";
 import { buttonVariants } from "../ui/button";
 import { ThemeSwitcher } from "../ui/theme-switcher";
 
@@ -40,10 +39,16 @@ export function Footer() {
           </span>
           <span>
             Made with{" "}
-            <Heart
+            <svg
               aria-label="love"
-              className="pointer-events-none inline size-4"
-            />{" "}
+              className="pointer-events-none inline-block size-[19px]"
+              fill="currentColor"
+              viewBox="0 0 19 19"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>Heart</title>
+              <path d="M7 2H4V3.5H2.5V5H1V9.5H2.5V11H4V12.5H5.5V14H7V15.6H8.5V17H10V15.6H11.5V14H13.0455V12.5H14.5V11H16V9.5H17.5V5H16V3.5H14.5V2H11.5V3.5H10V5H8.5V3.5H7V2ZM7 3.5V5H8.5V6.5H10V5H11.5V3.5H14.5V5H16V9.5H14.5V11H13.0455V12.5H11.5V14H10V15.6H8.5V14H7V12.5H5.5V11H4V9.5H2.5V5H4V3.5H7Z" />
+            </svg>{" "}
             by{" "}
             <a
               className="link"

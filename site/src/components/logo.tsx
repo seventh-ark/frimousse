@@ -6,7 +6,7 @@ import { type ComponentProps, useEffect, useState } from "react";
 const ICONS = [Face, Heart, Flash];
 const INTERVAL = 400;
 
-export function Face(props: ComponentProps<"svg">) {
+function Face(props: ComponentProps<"svg">) {
   return (
     <svg
       fill="currentColor"
@@ -20,7 +20,7 @@ export function Face(props: ComponentProps<"svg">) {
   );
 }
 
-export function Heart(props: ComponentProps<"svg">) {
+function Heart(props: ComponentProps<"svg">) {
   return (
     <svg
       fill="currentColor"
@@ -34,7 +34,7 @@ export function Heart(props: ComponentProps<"svg">) {
   );
 }
 
-export function Flash(props: ComponentProps<"svg">) {
+function Flash(props: ComponentProps<"svg">) {
   return (
     <svg
       fill="currentColor"
