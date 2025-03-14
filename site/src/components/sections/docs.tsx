@@ -25,6 +25,21 @@ export function Docs({
     >
       <PermalinkHeading as="h2">Installation</PermalinkHeading>
       <CodeBlock lang="bash">npm i frimousse</CodeBlock>
+      <p>
+        If you are using{" "}
+        <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
+          shadcn/ui
+        </a>
+        , you can also install it as a pre-built component which integrates with
+        the existing{" "}
+        <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
+          shadcn/ui
+        </a>{" "}
+        variables. Learn more in the <a href="#shadcnui">shadcn/ui section</a>.
+      </p>
+      <CodeBlock lang="bash">
+        npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
+      </CodeBlock>
 
       <PermalinkHeading as="h2">Usage</PermalinkHeading>
       <p>
@@ -102,8 +117,8 @@ export function Docs({
         <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
           shadcn/ui
         </a>
-        , you can install a pre-built component which integrates with the
-        existing{" "}
+        , you can install a pre-built version of the component which integrates
+        with the existing{" "}
         <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
           shadcn/ui
         </a>{" "}

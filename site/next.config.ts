@@ -9,8 +9,8 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/r/:file",
-        destination: "/registry/:file.json",
+        source: "/r/:path*",
+        destination: "/registry/:path*.json",
       },
     ];
   },
