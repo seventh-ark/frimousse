@@ -2,6 +2,7 @@
 
 import { toast } from "@/lib/toast";
 import { useState } from "react";
+import { ExamplePreview } from "../example-preview";
 import { Button } from "./ui/button";
 import {
   EmojiPicker,
@@ -15,7 +16,7 @@ export function ShadcnUiPopoverPreview() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="not-base shadcnui flex size-full items-center justify-center">
+    <ExamplePreview className="not-base shadcnui h-[200px]">
       <Popover onOpenChange={setIsOpen} open={isOpen}>
         <PopoverTrigger asChild>
           <Button>Open emoji picker</Button>
@@ -34,6 +35,6 @@ export function ShadcnUiPopoverPreview() {
           </EmojiPicker>
         </PopoverContent>
       </Popover>
-    </div>
+    </ExamplePreview>
   );
 }

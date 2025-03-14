@@ -13,7 +13,7 @@ export function Usage({
       className={cn("not-prose relative overflow-hidden", className)}
       {...props}
     >
-      <div className="flex items-center justify-center rounded-t-lg border border-b-0 border-dotted bg-background py-12">
+      <div className="flex items-center justify-center rounded-t-lg border border-b-0 border-dotted bg-background">
         <UsagePreview />
       </div>
       <Tabs

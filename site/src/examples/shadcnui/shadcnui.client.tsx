@@ -1,6 +1,7 @@
 "use client";
 
 import { toast } from "@/lib/toast";
+import { ExamplePreview } from "../example-preview";
 import {
   EmojiPicker,
   EmojiPickerContent,
@@ -9,7 +10,7 @@ import {
 
 export function ShadcnUiPreview() {
   return (
-    <div className="not-base shadcnui flex size-full items-center justify-center">
+    <ExamplePreview className="not-base shadcnui h-[460px]">
       <EmojiPicker
         className="h-[312px] rounded-lg border shadow-md"
         onEmojiSelect={(emoji) => {
@@ -19,6 +20,6 @@ export function ShadcnUiPreview() {
         <EmojiPickerSearch />
         <EmojiPickerContent />
       </EmojiPicker>
-    </div>
+    </ExamplePreview>
   );
 }

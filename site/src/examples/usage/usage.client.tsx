@@ -1,5 +1,6 @@
 "use client";
 
+import { ExamplePreview } from "@/examples/example-preview";
 import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 import {
@@ -59,12 +60,12 @@ function EmojiPicker({ className, columns, ...props }: EmojiPickerRootProps) {
 
 export function UsagePreview() {
   return (
-    <div className="flex size-full items-center justify-center">
+    <ExamplePreview className="h-[460px]">
       <EmojiPicker
         onEmojiSelect={(emoji) => {
           toast(emoji);
         }}
       />
-    </div>
+    </ExamplePreview>
   );
 }
