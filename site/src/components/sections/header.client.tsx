@@ -4,11 +4,10 @@ import { useIsMounted } from "@/hooks/use-mounted";
 import { useIsSticky } from "@/hooks/use-sticky";
 import { cn } from "@/lib/utils";
 import { useRef } from "react";
-import { version } from "../../../../package.json";
 import { Logo } from "../logo";
 import { buttonVariants } from "../ui/button";
 
-export function StickyHeader() {
+export function StickyHeader({ version }: { version: string }) {
   const stickyRef = useRef<HTMLDivElement>(null!);
   const isSticky = useIsSticky(stickyRef);
   const isMounted = useIsMounted();
