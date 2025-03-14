@@ -32,7 +32,7 @@ export function Usage({
                   export function MyEmojiPicker(props: EmojiPickerRootProps) {
                     return (
                       <EmojiPickerPrimitive.Root
-                        className="isolate flex h-[352px] w-fit flex-col bg-white dark:bg-neutral-900"
+                        className="isolate flex h-[368px] w-fit flex-col bg-white dark:bg-neutral-900"
                         {...props}
                       >
                         <EmojiPickerPrimitive.Search className="z-10 mx-2 mt-2 appearance-none rounded-md bg-neutral-100 px-2.5 py-2 text-sm dark:bg-neutral-800" />

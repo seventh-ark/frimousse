@@ -12,7 +12,7 @@ function EmojiPicker({ className, columns, ...props }: EmojiPickerRootProps) {
   return (
     <EmojiPickerPrimitive.Root
       className={cn(
-        "elevation relative isolate flex h-[352px] w-fit flex-col overflow-hidden rounded-xl bg-white shadow-elevation after:pointer-events-none after:absolute after:inset-0 after:z-10 after:rounded-[inherit] dark:bg-neutral-900 dark:after:shadow-[inset_0_0_0_1px_var(--color-neutral-800)]",
+        "elevation relative isolate flex h-[368px] w-fit flex-col overflow-hidden rounded-xl bg-white shadow-elevation after:pointer-events-none after:absolute after:inset-0 after:z-10 after:rounded-[inherit] dark:bg-neutral-900 dark:after:shadow-[inset_0_0_0_1px_var(--color-neutral-800)]",
         className,
       )}
       columns={columns}
@@ -60,7 +60,7 @@ function EmojiPicker({ className, columns, ...props }: EmojiPickerRootProps) {
 
 export function UsagePreview() {
   return (
-    <ExamplePreview className="h-[460px]">
+    <ExamplePreview className="h-[480px]">
       <EmojiPicker
         onEmojiSelect={(emoji) => {
           toast(emoji);

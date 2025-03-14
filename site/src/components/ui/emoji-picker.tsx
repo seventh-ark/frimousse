@@ -132,7 +132,7 @@ function EmojiPicker({
   return (
     <EmojiPickerPrimitive.Root
       className={cn(
-        "isolate flex h-[calc(100%_-_var(--spacing)*8)] w-full flex-col sm:h-[368px]",
+        "isolate flex h-[calc(100%_-_var(--spacing)*8)] w-full flex-col sm:h-[382px]",
         className,
       )}
       columns={columns}
@@ -143,7 +143,7 @@ function EmojiPicker({
           <SearchIcon className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2 size-4 text-muted-foreground" />
           <EmojiPickerPrimitive.Search
             autoFocus={autoFocus}
-            className="focusable h-9 w-full appearance-none rounded-md bg-muted py-1.5 pr-2.5 pl-7.5 transition duration-200 ease-out placeholder:text-muted-foreground sm:text-sm"
+            className="focusable h-8 w-full appearance-none rounded-md bg-muted py-1.5 pr-2.5 pl-7.5 transition duration-200 ease-out placeholder:text-muted-foreground sm:text-sm"
           />
         </div>
         <div className="flex-none sm:hidden">{skinToneSelector}</div>

@@ -57,7 +57,7 @@ export function ShadcnUi({
             return (
               <main className="flex h-full min-h-screen w-full items-center justify-center p-4">
                 <EmojiPicker
-                  className="h-[312px] rounded-lg border shadow-md"
+                  className="h-[326px] rounded-lg border shadow-md"
                   onEmojiSelect={({ emoji }) => {
                     console.log(emoji);
                   }}

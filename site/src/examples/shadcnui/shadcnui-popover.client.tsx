@@ -23,7 +23,7 @@ export function ShadcnUiPopoverPreview() {
         </PopoverTrigger>
         <PopoverContent className="w-fit p-0">
           <EmojiPicker
-            className="h-[328px]"
+            className="h-[342px]"
             onEmojiSelect={(emoji) => {
               setIsOpen(false);
               toast(emoji);

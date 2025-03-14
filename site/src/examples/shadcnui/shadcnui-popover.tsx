@@ -71,7 +71,7 @@ export function ShadcnUiPopover({
                   </PopoverTrigger>
                   <PopoverContent className="w-fit p-0">
                     <EmojiPicker
-                      className="h-[312px]"
+                      className="h-[342px]"
                       onEmojiSelect={({ emoji }) => {
                         setIsOpen(false);
                         console.log(emoji);

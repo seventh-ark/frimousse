@@ -10,9 +10,9 @@ import {
 
 export function ShadcnUiPreview() {
   return (
-    <ExamplePreview className="not-base shadcnui h-[460px]">
+    <ExamplePreview className="not-base shadcnui h-[446px]">
       <EmojiPicker
-        className="h-[312px] rounded-lg border shadow-md"
+        className="h-[326px] rounded-lg border shadow-md"
         onEmojiSelect={(emoji) => {
           toast(emoji);
         }}
