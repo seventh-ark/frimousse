@@ -17,18 +17,20 @@ export function StickyHeader() {
     <>
       <div
         className={cn(
-          "pointer-events-none inset-x-0 z-20 h-14 w-full md:h-18",
+          "pointer-events-none inset-x-0 z-60 h-14 w-full md:h-18",
           isMounted ? "fixed" : "absolute",
         )}
       >
+        <div
+          className={cn(
+            "absolute inset-0 border-b border-dotted bg-background transition-opacity duration-100 ease-out",
+            isSticky ? "opacity-100" : "opacity-0",
+          )}
+        >
+          <div className="container relative h-full before:pointer-events-none before:absolute before:inset-x-4 before:inset-y-0 before:h-full before:border-x before:border-dotted md:before:inset-x-0" />
+        </div>
         <div className="container relative h-full">
           <div className="pointer-events-auto absolute inset-x-4 inset-y-0 md:inset-x-0">
-            <div
-              className={cn(
-                "absolute inset-x-px inset-y-0 border-border border-b border-dotted bg-background transition-opacity duration-100 ease-out",
-                isSticky ? "opacity-100" : "opacity-0",
-              )}
-            />
             <div className="absolute top-3 right-4 md:top-5 md:right-8">
               <a
                 className={cn(
@@ -57,8 +59,9 @@ export function StickyHeader() {
       </div>
       <div
         className={cn(
-          "pointer-events-none z-20 mt-30 pt-4 will-change-transform md:mt-40 md:pt-6",
+          "pointer-events-none mt-30 pt-4 will-change-transform md:mt-40 md:pt-6",
           isMounted ? "-top-px sticky" : "relative",
+          isSticky ? "z-60" : "z-0",
         )}
         ref={stickyRef}
       >

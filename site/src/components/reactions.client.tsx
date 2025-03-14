@@ -15,7 +15,6 @@ import {
   useStorage,
 } from "@liveblocks/react/suspense";
 import NumberFlow from "@number-flow/react";
-import type { EmojiPickerRootProps } from "frimousse";
 import {
   CREATED_AT_KEY,
   DEFAULT_KEYS_COUNT,
@@ -72,7 +71,7 @@ interface ReactionPlaceholderProps
 
 interface AddReactionButtonProps
   extends Omit<ComponentProps<"button">, "children"> {
-  onEmojiSelect?: EmojiPickerRootProps["onEmojiSelect"];
+  onEmojiSelect?: (emoji: string) => void;
 }
 
 interface ReactionsProps {
@@ -231,7 +230,7 @@ function AddReactionButton({
   const emojiPicker = (
     <EmojiPicker
       autoFocus
-      onEmojiSelect={(emoji) => {
+      onEmojiSelect={({ emoji }) => {
         handleEmojiSelect?.(emoji);
         setIsOpen(false);
       }}

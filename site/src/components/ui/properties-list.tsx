@@ -17,8 +17,8 @@ export function PropertiesList({
   return (
     <ul
       className={cn(
-        "not-prose properties-list overflow-hidden rounded-lg border border-border border-dotted",
-        "**:[li:not(:last-child)]:border-border **:[li:not(:last-child)]:border-b **:[li:not(:last-child)]:border-dotted **:[li]:px-4 **:[li]:py-3",
+        "not-prose properties-list overflow-hidden rounded-lg border border-dotted",
+        "**:[li:not(:last-child)]:border-b **:[li:not(:last-child)]:border-dotted **:[li]:px-4 **:[li]:py-3",
         className,
       )}
       {...props}

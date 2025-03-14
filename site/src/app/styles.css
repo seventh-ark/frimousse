@@ -67,8 +67,6 @@
   --text-base: var(--text-base);
   --text-sm: var(--text-sm);
 
-  --spacing-outer-gutter: calc(var(--spacing) * 8);
-
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
@@ -102,7 +100,11 @@
   }
 
   *:where(:not(.not-base, .not-base *)) {
-    @apply border-border outline-ring;
+    &,
+    &::before,
+    &::after {
+      @apply border-border outline-ring;
+    }
 
     &:focus-visible {
       @apply outline-2 outline-offset-0;
@@ -195,9 +197,7 @@
 }
 
 @utility container {
-  margin-inline: auto;
-  padding-inline: var(--spacing-outer-gutter);
-  max-width: var(--container-2xl);
+  @apply mx-auto max-w-(--container-2xl) px-8;
 }
 
 @utility link {
@@ -213,15 +213,16 @@
   --shiki-color-1: oklch(0.54 0.16 242);
   --shiki-color-2: oklch(0.62 0.14 78);
   --shiki-color-3: oklch(0.58 0.16 296);
+  --shiki-color-4: oklch(0.56 0.16 126);
 
   --shiki-token-string: var(--shiki-color-1);
   --shiki-token-link: var(--shiki-color-1);
   --shiki-token-punctuation: var(--shiki-color-1);
   --shiki-token-keyword: var(--shiki-color-1);
-  --shiki-token-string-expression: var(--shiki-color-2);
   --shiki-token-constant: var(--shiki-color-2);
-  --shiki-token-function: var(--shiki-color-3);
+  --shiki-token-string-expression: var(--shiki-color-3);
   --shiki-token-parameter: var(--shiki-color-3);
+  --shiki-token-function: var(--shiki-color-4);
 
   @variant dark {
     --shiki-foreground: var(--color-neutral-300);
@@ -230,6 +231,7 @@
     --shiki-color-1: oklch(0.74 0.12 242);
     --shiki-color-2: oklch(0.78 0.1 78);
     --shiki-color-3: oklch(0.72 0.14 296);
+    --shiki-color-4: oklch(0.72 0.12 126);
   }
 }
 

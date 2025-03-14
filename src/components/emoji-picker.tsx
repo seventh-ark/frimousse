@@ -117,7 +117,7 @@ function EmojiPickerDataHandler({
  *
  * @example
  * ```tsx
- * <EmojiPicker.Root onEmojiSelect={(emoji) => console.log(emoji)}>
+ * <EmojiPicker.Root onEmojiSelect={({ emoji }) => console.log(emoji)}>
  *   <EmojiPicker.Search />
  *   <EmojiPicker.Viewport>
  *     <EmojiPicker.List />
@@ -262,7 +262,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
           if (activeEmoji) {
             event.preventDefault();
 
-            onEmojiSelect(activeEmoji.emoji, activeEmoji.label);
+            onEmojiSelect(activeEmoji);
           }
         }
 
@@ -584,12 +584,8 @@ const ActiveEmojiAnnouncer = memo(() => {
  * @example
  * ```tsx
  * <EmojiPicker.Viewport>
- *   <EmojiPicker.Loading>
- *     <span>Loading…</span>
- *   </EmojiPicker.Loading>
- *   <EmojiPicker.Empty>
- *     <span>No emoji found.</span>
- *   </EmojiPicker.Empty>
+ *   <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
+ *   <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
  *   <EmojiPicker.List />
  * </EmojiPicker.Viewport>
  * ```
@@ -806,8 +802,8 @@ const EmojiPickerListEmoji = memo(
     );
 
     const handleSelect = useCallback(() => {
-      store.get().onEmojiSelect(emoji.emoji, emoji.label);
-    }, [emoji.emoji, emoji.label]);
+      store.get().onEmojiSelect(emoji);
+    }, [emoji]);
 
     const handlePointerEnter = useCallback(() => {
       store.get().onActiveEmojiChange("pointer", columnIndex, rowIndex);
@@ -1245,8 +1241,7 @@ const EmojiPickerSkinToneSelector = forwardRef<
 );
 
 /**
- * Only renders when the emoji data is loading. The content is rendered
- * without any surrounding DOM element.
+ * Only renders when the emoji data is loading.
  *
  * @example
  * ```tsx
@@ -1255,7 +1250,10 @@ const EmojiPickerSkinToneSelector = forwardRef<
  * </EmojiPicker.Viewport>
  * ```
  */
-function EmojiPickerLoading({ children }: EmojiPickerLoadingProps): ReactNode {
+function EmojiPickerLoading({
+  children,
+  ...props
+}: EmojiPickerLoadingProps): ReactNode {
   const store = useEmojiPickerStore();
   const isLoading = useSelector(store, $isLoading);
 
@@ -1263,7 +1261,11 @@ function EmojiPickerLoading({ children }: EmojiPickerLoadingProps): ReactNode {
     return null;
   }
 
-  return <>{children}</>;
+  return (
+    <span frimousse-loading="" {...props}>
+      {children}
+    </span>
+  );
 }
 
 function EmojiPickerEmptyWithSearch({
@@ -1296,7 +1298,10 @@ function EmojiPickerEmptyWithSearch({
  * </EmojiPicker.Empty>
  * ```
  */
-function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps): ReactNode {
+function EmojiPickerEmpty({
+  children,
+  ...props
+}: EmojiPickerEmptyProps): ReactNode {
   const store = useEmojiPickerStore();
   const isEmpty = useSelector(store, $isEmpty);
 
@@ -1304,10 +1309,14 @@ function EmojiPickerEmpty({ children }: EmojiPickerEmptyProps): ReactNode {
     return null;
   }
 
-  return typeof children === "function" ? (
-    <EmojiPickerEmptyWithSearch>{children}</EmojiPickerEmptyWithSearch>
-  ) : (
-    children
+  return (
+    <span frimousse-empty="" {...props}>
+      {typeof children === "function" ? (
+        <EmojiPickerEmptyWithSearch>{children}</EmojiPickerEmptyWithSearch>
+      ) : (
+        children
+      )}
+    </span>
   );
 }
 

@@ -2,6 +2,7 @@ import { page, userEvent } from "@vitest/browser/context";
 import { Children, type ReactNode, useState } from "react";
 import { describe, expect, it } from "vitest";
 import type {
+  Emoji,
   EmojiPickerEmptyProps,
   EmojiPickerListProps,
   EmojiPickerRootProps,
@@ -40,12 +41,12 @@ function DefaultPage({
   rootChildren?: EmojiPickerRootProps["children"];
   emptyChildren?: EmojiPickerEmptyProps["children"];
 }) {
-  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+  const [selectedEmoji, setSelectedEmoji] = useState<Emoji | null>(null);
 
   return (
     <>
       <div>
-        <p data-testid="selected-emoji">{selectedEmoji}</p>
+        <p data-testid="selected-emoji">{selectedEmoji?.emoji}</p>
         {children}
       </div>
       <div>
@@ -63,8 +64,8 @@ function DefaultPage({
             onChange={searchOnChange}
             value={searchValue}
           />
-          <EmojiPicker.Loading>
-            <div data-testid="loading">Loading…</div>
+          <EmojiPicker.Loading data-testid="loading">
+            Loading…
           </EmojiPicker.Loading>
           <EmojiPicker.Empty>{emptyChildren}</EmojiPicker.Empty>
           <EmojiPicker.Viewport

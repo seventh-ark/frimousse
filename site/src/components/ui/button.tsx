@@ -10,7 +10,7 @@ interface ButtonProps
 }
 
 const buttonVariants = cva(
-  "transition duration-200 ease-out inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:flex-none",
+  "transition duration-200 ease-out inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:flex-none",
   {
     variants: {
       variant: {

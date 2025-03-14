@@ -151,7 +151,7 @@ export interface EmojiPickerRootProps extends ComponentProps<"div"> {
   /**
    * A callback invoked when an emoji is selected.
    */
-  onEmojiSelect?: (emoji: string, label: string) => void;
+  onEmojiSelect?: (emoji: Emoji) => void;
 
   /**
    * The locale of the emoji picker.
@@ -201,12 +201,7 @@ export interface EmojiPickerSkinToneSelectorProps
   emoji?: string;
 }
 
-export type EmojiPickerLoadingProps = {
-  /**
-   * The content to render when the emoji data is loading.
-   */
-  children?: ReactNode;
-};
+export type EmojiPickerLoadingProps = ComponentProps<"span">;
 
 export type EmojiPickerEmptyRenderProps = {
   /**
@@ -215,13 +210,14 @@ export type EmojiPickerEmptyRenderProps = {
   search: string;
 };
 
-export type EmojiPickerEmptyProps = {
+export interface EmojiPickerEmptyProps
+  extends Omit<ComponentProps<"span">, "children"> {
   /**
    * The content to render when no emoji is found for the current search, or
    * a render callback which receives the current search value.
    */
   children?: ReactNode | ((props: EmojiPickerEmptyRenderProps) => ReactNode);
-};
+}
 
 export type EmojiPickerActiveEmojiRenderProps = {
   /**

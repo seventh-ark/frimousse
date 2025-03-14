@@ -46,7 +46,7 @@ function ThemeSwitcher({
   return (
     <div
       className={cn(
-        "relative inline-flex h-8 items-center rounded-full border border-dotted px-1",
+        "relative isolate inline-flex h-8 items-center rounded-full border border-dotted px-1",
         className,
       )}
       {...props}

@@ -101,21 +101,17 @@ function EmojiPickerContent({
       data-slot="emoji-picker-viewport"
       {...props}
     >
-      <EmojiPickerPrimitive.Loading>
-        <div
-          className="absolute inset-0 flex items-center justify-center text-muted-foreground"
-          data-slot="emoji-picker-loading"
-        >
-          <LoaderIcon className="size-4 animate-spin" />
-        </div>
+      <EmojiPickerPrimitive.Loading
+        className="absolute inset-0 flex items-center justify-center text-muted-foreground"
+        data-slot="emoji-picker-loading"
+      >
+        <LoaderIcon className="size-4 animate-spin" />
       </EmojiPickerPrimitive.Loading>
-      <EmojiPickerPrimitive.Empty>
-        <div
-          className="absolute inset-0 flex items-center justify-center text-muted-foreground"
-          data-slot="emoji-picker-empty"
-        >
-          <span className="text-sm">No emoji found.</span>
-        </div>
+      <EmojiPickerPrimitive.Empty
+        className="absolute inset-0 flex items-center justify-center text-muted-foreground text-sm"
+        data-slot="emoji-picker-empty"
+      >
+        No emoji found.
       </EmojiPickerPrimitive.Empty>
       <EmojiPickerPrimitive.List
         className="select-none pb-1"

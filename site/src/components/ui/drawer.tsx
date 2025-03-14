@@ -22,7 +22,7 @@ const DrawerOverlay = forwardRef<
   ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
-    className={cn("fixed inset-0 z-50 bg-overlay", className)}
+    className={cn("fixed inset-0 z-80 bg-overlay", className)}
     ref={ref}
     {...props}
   />
@@ -36,7 +36,7 @@ const DrawerContent = forwardRef<
     <DrawerOverlay />
     <DrawerPrimitive.Content
       className={cn(
-        "elevation fixed inset-x-0 bottom-0 z-50 h-full max-h-[85vh] rounded-t-xl bg-background shadow-elevation outline-none",
+        "elevation fixed inset-x-0 bottom-0 z-80 h-full max-h-[85vh] rounded-t-xl bg-background shadow-elevation outline-none",
         className,
       )}
       ref={ref}

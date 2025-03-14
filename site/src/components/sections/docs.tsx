@@ -1,7 +1,8 @@
 import { ColorfulButtonsAlternate } from "@/examples/colorful-buttons/colorful-buttons-alternate";
 import { ColorfulButtonsBlur } from "@/examples/colorful-buttons/colorful-buttons-blur";
-import { ShadcnUiBasic } from "@/examples/shadcnui/shadcnui-basic";
+import { ShadcnUi } from "@/examples/shadcnui/shadcnui";
 import { ShadcnUiPopover } from "@/examples/shadcnui/shadcnui-popover";
+import { Usage } from "@/examples/usage/usage";
 import { cn } from "@/lib/utils";
 import { CircleHelp } from "lucide-react";
 import type { ComponentProps } from "react";
@@ -18,7 +19,10 @@ export function Docs({
   ...props
 }: Omit<ComponentProps<"section">, "children">) {
   return (
-    <section className={cn("prose mt-10 md:mt-16", className)} {...props}>
+    <section
+      className={cn("prose mt-10 mb-20 md:mt-16 md:mb-30", className)}
+      {...props}
+    >
       <PermalinkHeading as="h2">Installation</PermalinkHeading>
       <CodeBlock lang="bash">npm i frimousse</CodeBlock>
 
@@ -53,6 +57,7 @@ export function Docs({
         , CSS-in-JS, vanilla CSS via inline styles, classes, or by targeting the{" "}
         <code>[frimousse-*]</code> data attributes present on each part.
       </p>
+      <Usage />
       <p>
         You might want to use it in a popover rather than on its own. Frimousse
         only provides the emoji picker itself so if you don’t have a popover
@@ -107,7 +112,7 @@ export function Docs({
       <CodeBlock lang="bash">
         npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
       </CodeBlock>
-      <ShadcnUiBasic />
+      <ShadcnUi />
       <p>
         It can be composed and combined with other{" "}
         <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
@@ -141,9 +146,6 @@ export function Docs({
         should be of the same size (e.g. all rows should be of the same height)
         to prevent layout shifts.
       </p>
-      <figure className="not-prose aspect-16/10 rounded-lg bg-muted p-4">
-        Placeholder: Dynamic width example (with slider)
-      </figure>
       <p>
         The{" "}
         <a href="#emojipicker.root-css-variables">
@@ -242,7 +244,7 @@ export function Docs({
       <PermalinkHeading as="h3">EmojiPicker.Root</PermalinkHeading>
       <p>Surrounds all the emoji picker parts.</p>
       <CodeBlock lang="tsx">{`
-        <EmojiPicker.Root onEmojiSelect={(emoji) => console.log(emoji)}>
+        <EmojiPicker.Root onEmojiSelect={({ emoji }) => console.log(emoji)}>
           <EmojiPicker.Search />
           <EmojiPicker.Viewport>
             <EmojiPicker.List />
@@ -263,10 +265,7 @@ export function Docs({
         Props
       </PermalinkHeading>
       <PropertiesList>
-        <PropertiesListRow
-          name="onEmojiSelect"
-          type="(emoji: string, label: string) => void"
-        >
+        <PropertiesListRow name="onEmojiSelect" type="(emoji: Emoji) => void">
           <p>A callback invoked when an emoji is selected.</p>
         </PropertiesListRow>
         <PropertiesListRow defaultValue={`"en"`} name="locale" type="Locale">
@@ -390,12 +389,8 @@ export function Docs({
       <p>The scrolling container of the emoji picker.</p>
       <CodeBlock lang="tsx">{`
         <EmojiPicker.Viewport>
-          <EmojiPicker.Loading>
-            <span>Loading…</span>
-          </EmojiPicker.Loading>
-          <EmojiPicker.Empty>
-            <span>No emoji found.</span>
-          </EmojiPicker.Empty>
+          <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
+          <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
           <EmojiPicker.List />
         </EmojiPicker.Viewport>
       `}</CodeBlock>
@@ -553,10 +548,7 @@ export function Docs({
       </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.Loading</PermalinkHeading>
-      <p>
-        Only renders when the emoji data is loading. The content is rendered
-        without any surrounding DOM element.
-      </p>
+      <p>Only renders when the emoji data is loading.</p>
       <CodeBlock lang="tsx">{`
         <EmojiPicker.Viewport>
           <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
@@ -570,13 +562,15 @@ export function Docs({
         <PropertiesListRow name="children" type="ReactNode">
           <p>The content to render when the emoji data is loading.</p>
         </PropertiesListRow>
+        <PropertiesListBasicRow>
+          <p>
+            All built-in <code>span</code> props.
+          </p>
+        </PropertiesListBasicRow>
       </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.Empty</PermalinkHeading>
-      <p>
-        Only renders when no emoji is found for the current search. The content
-        is rendered without any surrounding DOM element.
-      </p>
+      <p>Only renders when no emoji is found for the current search.</p>
       <CodeBlock lang="tsx">{`
         <EmojiPicker.Viewport>
           <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
@@ -605,6 +599,11 @@ export function Docs({
             or a render callback which receives the current search value.
           </p>
         </PropertiesListRow>
+        <PropertiesListBasicRow>
+          <p>
+            All built-in <code>span</code> props.
+          </p>
+        </PropertiesListBasicRow>
       </PropertiesList>
 
       <PermalinkHeading as="h3">EmojiPicker.SkinToneSelector</PermalinkHeading>

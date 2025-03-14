@@ -92,12 +92,12 @@ export default function RootLayout({ children }: PropsWithChildren) {
           <div
             className={cn(
               "container relative flex min-h-dvh flex-col",
-              "before:pointer-events-none before:absolute before:inset-x-4 before:h-full before:border-border before:border-x before:border-dotted md:before:inset-x-0",
+              "before:pointer-events-none before:absolute before:inset-x-4 before:h-full before:border-x before:border-dotted md:before:inset-x-0",
             )}
           >
             {children}
-            <Footer />
           </div>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

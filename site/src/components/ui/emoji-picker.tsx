@@ -149,15 +149,11 @@ function EmojiPicker({
         <div className="flex-none sm:hidden">{skinToneSelector}</div>
       </div>
       <EmojiPickerPrimitive.Viewport className="relative flex-1 outline-none">
-        <EmojiPickerPrimitive.Loading>
-          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-            <SpinnerIcon className="size-4 animate-spin" />
-          </div>
+        <EmojiPickerPrimitive.Loading className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+          <SpinnerIcon className="size-4 animate-spin" />
         </EmojiPickerPrimitive.Loading>
-        <EmojiPickerPrimitive.Empty>
-          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-            <span className="text-sm">No emoji found.</span>
-          </div>
+        <EmojiPickerPrimitive.Empty className="absolute inset-0 flex items-center justify-center text-muted-foreground text-sm">
+          No emoji found.
         </EmojiPickerPrimitive.Empty>
         <EmojiPickerPrimitive.List
           className="select-none pb-[2vw] sm:pb-1.5"

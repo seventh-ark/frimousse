@@ -8,12 +8,14 @@ export function ShadcnUiPopover({
   ...props
 }: Omit<ComponentProps<"figure">, "children">) {
   return (
-    <figure className={cn("not-prose relative", className)} {...props}>
+    <figure
+      className={cn("not-prose relative overflow-hidden", className)}
+      {...props}
+    >
       <div className="flex items-center justify-center rounded-t-lg border border-b-0 border-dotted bg-background py-16">
         <ShadcnUiPopoverPreview />
       </div>
-      <div>
-        <CodeBlock className="rounded-t-none" lang="tsx">{`
+      <CodeBlock className="max-h-[304px] rounded-t-none" lang="tsx">{`
           "use client";
 
           import * as React from "react";
@@ -41,8 +43,8 @@ export function ShadcnUiPopover({
                 </PopoverTrigger>
                 <PopoverContent className="w-fit p-0">
                   <EmojiPicker
-                    className="h-[320px]"
-                    onEmojiSelect={(emoji) => {
+                    className="h-[312px]"
+                    onEmojiSelect={({ emoji }) => {
                       setIsOpen(false);
                       console.log(emoji);
                     }}
@@ -56,7 +58,6 @@ export function ShadcnUiPopover({
             );
           }
         `}</CodeBlock>
-      </div>
     </figure>
   );
 }

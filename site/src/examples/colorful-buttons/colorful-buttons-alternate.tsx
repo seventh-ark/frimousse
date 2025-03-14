@@ -111,7 +111,7 @@ function Emoji({
       type="button"
       {...props}
       onClick={() => {
-        toast(emoji.emoji, emoji.label);
+        toast(emoji);
       }}
     >
       {emoji.emoji}
@@ -126,7 +126,7 @@ export function ColorfulButtonsAlternate({
   return (
     <figure
       className={cn(
-        "not-prose relative flex h-[320px] items-center justify-center rounded-lg border border-dotted bg-background py-14",
+        "not-prose relative flex h-[320px] items-center justify-center overflow-hidden rounded-lg border border-dotted bg-background py-14",
         className,
       )}
       {...props}
