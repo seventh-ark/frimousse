@@ -53,17 +53,19 @@ export function ShadcnUi({
             EmojiPickerContent,
           } from "@/components/ui/emoji-picker";
 
-          export function Page() {
+          export default function Page() {
             return (
-              <EmojiPicker
-                className="h-[312px] rounded-lg border shadow-md"
-                onEmojiSelect={({ emoji }) => {
-                  console.log(emoji);
-                }}
-              >
-                <EmojiPickerSearch />
-                <EmojiPickerContent />
-              </EmojiPicker>
+              <main className="flex h-full min-h-screen w-full items-center justify-center p-4">
+                <EmojiPicker
+                  className="h-[312px] rounded-lg border shadow-md"
+                  onEmojiSelect={({ emoji }) => {
+                    console.log(emoji);
+                  }}
+                >
+                  <EmojiPickerSearch />
+                  <EmojiPickerContent />
+                </EmojiPicker>
+              </main>
             );
           }
         `}</CodeBlock>

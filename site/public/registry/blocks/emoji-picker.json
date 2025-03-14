@@ -17,7 +17,7 @@
       "type": "registry:page",
       "path": "src/examples/shadcnui/shadcnui.tsx",
       "target": "app/page.tsx",
-      "content": "\"use client\";\n\nimport * as React from \"react\";\n\nimport {\n  EmojiPicker,\n  EmojiPickerSearch,\n  EmojiPickerContent,\n} from \"@/components/ui/emoji-picker\";\n\nexport function Page() {\n  return (\n    <EmojiPicker\n      className=\"h-[312px] rounded-lg border shadow-md\"\n      onEmojiSelect={({ emoji }) => {\n        console.log(emoji);\n      }}\n    >\n      <EmojiPickerSearch />\n      <EmojiPickerContent />\n    </EmojiPicker>\n  );\n}\n"
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\nimport {\n  EmojiPicker,\n  EmojiPickerSearch,\n  EmojiPickerContent,\n} from \"@/components/ui/emoji-picker\";\n\nexport default function Page() {\n  return (\n    <main className=\"flex h-full min-h-screen w-full items-center justify-center p-4\">\n      <EmojiPicker\n        className=\"h-[312px] rounded-lg border shadow-md\"\n        onEmojiSelect={({ emoji }) => {\n          console.log(emoji);\n        }}\n      >\n        <EmojiPickerSearch />\n        <EmojiPickerContent />\n      </EmojiPicker>\n    </main>\n  );\n}\n"
     }
   ]
 }
