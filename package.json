@@ -1,7 +1,7 @@
 {
   "name": "frimousse",
   "description": "A lightweight, unstyled, and composable emoji picker for React.",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "license": "MIT",
   "packageManager": "npm@11.1.0",
   "type": "module",
