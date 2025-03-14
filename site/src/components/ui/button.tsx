@@ -20,7 +20,7 @@ const buttonVariants = cva(
         secondary:
           "bg-muted text-secondary-foreground hover:bg-secondary/60 focus-visible:bg-secondary/60 data-[state=open]:bg-secondary/60 outline-secondary",
         ghost:
-          "hover:bg-secondary focus-visible:bg-secondary data-[state=open]:bg-secondary text-secondary-foreground",
+          "hover:bg-muted focus-visible:bg-muted data-[state=open]:bg-muted text-muted-foreground hover:text-secondary-foreground focus-visible:text-secondary-foreground data-[state=open]:text-secondary-foreground",
         outline:
           "border border-dotted hover:bg-muted focus-visible:bg-muted data-[state=open]:bg-muted text-secondary-foreground hover:text-foreground focus-visible:text-foreground data-[state=open]:text-foreground",
       },

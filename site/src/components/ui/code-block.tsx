@@ -10,7 +10,7 @@ import {
 import dedent from "dedent";
 import type { ComponentProps } from "react";
 import type { BundledLanguage } from "shiki";
-import { codeToHtml, createCssVariablesTheme } from "shiki";
+import { codeToHtml } from "shiki";
 import { CopyButton } from "../copy-button";
 
 const TRANSFORMERS_ANNOTATION_REGEX = /\[!code(?:\s+\w+(:\w+)?)?\]/;
@@ -36,7 +36,10 @@ export async function CodeBlock({
   const code = dedent(children);
   const html = await codeToHtml(code, {
     lang,
-    theme: createCssVariablesTheme(),
+    themes: {
+      light: "github-light",
+      dark: "github-dark",
+    },
     defaultColor: false,
     transformers: [
       transformerNotationDiff(),

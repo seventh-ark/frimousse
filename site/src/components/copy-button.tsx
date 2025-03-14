@@ -83,7 +83,10 @@ export function CopyButton({
   return (
     <Button
       aria-label={label}
-      className={cn("cursor-copy", className)}
+      className={cn(
+        "cursor-copy hover:bg-secondary focus-visible:bg-secondary data-[state=open]:bg-secondary",
+        className,
+      )}
       onClick={handleCopy}
       size="icon"
       title={label}

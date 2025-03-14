@@ -174,8 +174,7 @@
     --text-sm: 0.875rem;
   }
 
-  .dark &,
-  &.dark {
+  @variant dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.145 0 0);
@@ -206,33 +205,6 @@
 
 @utility code-block {
   --shiki-background: var(--muted);
-
-  --shiki-foreground: var(--color-neutral-700);
-  --shiki-token-comment: var(--color-neutral-400);
-
-  --shiki-color-1: oklch(0.54 0.16 242);
-  --shiki-color-2: oklch(0.62 0.14 78);
-  --shiki-color-3: oklch(0.58 0.16 296);
-  --shiki-color-4: oklch(0.56 0.16 126);
-
-  --shiki-token-string: var(--shiki-color-1);
-  --shiki-token-link: var(--shiki-color-1);
-  --shiki-token-punctuation: var(--shiki-color-1);
-  --shiki-token-keyword: var(--shiki-color-1);
-  --shiki-token-constant: var(--shiki-color-2);
-  --shiki-token-string-expression: var(--shiki-color-3);
-  --shiki-token-parameter: var(--shiki-color-3);
-  --shiki-token-function: var(--shiki-color-4);
-
-  @variant dark {
-    --shiki-foreground: var(--color-neutral-300);
-    --shiki-token-comment: var(--color-neutral-500);
-
-    --shiki-color-1: oklch(0.74 0.12 242);
-    --shiki-color-2: oklch(0.78 0.1 78);
-    --shiki-color-3: oklch(0.72 0.14 296);
-    --shiki-color-4: oklch(0.72 0.12 126);
-  }
 }
 
 @utility prose {

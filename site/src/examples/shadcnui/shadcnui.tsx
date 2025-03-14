@@ -16,7 +16,7 @@ export function ShadcnUi({
       <div className="relative isolate flex items-center justify-center rounded-t-lg border border-b-0 border-dotted bg-background">
         <a
           className={cn(
-            buttonVariants({ size: "sm", variant: "outline" }),
+            buttonVariants({ size: "sm", variant: "ghost" }),
             "absolute top-1.5 right-1.5 z-10",
           )}
           href="https://v0.dev/chat/api/open?url=https://frimousse.liveblocks.io/r/blocks/emoji-picker"
