@@ -131,8 +131,9 @@ function EmojiPickerDataHandler({
  * @example
  * ```tsx
  * <EmojiPicker.Root locale="fr" columns={10} skinTone="medium">
- *   …
+ *   {\/* ... *\/}
  * </EmojiPicker.Root>
+ * ```
  */
 const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
   (
@@ -475,6 +476,9 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
  * ```tsx
  * <EmojiPicker.Root>
  *   <EmojiPicker.Search />
+ *   <EmojiPicker.Viewport>
+ *     <EmojiPicker.List />
+ *   </EmojiPicker.Viewport>
  * </EmojiPicker.Root>
  * ```
  *
@@ -490,6 +494,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
  *       value={search}
  *       onChange={(event) => setSearch(event.target.value)}
  *     />
+ *     {\/* ... *\/}
  *   </EmojiPicker.Root>
  * );
  * ```
@@ -583,11 +588,14 @@ const ActiveEmojiAnnouncer = memo(() => {
  *
  * @example
  * ```tsx
- * <EmojiPicker.Viewport>
- *   <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
- *   <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
- *   <EmojiPicker.List />
- * </EmojiPicker.Viewport>
+ * <EmojiPicker.Root>
+ *   <EmojiPicker.Search />
+ *   <EmojiPicker.Viewport>
+ *     <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
+ *     <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
+ *     <EmojiPicker.List />
+ *   </EmojiPicker.Viewport>
+ * </EmojiPicker.Root>
  * ```
  */
 const EmojiPickerViewport = forwardRef<
@@ -982,7 +990,7 @@ const EmojiPickerListSizers = memo(
         </div>
         <div {...listCategoryProps(-1)}>
           <div frimousse-category-header-sizer="" ref={categoryHeaderRef}>
-            <CategoryHeader {...listCategoryHeaderProps(category)} />
+            <CategoryHeader {...listCategoryHeaderProps(category, true)} />
           </div>
         </div>
       </div>
@@ -1020,30 +1028,31 @@ function DefaultEmojiPickerListRow({ ...props }: EmojiPickerListRowProps) {
  *
  * @example
  * ```tsx
- * <EmojiPicker.Viewport>
- *   <EmojiPicker.List />
- * </EmojiPicker.Viewport>
+ * <EmojiPicker.Root>
+ *   <EmojiPicker.Search />
+ *   <EmojiPicker.Viewport>
+ *     <EmojiPicker.List />
+ *   </EmojiPicker.Viewport>
+ * </EmojiPicker.Root>
  * ```
  *
  * Inner components within the list can be customized via the `components` prop.
  *
  * @example
  * ```tsx
- * <EmojiPicker.Viewport>
- *   <EmojiPicker.List
- *     components={{
- *       CategoryHeader: ({ category, ...props }) => (
- *         <div {...props}>{category.label}</div>
- *       ),
- *       Emoji: ({ emoji, isActive, ...props }) => (
- *         <button aria-label={emoji.label} {...props}>
- *           {emoji.emoji}
- *         </button>
- *       ),
- *       Row: ({ children, ...props }) => <div {...props}>{children}</div>,
- *     }}
- *   />
- * </EmojiPicker.Viewport>
+ * <EmojiPicker.List
+ *   components={{
+ *     CategoryHeader: ({ category, ...props }) => (
+ *       <div {...props}>{category.label}</div>
+ *     ),
+ *     Emoji: ({ emoji, isActive, ...props }) => (
+ *       <button aria-label={emoji.label} {...props}>
+ *         {emoji.emoji}
+ *       </button>
+ *     ),
+ *     Row: ({ children, ...props }) => <div {...props}>{children}</div>,
+ *   }}
+ * />
  * ```
  */
 const EmojiPickerList = forwardRef<HTMLDivElement, EmojiPickerListProps>(
@@ -1245,9 +1254,13 @@ const EmojiPickerSkinToneSelector = forwardRef<
  *
  * @example
  * ```tsx
- * <EmojiPicker.Viewport>
- *   <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
- * </EmojiPicker.Viewport>
+ * <EmojiPicker.Root>
+ *   <EmojiPicker.Search />
+ *   <EmojiPicker.Viewport>
+ *     <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
+ *     <EmojiPicker.List />
+ *   </EmojiPicker.Viewport>
+ * </EmojiPicker.Root>
  * ```
  */
 function EmojiPickerLoading({
@@ -1283,9 +1296,13 @@ function EmojiPickerEmptyWithSearch({
  *
  * @example
  * ```tsx
- * <EmojiPicker.Viewport>
- *   <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
- * </EmojiPicker.Viewport>
+ * <EmojiPicker.Root>
+ *   <EmojiPicker.Search />
+ *   <EmojiPicker.Viewport>
+ *     <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
+ *     <EmojiPicker.List />
+ *   </EmojiPicker.Viewport>
+ * </EmojiPicker.Root>
  * ```
  *
  * It can also expose the current search via a render callback to build
@@ -1384,7 +1401,7 @@ function EmojiPickerActiveEmoji({
  * ```tsx
  * const [skinTone, setSkinTone, skinToneVariations] = useSkinTone("👋");
  *
- * // [👋] [👋🏻] [👋🏼] [👋🏽] [👋🏾] [👋🏿]
+ * // (👋) (👋🏻) (👋🏼) (👋🏽) (👋🏾) (👋🏿)
  * <EmojiPicker.SkinTone emoji="👋">
  *   {({ skinTone, setSkinTone, skinToneVariations }) => (
  *     skinToneVariations.map(({ skinTone, emoji }) => (

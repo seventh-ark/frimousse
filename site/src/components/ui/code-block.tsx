@@ -72,7 +72,7 @@ export async function CodeBlock({
           "**:[.line.highlighted]:bg-secondary/60 dark:**:[.line.highlighted]:bg-secondary/80",
           "**:[.line.diff.add]:bg-lime-500/15 dark:**:[.line.diff.add]:bg-lime-400/10",
           "**:[.line.diff.remove]:bg-rose-500/20 **:[.line.diff.remove]:opacity-50 dark:**:[.line.diff.remove]:bg-rose-400/20",
-          "**:[.highlighted-word]:before:-inset-px **:[.highlighted-word]:pointer-events-none **:[.highlighted-word]:relative **:[.highlighted-word]:before:absolute **:[.highlighted-word]:before:rounded-sm **:[.highlighted-word]:before:border **:[.highlighted-word]:before:border-secondary-foreground/40 **:[.highlighted-word]:before:border-dotted",
+          "**:[.highlighted-word]:before:-z-1 **:[.highlighted-word]:pointer-events-none **:[.highlighted-word]:relative **:[.highlighted-word]:before:absolute **:[.highlighted-word]:before:inset-x-[-0.25em] **:[.highlighted-word]:before:inset-y-[-0.165em] **:[.highlighted-word]:before:rounded-sm **:[.highlighted-word]:before:bg-secondary/80 dark:**:[.highlighted-word]:before:bg-secondary",
         )}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: This is safe with Shiki
         dangerouslySetInnerHTML={{ __html: html }}

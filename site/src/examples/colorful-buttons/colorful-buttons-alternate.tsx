@@ -1,123 +1,8 @@
-"use client";
-
-import { toast } from "@/lib/toast";
+import { CodeBlock } from "@/components/ui/code-block";
+import { Tabs } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import type { Emoji as EmojiObject } from "frimousse";
-import { type ComponentProps, type PointerEvent, useCallback } from "react";
-
-interface ListProps extends ComponentProps<"div"> {
-  rows: number;
-  columns: number;
-}
-
-interface RowProps extends ComponentProps<"div"> {
-  index: number;
-}
-
-interface EmojiProps extends ComponentProps<"button"> {
-  emoji: EmojiObject;
-  index: number;
-}
-
-function List({ rows, columns, children, ...props }: ListProps) {
-  const clearActiveEmojis = useCallback(() => {
-    const emojis = Array.from(document.querySelectorAll("[frimousse-emoji]"));
-
-    for (const emoji of emojis) {
-      emoji.removeAttribute("data-active");
-    }
-  }, []);
-
-  const setActiveEmoji = useCallback(
-    (event: PointerEvent<HTMLDivElement>) => {
-      clearActiveEmojis();
-
-      const emoji = document.elementFromPoint(event.clientX, event.clientY);
-
-      if (emoji?.hasAttribute("frimousse-emoji")) {
-        emoji.setAttribute("data-active", "");
-      }
-    },
-    [clearActiveEmojis],
-  );
-
-  return (
-    <div
-      aria-colcount={columns}
-      aria-rowcount={rows}
-      frimousse-list=""
-      role="grid"
-      {...props}
-      onPointerCancel={clearActiveEmojis}
-      onPointerDown={setActiveEmoji}
-      onPointerLeave={clearActiveEmojis}
-      onPointerMove={setActiveEmoji}
-    >
-      {children}
-    </div>
-  );
-}
-
-function Row({ index, style, className, children, ...props }: RowProps) {
-  return (
-    <div
-      aria-rowindex={index}
-      className={cn("group", className)}
-      frimousse-row=""
-      role="row"
-      style={{
-        contain: "content",
-        display: "flex",
-        ...style,
-      }}
-      tabIndex={-1}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-}
-
-function Emoji({
-  emoji,
-  index,
-  style,
-  className,
-  children,
-  ...props
-}: EmojiProps) {
-  return (
-    <button
-      aria-colindex={index}
-      aria-label={emoji.label}
-      className={cn(
-        "group relative size-12 rounded-[20%] text-2xl outline-none transition duration-200 ease-out",
-        "focus-visible:bg-(--color) focus-visible:duration-0 data-[active]:bg-(--color) data-[active]:duration-0",
-        "[--color-red:--alpha(var(--color-rose-500)/12%)] dark:[--color-red:--alpha(var(--color-rose-400)/26%)]",
-        "[--color-green:--alpha(var(--color-lime-500)/18%)] dark:[--color-green:--alpha(var(--color-lime-400)/28%)]",
-        "[--color-blue:--alpha(var(--color-sky-500)/12%)] dark:[--color-blue:--alpha(var(--color-sky-400)/22%)]",
-        "group-odd:nth-[3n+1]:[--color:var(--color-red)] group-even:nth-[3n+2]:[--color:var(--color-red)]",
-        "group-odd:nth-[3n+2]:[--color:var(--color-green)] group-even:nth-[3n+3]:[--color:var(--color-green)]",
-        "group-odd:nth-[3n+3]:[--color:var(--color-blue)] group-even:nth-[3n+1]:[--color:var(--color-blue)]",
-        className,
-      )}
-      frimousse-emoji=""
-      role="gridcell"
-      style={{
-        fontFamily:
-          "'Apple Color Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', 'Android Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', EmojiSymbols, sans-serif",
-        ...style,
-      }}
-      type="button"
-      {...props}
-      onClick={() => {
-        toast(emoji);
-      }}
-    >
-      {emoji.emoji}
-    </button>
-  );
-}
+import type { ComponentProps } from "react";
+import { ColorfulButtonsAlternatePreview } from "./colorful-buttons-alternate.client";
 
 export function ColorfulButtonsAlternate({
   className,
@@ -125,38 +10,82 @@ export function ColorfulButtonsAlternate({
 }: Omit<ComponentProps<"figure">, "children">) {
   return (
     <figure
-      className={cn(
-        "not-prose relative flex h-[320px] items-center justify-center overflow-hidden rounded-lg border border-dotted bg-background py-14",
-        className,
-      )}
+      className={cn("not-prose relative overflow-hidden", className)}
       {...props}
     >
-      <List className="w-fit touch-none select-none" columns={4} rows={3}>
-        <Row index={0}>
-          <Emoji
-            emoji={{ emoji: "😊", label: "Smiling face with smiling eyes" }}
-            index={0}
-          />
-          <Emoji emoji={{ emoji: "🎀", label: "Ribbon" }} index={1} />
-          <Emoji emoji={{ emoji: "🥑", label: "Avocado" }} index={2} />
-          <Emoji emoji={{ emoji: "🌈", label: "Rainbow" }} index={3} />
-        </Row>
-        <Row index={1}>
-          <Emoji emoji={{ emoji: "🖤", label: "Black heart" }} index={0} />
-          <Emoji emoji={{ emoji: "❤️", label: "Red heart" }} index={1} />
-          <Emoji emoji={{ emoji: "🧡", label: "Orange heart" }} index={2} />
-          <Emoji emoji={{ emoji: "💛", label: "Yellow heart" }} index={3} />
-        </Row>
-        <Row index={2}>
-          <Emoji emoji={{ emoji: "🤍", label: "White heart" }} index={0} />
-          <Emoji emoji={{ emoji: "💚", label: "Green heart" }} index={1} />
-          <Emoji emoji={{ emoji: "💙", label: "Blue heart" }} index={2} />
-          <Emoji emoji={{ emoji: "💜", label: "Purple heart" }} index={3} />
-        </Row>
-      </List>
-      <span className="pointer-events-none absolute inset-x-4 bottom-6 select-none truncate text-center text-foreground/50 text-sm">
-        Hover or focus to see the effect
-      </span>
+      <div className="rounded-t-lg border border-b-0 border-dotted bg-background">
+        <ColorfulButtonsAlternatePreview />
+      </div>
+      <Tabs
+        className="h-[348px] overflow-hidden rounded-b-lg **:data-[slot=tabs-list]:border-x **:data-[slot=tabs-list]:border-t **:data-[slot=tabs-list]:border-dotted"
+        defaultValue="tailwind"
+        tabs={[
+          {
+            name: "tailwind",
+            label: "Tailwind CSS",
+            children: (
+              <CodeBlock className="absolute inset-0 rounded-none" lang="tsx">{`
+                <EmojiPickerPrimitive.List
+                  components={{
+                    Row: ({ children, ...props }) => (
+                      <div className="group" {...props}>
+                        {children}
+                      </div>
+                    ),
+                    Emoji: ({ emoji, isActive, ...props }) => {
+                      return (
+                        <button
+                          aria-label={emoji.label}
+                          data-active={isActive ? "" : undefined}
+                          className="relative flex aspect-square size-8 items-center justify-center overflow-hidden rounded-md text-lg data-[active]:group-even:nth-[3n+1]:bg-blue-100 data-[active]:group-even:nth-[3n+2]:bg-red-100 data-[active]:group-even:nth-[3n+3]:bg-green-100 data-[active]:group-odd:nth-[3n+1]:bg-red-100 data-[active]:group-odd:nth-[3n+2]:bg-green-100 data-[active]:group-odd:nth-[3n+3]:bg-blue-100 dark:data-[active]:group-even:nth-[3n+1]:bg-blue-900 dark:data-[active]:group-even:nth-[3n+2]:bg-red-900 dark:data-[active]:group-even:nth-[3n+3]:bg-green-900 dark:data-[active]:group-odd:nth-[3n+1]:bg-red-900 dark:data-[active]:group-odd:nth-[3n+2]:bg-green-900 dark:data-[active]:group-odd:nth-[3n+3]:bg-blue-900"
+                          {...props}
+                        >
+                          {emoji.emoji}
+                        </button>
+                      );
+                    },
+                  }}
+                />
+              `}</CodeBlock>
+            ),
+          },
+          {
+            name: "css",
+            label: "CSS",
+            children: (
+              <CodeBlock className="absolute inset-0 rounded-none" lang="css">{`
+                [frimousse-emoji] {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  width: 32px;
+                  height: 32px;
+                  border-radius: 6px;
+                  background: transparent;
+                  font-size: 18px;
+
+                  &[data-active] {
+                    [frimousse-row]:nth-child(odd) &:nth-child(3n+1),
+                    [frimousse-row]:nth-child(even) &:nth-child(3n+2) {
+                      background: light-dark(#ffe2e2, #82181a);
+                    }
+
+                    [frimousse-row]:nth-child(odd) &:nth-child(3n+2),
+                    [frimousse-row]:nth-child(even) &:nth-child(3n+3) {
+                      background: light-dark(#dcfce7, #0d542b);
+                    }
+
+                    [frimousse-row]:nth-child(odd) &:nth-child(3n+3),
+                    [frimousse-row]:nth-child(even) &:nth-child(3n+1) {
+                      background: light-dark(#dbeafe, #1c398e);
+                    }
+                  }
+                }
+              `}</CodeBlock>
+            ),
+          },
+        ]}
+      />
     </figure>
   );
 }

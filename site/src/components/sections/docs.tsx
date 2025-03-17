@@ -30,16 +30,14 @@ export function Docs({
         <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
           shadcn/ui
         </a>
-        , you can also install it as a pre-built component which integrates with
-        the existing{" "}
-        <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
-          shadcn/ui
-        </a>{" "}
-        variables. Learn more in the <a href="#shadcnui">shadcn/ui section</a>.
+        , you can also install it as a pre-built component.
       </p>
       <CodeBlock lang="bash">
         npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
       </CodeBlock>
+      <p>
+        Learn more in the shadcn/ui <a href="#shadcnui">section</a>.
+      </p>
 
       <PermalinkHeading as="h2">Usage</PermalinkHeading>
       <p>
@@ -70,7 +68,7 @@ export function Docs({
           Tailwind CSS
         </a>
         , CSS-in-JS, vanilla CSS via inline styles, classes, or by targeting the{" "}
-        <code>[frimousse-*]</code> data attributes present on each part.
+        <code>[frimousse-*]</code> attributes present on each part.
       </p>
       <Usage />
       <p>
@@ -118,22 +116,14 @@ export function Docs({
           shadcn/ui
         </a>
         , you can install a pre-built version of the component which integrates
-        with the existing{" "}
-        <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
-          shadcn/ui
-        </a>{" "}
-        variables.
+        with the existing shadcn/ui variables.
       </p>
       <CodeBlock lang="bash">
         npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
       </CodeBlock>
       <ShadcnUi />
       <p>
-        It can be composed and combined with other{" "}
-        <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
-          shadcn/ui
-        </a>{" "}
-        components like{" "}
+        It can be composed and combined with other shadcn/ui components like{" "}
         <a
           href="https://ui.shadcn.com/docs/components/popover"
           rel="noreferrer"
@@ -231,9 +221,9 @@ export function Docs({
         <span className="inline-block rounded-[0.3em] bg-rose-500/12 px-[0.375em] pt-[0.245em] pb-[0.265em] leading-none dark:bg-rose-400/26">
           red
         </span>{" "}
-        again, and so on. All <strong>odd</strong> rows will follow the same
-        pattern, while <strong>even</strong> rows offset it by one to avoid
-        every column using the same color, starting with{" "}
+        again, and so on. All <strong>odd</strong> rows follow the same pattern,
+        while <strong>even</strong> rows offset it by one to avoid every column
+        using the same color, starting with{" "}
         <span className="inline-block rounded-[0.3em] bg-sky-500/12 px-[0.375em] pt-[0.245em] pb-[0.265em] leading-none dark:bg-sky-400/22">
           blue
         </span>{" "}
@@ -249,7 +239,8 @@ export function Docs({
         button’s emoji as background color instead. Extracting colors from
         emojis isn’t trivial, but a similar visual result can be achieved more
         easily by duplicating the emoji and scaling it to fill the background,
-        then blurring it.
+        then blurring it. In the example below, the blurred and duplicated emoji
+        is built as a <code>::before</code> pseudo-element.
       </p>
       <ColorfulButtonsBlur />
 
@@ -259,11 +250,13 @@ export function Docs({
       <PermalinkHeading as="h3">EmojiPicker.Root</PermalinkHeading>
       <p>Surrounds all the emoji picker parts.</p>
       <CodeBlock lang="tsx">{`
+        // [!code highlight:1]
         <EmojiPicker.Root onEmojiSelect={({ emoji }) => console.log(emoji)}>
           <EmojiPicker.Search />
           <EmojiPicker.Viewport>
             <EmojiPicker.List />
           </EmojiPicker.Viewport>
+        // [!code highlight:1]
         </EmojiPicker.Root>
       `}</CodeBlock>
       <p>
@@ -271,6 +264,9 @@ export function Docs({
         component as props.
       </p>
       <CodeBlock lang="tsx">{`
+        // [!code word:locale]
+        // [!code word:columns]
+        // [!code word:skinTone]
         <EmojiPicker.Root locale="fr" columns={10} skinTone="medium">
           {/* ... */}
         </EmojiPicker.Root>
@@ -363,19 +359,26 @@ export function Docs({
       <p>A search input to filter the list of emojis.</p>
       <CodeBlock lang="tsx">{`
         <EmojiPicker.Root>
+          // [!code highlight:1]
           <EmojiPicker.Search />
+          <EmojiPicker.Viewport>
+            <EmojiPicker.List />
+          </EmojiPicker.Viewport>
         </EmojiPicker.Root>
       `}</CodeBlock>
       <p>It can be controlled or uncontrolled.</p>
       <CodeBlock lang="tsx">{`
+        // [!code highlight:1]
         const [search, setSearch] = useState("");
 
         return (
           <EmojiPicker.Root>
             <EmojiPicker.Search
+              // [!code highlight:2]
               value={search}
               onChange={(event) => setSearch(event.target.value)}
             />
+            {/* ... */}
           </EmojiPicker.Root>
         );
       `}</CodeBlock>
@@ -403,11 +406,16 @@ export function Docs({
       <PermalinkHeading as="h3">EmojiPicker.Viewport</PermalinkHeading>
       <p>The scrolling container of the emoji picker.</p>
       <CodeBlock lang="tsx">{`
-        <EmojiPicker.Viewport>
-          <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
-          <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
-          <EmojiPicker.List />
-        </EmojiPicker.Viewport>
+        <EmojiPicker.Root>
+          <EmojiPicker.Search />
+          // [!code highlight:1]
+          <EmojiPicker.Viewport>
+            <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
+            <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
+            <EmojiPicker.List />
+          // [!code highlight:1]
+          </EmojiPicker.Viewport>
+        </EmojiPicker.Root>
       `}</CodeBlock>
 
       <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Viewport">
@@ -433,30 +441,33 @@ export function Docs({
       <PermalinkHeading as="h3">EmojiPicker.List</PermalinkHeading>
       <p>The list of emojis.</p>
       <CodeBlock lang="tsx">{`
-        <EmojiPicker.Viewport>
-          <EmojiPicker.List />
-        </EmojiPicker.Viewport>
+        <EmojiPicker.Root>
+          <EmojiPicker.Search />
+          <EmojiPicker.Viewport>
+            // [!code highlight:1]
+            <EmojiPicker.List />
+          </EmojiPicker.Viewport>
+        </EmojiPicker.Root>
       `}</CodeBlock>
       <p>
         Inner components within the list can be customized via the{" "}
         <code>components</code> prop.
       </p>
       <CodeBlock lang="tsx">{`
-        <EmojiPicker.Viewport>
-          <EmojiPicker.List
-            components={{
-              CategoryHeader: ({ category, ...props }) => (
-                <div {...props}>{category.label}</div>
-              ),
-              Emoji: ({ emoji, isActive, ...props }) => (
-                <button aria-label={emoji.label} {...props}>
-                  {emoji.emoji}
-                </button>
-              ),
-              Row: ({ children, ...props }) => <div {...props}>{children}</div>,
-            }}
-          />
-        </EmojiPicker.Viewport>
+        <EmojiPicker.List
+          // [!code highlight:11]
+          components={{
+            CategoryHeader: ({ category, ...props }) => (
+              <div {...props}>{category.label}</div>
+            ),
+            Emoji: ({ emoji, isActive, ...props }) => (
+              <button aria-label={emoji.label} {...props}>
+                {emoji.emoji}
+              </button>
+            ),
+            Row: ({ children, ...props }) => <div {...props}>{children}</div>,
+          }}
+        />
       `}</CodeBlock>
 
       <PermalinkHeading as="h4" slugPrefix="EmojiPicker.List">
@@ -496,7 +507,7 @@ export function Docs({
           <p>
             The component used to render a sticky category header in the list.
           </p>
-          <p className="text-secondary-foreground/60!">
+          <p className="mt-2 text-secondary-foreground/60!">
             <CircleHelp
               aria-hidden
               className="-mt-0.5 mr-1.5 inline-block size-3.5"
@@ -517,7 +528,7 @@ export function Docs({
         </PropertiesListBasicRow>
         <PropertiesListRow name="Row" type="EmojiPickerListRowProps">
           <p>The component used to render a row of emojis in the list.</p>
-          <p className="text-secondary-foreground/60!">
+          <p className="mt-2 text-secondary-foreground/60!">
             <CircleHelp
               aria-hidden
               className="-mt-0.5 mr-1.5 inline-block size-3.5"
@@ -535,7 +546,7 @@ export function Docs({
         </PropertiesListBasicRow>
         <PropertiesListRow name="Emoji" type="EmojiPickerListEmojiProps">
           <p>The component used to render an emoji button in the list.</p>
-          <p className="text-secondary-foreground/60!">
+          <p className="mt-2 text-secondary-foreground/60!">
             <CircleHelp
               aria-hidden
               className="-mt-0.5 mr-1.5 inline-block size-3.5"
@@ -565,9 +576,14 @@ export function Docs({
       <PermalinkHeading as="h3">EmojiPicker.Loading</PermalinkHeading>
       <p>Only renders when the emoji data is loading.</p>
       <CodeBlock lang="tsx">{`
-        <EmojiPicker.Viewport>
-          <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
-        </EmojiPicker.Viewport>
+        <EmojiPicker.Root>
+          <EmojiPicker.Search />
+          <EmojiPicker.Viewport>
+            // [!code highlight:1]
+            <EmojiPicker.Loading>Loading…</EmojiPicker.Loading>
+            <EmojiPicker.List />
+          </EmojiPicker.Viewport>
+        </EmojiPicker.Root>
       `}</CodeBlock>
 
       <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Loading">
@@ -584,12 +600,26 @@ export function Docs({
         </PropertiesListBasicRow>
       </PropertiesList>
 
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Loading">
+        Attributes
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow name="[frimousse-loading]">
+          <p>Can be targeted in CSS for styling.</p>
+        </PropertiesListRow>
+      </PropertiesList>
+
       <PermalinkHeading as="h3">EmojiPicker.Empty</PermalinkHeading>
       <p>Only renders when no emoji is found for the current search.</p>
       <CodeBlock lang="tsx">{`
-        <EmojiPicker.Viewport>
-          <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
-        </EmojiPicker.Viewport>
+        <EmojiPicker.Root>
+          <EmojiPicker.Search />
+          <EmojiPicker.Viewport>
+            // [!code highlight:1]
+            <EmojiPicker.Empty>No emoji found.</EmojiPicker.Empty>
+            <EmojiPicker.List />
+          </EmojiPicker.Viewport>
+        </EmojiPicker.Root>
       `}</CodeBlock>
       <p>
         It can also expose the current search via a render callback to build a
@@ -621,6 +651,15 @@ export function Docs({
         </PropertiesListBasicRow>
       </PropertiesList>
 
+      <PermalinkHeading as="h4" slugPrefix="EmojiPicker.Empty">
+        Attributes
+      </PermalinkHeading>
+      <PropertiesList>
+        <PropertiesListRow name="[frimousse-empty]">
+          <p>Can be targeted in CSS for styling.</p>
+        </PropertiesListRow>
+      </PropertiesList>
+
       <PermalinkHeading as="h3">EmojiPicker.SkinToneSelector</PermalinkHeading>
       <p>
         A button to change the current skin tone by cycling through the
@@ -631,6 +670,7 @@ export function Docs({
       `}</CodeBlock>
       <p>The emoji used as visual can be customized.</p>
       <CodeBlock lang="tsx">{`
+        // [!code word:emoji]
         <EmojiPicker.SkinToneSelector emoji="👋" />
       `}</CodeBlock>
       <p>
@@ -690,7 +730,7 @@ export function Docs({
       <CodeBlock lang="tsx">{`
         const [skinTone, setSkinTone, skinToneVariations] = useSkinTone("👋");
 
-        // [👋] [👋🏻] [👋🏼] [👋🏽] [👋🏾] [👋🏿]
+        // (👋) (👋🏻) (👋🏼) (👋🏽) (👋🏾) (👋🏿)
         <EmojiPicker.SkinTone emoji="👋">
           {({ skinTone, setSkinTone, skinToneVariations }) => (
             skinToneVariations.map(({ skinTone, emoji }) => (
@@ -769,7 +809,7 @@ export function Docs({
       <CodeBlock lang="tsx">{`
         const [skinTone, setSkinTone, skinToneVariations] = useSkinTone("👋");
 
-        // [👋] [👋🏻] [👋🏼] [👋🏽] [👋🏾] [👋🏿]
+        // (👋) (👋🏻) (👋🏼) (👋🏽) (👋🏾) (👋🏿)
         skinToneVariations.map(({ skinTone, emoji }) => (
           <button key={skinTone} onClick={() => setSkinTone(skinTone)}>
             {emoji}
@@ -830,7 +870,16 @@ export function Docs({
       <PermalinkHeading as="h2">Miscellaneous</PermalinkHeading>
 
       <p>
-        The name “frimousse” is the French word for “smiley” and “emoticon”.
+        The name{" "}
+        <a
+          href="https://en.wiktionary.org/wiki/frimousse"
+          rel="noreferrer"
+          target="_blank"
+        >
+          “frimousse”
+        </a>{" "}
+        means “little face” in French, and it can also refer to smileys and
+        emoticons.
       </p>
       <p>
         The emoji picker component was originally created for the{" "}
@@ -841,7 +890,7 @@ export function Docs({
         >
           Liveblocks Comments
         </a>{" "}
-        components, within{" "}
+        default components, within{" "}
         <a
           href="https://github.com/liveblocks/liveblocks/tree/main/packages/liveblocks-react-ui"
           rel="noreferrer"

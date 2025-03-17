@@ -60,7 +60,7 @@ export function useActiveEmoji(): Emoji | undefined {
  * ```tsx
  * const [skinTone, setSkinTone, skinToneVariations] = useSkinTone("👋");
  *
- * // [👋] [👋🏻] [👋🏼] [👋🏽] [👋🏾] [👋🏿]
+ * // (👋) (👋🏻) (👋🏼) (👋🏽) (👋🏾) (👋🏿)
  * skinToneVariations.map(({ skinTone, emoji }) => (
  *   <button key={skinTone} onClick={() => setSkinTone(skinTone)}>
  *     {emoji}

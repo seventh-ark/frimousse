@@ -19,12 +19,12 @@ export function ShadcnUiPopover({
             buttonVariants({ size: "sm", variant: "ghost" }),
             "absolute top-1.5 right-1.5 z-10",
           )}
-          href="https://v0.dev/chat/api/open?url=https://frimousse.liveblocks.io/r/blocks/emoji-picker-popover"
+          href="https://v0.dev/chat/api/open?url=https://frimousse.liveblocks.io/r/v0/emoji-picker-popover"
           rel="noreferrer"
           target="_blank"
         >
           <span className="mx-px inline-flex items-center gap-1">
-            Edit in{" "}
+            Open in{" "}
             <svg
               className="size-4.5 leading-none"
               fill="currentColor"

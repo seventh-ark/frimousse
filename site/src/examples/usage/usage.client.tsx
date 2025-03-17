@@ -45,7 +45,7 @@ function EmojiPicker({ className, columns, ...props }: EmojiPickerRootProps) {
             ),
             CategoryHeader: ({ category, ...props }) => (
               <div
-                className="bg-white px-3 pt-3 pb-1.5 font-medium text-neutral-600 text-xs dark:bg-neutral-900 dark:text-neutral-400"
+                className="after:-top-1 relative bg-white px-3 pt-3 pb-1.5 font-medium text-neutral-600 text-xs after:absolute after:inset-x-0 after:h-2 after:bg-white dark:bg-neutral-900 dark:text-neutral-400 dark:after:bg-neutral-900"
                 {...props}
               >
                 {category.label}

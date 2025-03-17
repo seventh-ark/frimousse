@@ -8,7 +8,7 @@ import {
   EmojiPicker as EmojiPickerPrimitive,
   type EmojiPickerRootProps,
 } from "frimousse";
-import type { ComponentProps } from "react";
+import type { CSSProperties, ComponentProps } from "react";
 import { buttonVariants } from "./button";
 
 interface EmojiPickerProps extends EmojiPickerRootProps {
@@ -71,6 +71,7 @@ function EmojiPickerEmoji({
   emoji,
   isActive,
   className,
+  style,
   ...props
 }: EmojiPickerListEmojiProps) {
   return (
@@ -78,19 +79,18 @@ function EmojiPickerEmoji({
       {...props}
       aria-label={emoji.label}
       className={cn(
-        "group relative flex aspect-square min-w-8 max-w-[calc(100%/var(--frimousse-list-columns))] flex-1 items-center justify-center whitespace-nowrap rounded-[max(2vw,var(--radius-md))] text-[max(4vw,var(--text-lg))] transition-colors duration-200 ease-out data-[active]:bg-muted/80 data-[active]:duration-0 sm:size-8 sm:flex-none sm:rounded-md sm:text-lg",
+        "relative flex aspect-square min-w-8 max-w-[calc(100%/var(--frimousse-list-columns))] flex-1 items-center justify-center overflow-hidden whitespace-nowrap rounded-[max(2vw,var(--radius-md))] text-[max(4vw,var(--text-lg))] transition-colors duration-200 ease-out data-[active]:bg-muted/80 data-[active]:duration-0 sm:size-8 sm:flex-none sm:rounded-md sm:text-lg",
+        "before:-z-1 before:absolute before:inset-0 before:hidden before:items-center before:justify-center before:text-[2.5em] before:opacity-0 before:blur-lg before:saturate-200 before:transition-[display,opacity] before:transition-discrete before:duration-200 before:ease-out before:content-(--emoji) data-[active]:before:flex data-[active]:before:opacity-100 data-[active]:before:duration-0",
         className,
       )}
+      style={
+        {
+          "--emoji": `"${emoji.emoji}"`,
+          ...style,
+        } as CSSProperties
+      }
     >
-      <span
-        aria-hidden
-        className="absolute inset-0 hidden items-center justify-center overflow-hidden rounded-[inherit] opacity-0 transition-[display,opacity] transition-discrete duration-200 ease-out group-data-[active]:flex group-data-[active]:opacity-100 group-data-[active]:duration-0"
-      >
-        <span className="text-[2.5em] opacity-20 blur-lg saturate-200">
-          {emoji.emoji}
-        </span>
-      </span>
-      <span className="relative">{emoji.emoji}</span>
+      {emoji.emoji}
     </button>
   );
 }
@@ -104,7 +104,7 @@ function EmojiPickerCategoryHeader({
     <div
       {...props}
       className={cn(
-        "bg-background px-4 pt-3 pb-1.5 font-medium text-secondary-foreground text-xs sm:px-3",
+        "after:-top-1 relative bg-background px-4 pt-3 pb-1.5 font-medium text-secondary-foreground text-xs after:absolute after:inset-x-0 after:h-2 after:bg-background sm:px-3",
         className,
       )}
     >
