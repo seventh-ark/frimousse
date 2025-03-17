@@ -30,7 +30,15 @@ export function Docs({
         <a href="https://ui.shadcn.com/" rel="noreferrer" target="_blank">
           shadcn/ui
         </a>
-        , you can also install it as a pre-built component.
+        , you can also install it as a pre-built component via the{" "}
+        <a
+          href="https://ui.shadcn.com/docs/cli"
+          rel="noreferrer"
+          target="_blank"
+        >
+          shadcn CLI
+        </a>
+        .
       </p>
       <CodeBlock lang="bash">
         npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
@@ -116,7 +124,15 @@ export function Docs({
           shadcn/ui
         </a>
         , you can install a pre-built version of the component which integrates
-        with the existing shadcn/ui variables.
+        with the existing shadcn/ui variables via the{" "}
+        <a
+          href="https://ui.shadcn.com/docs/cli"
+          rel="noreferrer"
+          target="_blank"
+        >
+          shadcn CLI
+        </a>
+        .
       </p>
       <CodeBlock lang="bash">
         npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
