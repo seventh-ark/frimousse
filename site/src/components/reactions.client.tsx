@@ -115,6 +115,8 @@ const ReactionButton = memo(
     return (
       <button
         aria-hidden={hidden ? "true" : undefined}
+        aria-label={`${count} reaction${count !== 1 ? "s" : ""} with ${emoji}`}
+        aria-pressed={active}
         className={cn(
           buttonVariants({ variant: "none" }),
           "group rounded-full border border-transparent bg-muted px-2.5 py-1 text-sm tabular-nums will-change-transform hover:border-border hover:bg-background focus-visible:border-border focus-visible:bg-background data-[state=open]:border-border data-[state=open]:bg-background",
