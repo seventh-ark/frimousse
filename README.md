@@ -7,11 +7,11 @@
   </a>
 </h1>
 
-[![npm](https://img.shields.io/npm/v/frimousse?color=%23fc0)](https://www.npmjs.com/package/frimousse)
-[![installs](https://img.shields.io/npm/dm/frimousse?color=%23fc0&label=npm)](https://www.npmjs.com/package/frimousse)
-[![size](https://img.shields.io/bundlephobia/minzip/frimousse?label=size&color=%23fc0)](https://bundlephobia.com/package/frimousse)
-[![tests](https://img.shields.io/github/actions/workflow/status/liveblocks/frimousse/.github/workflows/tests.yml?color=%23fc0&label=tests)](https://github.com/liveblocks/frimousse/actions/workflows/tests.yml)
-[![license](https://img.shields.io/github/license/liveblocks/frimousse?color=%23fc0)](https://github.com/liveblocks/frimousse/blob/main/LICENSE)
+[![npm](https://img.shields.io/npm/v/frimousse?color=fc0&labelColor=651)](https://www.npmjs.com/package/frimousse)
+[![downloads](https://img.shields.io/npm/dm/frimousse?label=downloads&color=fc0&labelColor=651)](https://www.npmjs.com/package/frimousse)
+[![size](https://img.shields.io/bundlephobia/minzip/frimousse?label=size&color=fc0&labelColor=651)](https://bundlephobia.com/package/frimousse)
+[![tests](https://img.shields.io/github/actions/workflow/status/liveblocks/frimousse/.github/workflows/tests.yml?label=tests&color=fc0&labelColor=651)](https://github.com/liveblocks/frimousse/actions/workflows/tests.yml)
+[![license](https://img.shields.io/github/license/liveblocks/frimousse?color=fc0&labelColor=651)](https://github.com/liveblocks/frimousse/blob/main/LICENSE)
 
 A lightweight, unstyled, and composable emoji picker for React.
 
@@ -21,11 +21,21 @@ A lightweight, unstyled, and composable emoji picker for React.
 - 🔣 **No � symbols**: Unsupported emojis are automatically hidden
 - ♿️ **Accessible**: Keyboard navigable and screen reader-friendly
 
+ <img src=".github/assets/header.svg" alt="Various emoji pickers." />
+
 ## Installation
 
 ```bash
 npm i frimousse
 ```
+
+If you are using [shadcn/ui](https://ui.shadcn.com/), you can also install it as a pre-built component.
+
+```bash
+npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
+```
+
+Learn more in the [shadcn/ui](#shadcnui) section.
 
 ## Usage
 
@@ -48,17 +58,19 @@ export function MyEmojiPicker() {
 }
 ```
 
-Apart from a few sizing and overflow defaults, the parts don’t have any styles out-of-the-box. Being composable, you can bring your own styles and apply them however you want: [Tailwind CSS](https://tailwindcss.com/), CSS-in-JS, vanilla CSS via inline styles, classes, or by targeting the `[frimousse-*]` data attributes present on each part.
+Apart from a few sizing and overflow defaults, the parts don’t have any styles out-of-the-box. Being composable, you can bring your own styles and apply them however you want: [Tailwind CSS](https://tailwindcss.com/), CSS-in-JS, vanilla CSS via inline styles, classes, or by targeting the `[frimousse-*]` attributes present on each part.
 
 You might want to use it in a popover rather than on its own. Frimousse only provides the emoji picker itself so if you don’t have a popover component in your app yet, there are several libraries available: [Radix UI](https://www.radix-ui.com/primitives/docs/components/popover), [Base UI](https://base-ui.com/react/components/popover), [Headless UI](https://headlessui.com/react/popover), and [React Aria](https://react-spectrum.adobe.com/react-aria/Popover.html), to name a few.
 
 ### shadcn/ui
 
-If you are using [shadcn/ui](https://ui.shadcn.com/), you can install a pre-built component which integrates with the existing [shadcn/ui](https://ui.shadcn.com/) variables.
+If you are using [shadcn/ui](https://ui.shadcn.com/), you can install a pre-built component which integrates with the existing shadcn/ui variables.
 
 ```bash
 npx shadcn@latest add https://frimousse.liveblocks.io/r/emoji-picker
 ```
+
+It can be composed and combined with other shadcn/ui components like [Popover](https://ui.shadcn.com/docs/components/popover).
 
 ## Documentation
 
@@ -66,9 +78,9 @@ Find the full documentation and examples on [frimousse.liveblocks.io](https://fr
 
 ## Miscellaneous
 
-The name “frimousse” is the French word for “smiley” and “emoticon”.
+The name [“frimousse”](https://en.wiktionary.org/wiki/frimousse) means “little face” in French, and it can also refer to smileys and emoticons.
 
-The emoji picker component was originally created for the [Liveblocks Comments](https://liveblocks.io/comments) components, within [`@liveblocks/react-ui`](https://github.com/liveblocks/liveblocks/tree/main/packages/liveblocks-react-ui).
+The emoji picker component was originally created for the [Liveblocks Comments](https://liveblocks.io/comments) default components, within [`@liveblocks/react-ui`](https://github.com/liveblocks/liveblocks/tree/main/packages/liveblocks-react-ui).
 
 ## Contributing
 
