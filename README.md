@@ -82,6 +82,10 @@ The name [“frimousse”](https://en.wiktionary.org/wiki/frimousse) means “li
 
 The emoji picker component was originally created for the [Liveblocks Comments](https://liveblocks.io/comments) default components, within [`@liveblocks/react-ui`](https://github.com/liveblocks/liveblocks/tree/main/packages/liveblocks-react-ui).
 
+## Credits
+
+The emoji data is based on [Emojibase](https://emojibase.dev/).
+
 ## Contributing
 
 All contributions are welcome! If you find a bug or have a feature request, feel free to create an [issue](https://github.com/liveblocks/frimousse/issues) or a [PR](https://github.com/liveblocks/frimousse/pulls).

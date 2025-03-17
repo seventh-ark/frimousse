@@ -875,8 +875,8 @@ export function Docs({
         </a>{" "}
         is also available.
       </p>
-      <PermalinkHeading as="h2">Miscellaneous</PermalinkHeading>
 
+      <PermalinkHeading as="h2">Miscellaneous</PermalinkHeading>
       <p>
         The name{" "}
         <a
@@ -905,6 +905,15 @@ export function Docs({
           target="_blank"
         >
           <code>@liveblocks/react-ui</code>
+        </a>
+        .
+      </p>
+
+      <PermalinkHeading as="h2">Credits</PermalinkHeading>
+      <p>
+        The emoji data is based on{" "}
+        <a href="https://emojibase.dev/" rel="noreferrer" target="_blank">
+          Emojibase
         </a>
         .
       </p>
