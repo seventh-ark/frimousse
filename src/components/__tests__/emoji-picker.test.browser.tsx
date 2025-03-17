@@ -140,14 +140,14 @@ describe("EmojiPicker", () => {
     page.render(
       <DefaultPage
         listComponents={{
-          Emoji: ({ emoji, isActive, style, ...props }) => (
+          Emoji: ({ emoji, style, ...props }) => (
             <button
               data-testid={`emoji: ${emoji.emoji}`}
               style={{ height: EMOJI_BUTTON_HEIGHT, ...style }}
               type="button"
               {...props}
             >
-              {isActive ? emoji.emoji : null}
+              {emoji.isActive ? emoji.emoji : null}
             </button>
           ),
         }}
@@ -214,13 +214,13 @@ describe("EmojiPicker", () => {
     page.render(
       <DefaultPage
         listComponents={{
-          Emoji: ({ emoji, isActive, style, ...props }) => (
+          Emoji: ({ emoji, style, ...props }) => (
             <button
               {...props}
               style={{
                 ...style,
                 height: EMOJI_BUTTON_HEIGHT,
-                background: isActive ? "red" : undefined,
+                background: emoji.isActive ? "red" : undefined,
               }}
             >
               {emoji.emoji}

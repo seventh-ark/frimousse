@@ -557,13 +557,21 @@ export function Docs({
         <PropertiesListRow className="pl-8!" name="[frimousse-emoji]">
           <p>Can be targeted in CSS for styling.</p>
         </PropertiesListRow>
-        <PropertiesListRow className="pl-8!" name="emoji" type="Emoji">
-          <p>The emoji for this button.</p>
-        </PropertiesListRow>
-        <PropertiesListRow className="pl-8!" name="isActive" type="boolean">
+        <PropertiesListRow className="pl-8!" name="[data-active]">
           <p>
-            Whether the emoji is currently active (either hovered or selected
-            via keyboard navigation).
+            Present when the emoji is currently active (either hovered or
+            selected via keyboard navigation).
+          </p>
+        </PropertiesListRow>
+        <PropertiesListRow
+          className="pl-8!"
+          name="emoji"
+          type="Emoji & { isActive: boolean }"
+        >
+          <p>
+            The emoji for this button, its label, and whether the emoji is
+            currently active (either hovered or selected via keyboard
+            navigation).
           </p>
         </PropertiesListRow>
         <PropertiesListBasicRow className="pl-8!">

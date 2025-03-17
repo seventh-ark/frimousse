@@ -32,11 +32,9 @@ export function ColorfulButtonsAlternate({
                         {children}
                       </div>
                     ),
-                    Emoji: ({ emoji, isActive, ...props }) => {
+                    Emoji: ({ emoji, ...props }) => {
                       return (
                         <button
-                          aria-label={emoji.label}
-                          data-active={isActive ? "" : undefined}
                           className="relative flex aspect-square size-8 items-center justify-center overflow-hidden rounded-md text-lg data-[active]:group-even:nth-[3n+1]:bg-blue-100 data-[active]:group-even:nth-[3n+2]:bg-red-100 data-[active]:group-even:nth-[3n+3]:bg-green-100 data-[active]:group-odd:nth-[3n+1]:bg-red-100 data-[active]:group-odd:nth-[3n+2]:bg-green-100 data-[active]:group-odd:nth-[3n+3]:bg-blue-100 dark:data-[active]:group-even:nth-[3n+1]:bg-blue-900 dark:data-[active]:group-even:nth-[3n+2]:bg-red-900 dark:data-[active]:group-even:nth-[3n+3]:bg-green-900 dark:data-[active]:group-odd:nth-[3n+1]:bg-red-900 dark:data-[active]:group-odd:nth-[3n+2]:bg-green-900 dark:data-[active]:group-odd:nth-[3n+3]:bg-blue-900"
                           {...props}
                         >

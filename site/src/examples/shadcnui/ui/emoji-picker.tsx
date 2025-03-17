@@ -56,19 +56,16 @@ function EmojiPickerRow({ children, ...props }: EmojiPickerListRowProps) {
 
 function EmojiPickerEmoji({
   emoji,
-  isActive,
   className,
   ...props
 }: EmojiPickerListEmojiProps) {
   return (
     <button
       {...props}
-      aria-label={emoji.label}
       className={cn(
         "flex size-7 items-center justify-center rounded-sm text-base data-[active]:bg-accent",
         className,
       )}
-      data-active={isActive ? "" : undefined}
       data-slot="emoji-picker-emoji"
     >
       {emoji.emoji}

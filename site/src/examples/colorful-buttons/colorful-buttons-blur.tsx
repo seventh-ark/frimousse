@@ -27,11 +27,9 @@ export function ColorfulButtonsBlur({
               <CodeBlock className="absolute inset-0 rounded-none" lang="tsx">{`
                 <EmojiPickerPrimitive.List
                   components={{
-                    Emoji: ({ emoji, isActive, ...props }) => {
+                    Emoji: ({ emoji, ...props }) => {
                       return (
                         <button
-                          aria-label={emoji.label}
-                          data-active={isActive ? "" : undefined}
                           className="relative flex aspect-square size-8 items-center justify-center overflow-hidden rounded-md text-lg data-[active]:bg-neutral-100/80 dark:data-[active]:bg-neutral-800/80 before:absolute before:inset-0 before:-z-1 before:hidden before:items-center before:justify-center before:text-[2.5em] before:blur-lg before:saturate-200 before:content-(--emoji) data-[active]:before:flex"
                           style={
                             {

@@ -56,10 +56,8 @@ export function Usage({
                                 {children}
                               </div>
                             ),
-                            Emoji: ({ emoji, isActive, ...props }) => (
+                            Emoji: ({ emoji, ...props }) => (
                               <button
-                                aria-label={emoji.label}
-                                data-active={isActive ? "" : undefined}
                                 className="flex size-8 items-center justify-center rounded-md text-lg data-[active]:bg-neutral-100 dark:data-[active]:bg-neutral-800"
                                 {...props}
                               >

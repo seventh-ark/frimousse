@@ -686,11 +686,11 @@ function listEmojiProps(
   isActive: boolean,
 ): WithAttributes<EmojiPickerListEmojiProps> {
   return {
-    emoji,
-    isActive,
+    emoji: { ...emoji, isActive },
     role: "gridcell",
     "aria-colindex": columnIndex,
     "aria-selected": isActive || undefined,
+    "aria-label": emoji.label,
     "data-active": isActive ? "" : undefined,
     "frimousse-emoji": "",
     style: {
@@ -1007,14 +1007,11 @@ function DefaultEmojiPickerListCategoryHeader({
 
 function DefaultEmojiPickerListEmoji({
   emoji,
-  isActive: _,
   ...props
 }: EmojiPickerListEmojiProps) {
   return (
     <button type="button" {...props}>
-      <span aria-label={emoji.label} role="img">
-        {emoji.emoji}
-      </span>
+      {emoji.emoji}
     </button>
   );
 }
@@ -1045,8 +1042,8 @@ function DefaultEmojiPickerListRow({ ...props }: EmojiPickerListRowProps) {
  *     CategoryHeader: ({ category, ...props }) => (
  *       <div {...props}>{category.label}</div>
  *     ),
- *     Emoji: ({ emoji, isActive, ...props }) => (
- *       <button aria-label={emoji.label} {...props}>
+ *     Emoji: ({ emoji, ...props }) => (
+ *       <button {...props}>
  *         {emoji.emoji}
  *       </button>
  *     ),

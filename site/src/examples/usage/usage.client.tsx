@@ -29,9 +29,8 @@ function EmojiPicker({ className, columns, ...props }: EmojiPickerRootProps) {
         <EmojiPickerPrimitive.List
           className="select-none pb-1.5"
           components={{
-            Emoji: ({ emoji, isActive: _, ...props }) => (
+            Emoji: ({ emoji, ...props }) => (
               <button
-                aria-label={emoji.label}
                 className="flex size-8 items-center justify-center whitespace-nowrap rounded-md text-lg data-[active]:bg-neutral-100 dark:data-[active]:bg-neutral-800"
                 {...props}
               >

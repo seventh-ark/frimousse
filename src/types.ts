@@ -129,15 +129,10 @@ export interface EmojiPickerListCategoryHeaderProps
 export interface EmojiPickerListEmojiProps
   extends Omit<ComponentProps<"button">, "children"> {
   /**
-   * The emoji for this button.
+   * The emoji for this button, its label, and whether the emoji is currently
+   * active (either hovered or selected via keyboard navigation).
    */
-  emoji: Emoji;
-
-  /**
-   * Whether the emoji is currently active (either hovered or selected
-   * via keyboard navigation).
-   */
-  isActive: boolean;
+  emoji: Resolve<Emoji & { isActive: boolean }>;
 }
 
 export interface EmojiPickerListProps extends ComponentProps<"div"> {

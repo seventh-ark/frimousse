@@ -69,7 +69,6 @@ function EmojiPickerRow({
 
 function EmojiPickerEmoji({
   emoji,
-  isActive,
   className,
   style,
   ...props
@@ -77,7 +76,6 @@ function EmojiPickerEmoji({
   return (
     <button
       {...props}
-      aria-label={emoji.label}
       className={cn(
         "relative flex aspect-square min-w-8 max-w-[calc(100%/var(--frimousse-list-columns))] flex-1 items-center justify-center overflow-hidden whitespace-nowrap rounded-[max(2vw,var(--radius-md))] text-[max(4vw,var(--text-lg))] transition-colors duration-200 ease-out data-[active]:bg-muted/80 data-[active]:duration-0 sm:size-8 sm:flex-none sm:rounded-md sm:text-lg",
         "before:-z-1 before:absolute before:inset-0 before:hidden before:items-center before:justify-center before:text-[2.5em] before:opacity-0 before:blur-lg before:saturate-200 before:transition-[display,opacity] before:transition-discrete before:duration-200 before:ease-out before:content-(--emoji) data-[active]:before:flex data-[active]:before:opacity-100 data-[active]:before:duration-0",
