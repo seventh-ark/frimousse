@@ -4,5 +4,5 @@ These registry items aren’t meant to be installed via the shadcn CLI, they’r
 
 - Built for Tailwind CSS v3 as v0 doesn’t support Tailwind CSS v4 yet
   - `outline-hidden` → `outline-none`
-  - `rounded-sm` → `rounded`
+  - `rounded-sm` → `rounded-md`
   - `max-w-(--frimousse-viewport-width)` → `max-w-[--frimousse-viewport-width]`

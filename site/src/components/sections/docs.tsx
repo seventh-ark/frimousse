@@ -476,8 +476,8 @@ export function Docs({
             CategoryHeader: ({ category, ...props }) => (
               <div {...props}>{category.label}</div>
             ),
-            Emoji: ({ emoji, isActive, ...props }) => (
-              <button aria-label={emoji.label} {...props}>
+            Emoji: ({ emoji, ...props }) => (
+              <button {...props}>
                 {emoji.emoji}
               </button>
             ),
