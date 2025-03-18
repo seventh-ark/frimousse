@@ -15,9 +15,13 @@ on:
         description: "Prerelease tag (e.g. beta, alpha)"
         required: false
         type: string
+      dry-run:
+        description: 'Run the release without publishing for testing (set to "true")'
+        required: false
+        default: "false"
 concurrency:
   group: ${{ github.workflow }}
-run-name: "Release (increment: ${{ github.event.inputs.increment }}, prerelease: ${{ github.event.inputs.prerelease || 'none' }})"
+run-name: "Release (increment: ${{ github.event.inputs.increment }}, prerelease: ${{ github.event.inputs.prerelease || 'none' }}${{ github.event.inputs.dry-run == 'true' && ', dry run' || '' }})"
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -48,6 +52,9 @@ jobs:
           fi
           if [[ -n "${{ github.event.inputs.prerelease }}" ]]; then
             ARGS+=" --preRelease=${{ github.event.inputs.prerelease }}"
+          fi
+          if [[ "${{ github.event.inputs.dry-run }}" == "true" ]]; then
+            ARGS+=" --dry-run"
           fi
           npm run release -- $ARGS --ci
         env:
