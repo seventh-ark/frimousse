@@ -8,6 +8,7 @@ import type { PropsWithChildren } from "react";
 import { Toaster } from "sonner";
 import { DynamicMaximumScaleMeta } from "./layout.client";
 import "./styles.css";
+import { config } from "@/config";
 
 const inter = localFont({
   src: "./inter-variable.woff2",
@@ -19,23 +20,15 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
 });
 
-const config = {
-  name: "Frimousse — An emoji picker for React",
-  url: "https://frimousse.liveblocks.io",
-  description:
-    "A lightweight, unstyled, and composable emoji picker for React.",
-  links: {
-    twitter: "https://x.com/liveblocks",
-    github: "https://github.com/liveblocks/frimousse",
-  },
-} as const;
-
 export const metadata: Metadata = {
   title: {
     default: config.name,
     template: `%s — ${config.name}`,
   },
   metadataBase: new URL(config.url),
+  alternates: {
+    canonical: "/",
+  },
   description: config.description,
   keywords: [
     "emoji",
