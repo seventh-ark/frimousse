@@ -146,7 +146,7 @@ function EmojiPicker({
         </div>
         <div className="flex-none sm:hidden">{skinToneSelector}</div>
       </div>
-      <EmojiPickerPrimitive.Viewport className="relative flex-1 outline-none">
+      <EmojiPickerPrimitive.Viewport className="scrollbar-track-[transparent] scrollbar-thumb-secondary-foreground/30 relative flex-1 outline-none">
         <EmojiPickerPrimitive.Loading className="absolute inset-0 flex items-center justify-center text-muted-foreground">
           <SpinnerIcon className="size-4 animate-spin" />
         </EmojiPickerPrimitive.Loading>

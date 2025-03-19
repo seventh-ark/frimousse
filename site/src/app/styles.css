@@ -97,6 +97,8 @@
 
   * {
     @apply selection:bg-foreground/15;
+
+    scrollbar-width: thin;
   }
 
   *:where(:not(.not-base, .not-base *)) {
@@ -268,5 +270,32 @@
     &:not(:last-child) {
       @apply mb-1;
     }
+  }
+}
+
+@utility scrollbar-thumb-* {
+  --scrollbar-thumb-alpha: calc(--modifier(integer) * 1%);
+  --scrollbar-thumb: --alpha(--value(--color-*, [color]) / var(--scrollbar-thumb-alpha, 100%));
+
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track, transparent);
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 100%;
+    background: var(--scrollbar-thumb);
+  }
+}
+
+@utility scrollbar-track-* {
+  --scrollbar-track-alpha: calc(--modifier(integer) * 1%);
+  --scrollbar-track: --alpha(--value(--color-*, [color]) / var(--scrollbar-track-alpha, 100%));
+
+  scrollbar-color: var(
+      --scrollbar-thumb,
+      light-dark(rgb(0 0 0 / 40%), rgb(255 255 255 / 40%))
+    )
+    var(--scrollbar-track);
+
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
   }
 }
