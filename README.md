@@ -7,11 +7,11 @@
   </a>
 </h1>
 
-[![npm](https://img.shields.io/npm/v/frimousse?color=fc0&labelColor=651)](https://www.npmjs.com/package/frimousse)
-[![downloads](https://img.shields.io/npm/dm/frimousse?label=downloads&color=fc0&labelColor=651)](https://www.npmjs.com/package/frimousse)
-[![size](https://img.shields.io/bundlephobia/minzip/frimousse?label=size&color=fc0&labelColor=651)](https://bundlephobia.com/package/frimousse)
-[![tests](https://img.shields.io/github/actions/workflow/status/liveblocks/frimousse/.github/workflows/tests.yml?label=tests&color=fc0&labelColor=651)](https://github.com/liveblocks/frimousse/actions/workflows/tests.yml)
-[![license](https://img.shields.io/github/license/liveblocks/frimousse?color=fc0&labelColor=651)](https://github.com/liveblocks/frimousse/blob/main/LICENSE)
+[![npm](https://img.shields.io/npm/v/frimousse?labelColor=651&color=fc0)](https://www.npmjs.com/package/frimousse)
+[![downloads](https://img.shields.io/npm/dm/frimousse?label=downloads&labelColor=651&color=fc0)](https://www.npmjs.com/package/frimousse)
+[![size](https://img.shields.io/bundlephobia/minzip/frimousse?label=size&labelColor=651&color=fc0)](https://bundlephobia.com/package/frimousse)
+[![tests](https://img.shields.io/github/actions/workflow/status/liveblocks/frimousse/.github/workflows/tests.yml?label=tests&labelColor=651&color=fc0)](https://github.com/liveblocks/frimousse/actions/workflows/tests.yml)
+[![license](https://img.shields.io/github/license/liveblocks/frimousse?labelColor=651&color=fc0)](https://github.com/liveblocks/frimousse/blob/main/LICENSE)
 
 A lightweight, unstyled, and composable emoji picker for React.
 
