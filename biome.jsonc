@@ -66,9 +66,5 @@
     "clientKind": "git",
     "useIgnoreFile": true,
     "defaultBranch": "main"
-  },
-  "files": {
-    // Biome can't parse syntax from Tailwind CSS like `--alpha(--value(--color-*, [color])`
-    "ignore": ["**/*.css"]
   }
 }
