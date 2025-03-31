@@ -105,7 +105,8 @@ export function Usage({
                   outline: none;
                 }
 
-                [frimousse-loading] {
+                [frimousse-loading]
+                [frimousse-empty], {
                   position: absolute;
                   inset: 0;
                   display: flex;
