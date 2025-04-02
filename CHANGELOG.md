@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.2.0] - 2025-04-02
+
 - When setting `emojiVersion` on `EmojiPicker.Root`, this version of Emojibase’s data will be fetched instead of `latest`.
 - Add `emojibaseUrl` prop on `EmojiPicker.Root` to allow choosing where Emojibase’s data is fetched from: another CDN, self-hosted files, etc.
 
