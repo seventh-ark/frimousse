@@ -1,128 +1,113 @@
 import { afterEach, beforeEach, vi } from "vitest";
+import createFetchMock from "vitest-fetch-mock";
 
-function mockFetch(
-  entries: Record<
-    string,
-    {
-      GET?: () => Promise<Response>;
-      HEAD?: () => Promise<Response>;
-      [method: string]: (() => Promise<Response>) | undefined;
-    }
-  >,
-) {
-  return vi
-    .spyOn(globalThis, "fetch")
-    .mockImplementation(async (url, options) => {
-      const method = options?.method?.toUpperCase() || "GET";
-      const requestUrl =
-        typeof url === "string"
-          ? url
-          : url instanceof Request
-            ? url.url
-            : url.toString();
+const EMOJIBASE_URL_REGEX = /\/(\w+)\/(\w+\.json)$/;
 
-      for (const targetUrl in entries) {
-        const entry = entries[targetUrl as keyof typeof entries];
+const fetchMocker = createFetchMock(vi);
+fetchMocker.enableMocks();
 
-        if (requestUrl === targetUrl && entry?.[method]) {
-          return entry[method]();
-        }
-      }
+function hash(value: string) {
+  let hash = 0;
 
-      return Promise.reject(new Error(`Unhandled request: ${method} ${url}`));
-    });
+  for (let i = 0; i < value.length; i++) {
+    hash = (hash << 5) - hash + value.charCodeAt(i);
+    hash |= 0;
+  }
+
+  return hash.toString(16);
 }
 
 beforeEach(() => {
-  mockFetch({
-    "https://cdn.jsdelivr.net/npm/emojibase-data@latest/en/data.json": {
-      GET: async () => {
+  fetchMocker.mockIf(EMOJIBASE_URL_REGEX, async (req) => {
+    const [, locale, file] = req.url.match(EMOJIBASE_URL_REGEX) ?? [];
+
+    if (locale === "en" && file === "data.json") {
+      const headers: HeadersInit = {
+        ETag: hash("en/data.json"),
+      };
+
+      if (req.method === "GET") {
         const data = (await import("emojibase-data/en/data.json")).default;
-        return Promise.resolve(
-          new Response(JSON.stringify(data), {
-            headers: {
-              ETag: "abc123",
-            },
-          }),
-        );
-      },
-      HEAD: async () => {
-        return Promise.resolve(
-          new Response(null, {
-            status: 200,
-            headers: {
-              ETag: "abc123",
-            },
-          }),
-        );
-      },
-    },
-    "https://cdn.jsdelivr.net/npm/emojibase-data@latest/en/messages.json": {
-      GET: async () => {
-        const data = (await import("emojibase-data/en/messages.json")).default;
-        return Promise.resolve(
-          new Response(JSON.stringify(data), {
-            headers: {
-              ETag: "def456",
-            },
-          }),
-        );
-      },
-      HEAD: async () => {
-        return Promise.resolve(
-          new Response(null, {
-            status: 200,
-            headers: {
-              ETag: "def456",
-            },
-          }),
-        );
-      },
-    },
-    "https://cdn.jsdelivr.net/npm/emojibase-data@latest/fr/data.json": {
-      GET: async () => {
+        return {
+          body: JSON.stringify(data),
+          headers,
+        };
+      }
+
+      if (req.method === "HEAD") {
+        return {
+          status: 200,
+          headers,
+        };
+      }
+    }
+
+    if (locale === "en" && file === "messages.json") {
+      const headers: HeadersInit = {
+        ETag: hash("en/messages.json"),
+      };
+
+      if (req.method === "GET") {
+        const messages = (await import("emojibase-data/en/messages.json"))
+          .default;
+        return {
+          body: JSON.stringify(messages),
+          headers,
+        };
+      }
+
+      if (req.method === "HEAD") {
+        return {
+          status: 200,
+          headers,
+        };
+      }
+    }
+
+    if (locale === "fr" && file === "data.json") {
+      const headers: HeadersInit = {
+        ETag: hash("fr/data.json"),
+      };
+
+      if (req.method === "GET") {
         const data = (await import("emojibase-data/fr/data.json")).default;
-        return Promise.resolve(
-          new Response(JSON.stringify(data), {
-            headers: {
-              ETag: "ghi789",
-            },
-          }),
-        );
-      },
-      HEAD: async () => {
-        return Promise.resolve(
-          new Response(null, {
-            status: 200,
-            headers: {
-              ETag: "ghi789",
-            },
-          }),
-        );
-      },
-    },
-    "https://cdn.jsdelivr.net/npm/emojibase-data@latest/fr/messages.json": {
-      GET: async () => {
-        const data = (await import("emojibase-data/fr/messages.json")).default;
-        return Promise.resolve(
-          new Response(JSON.stringify(data), {
-            headers: {
-              ETag: "jkl012",
-            },
-          }),
-        );
-      },
-      HEAD: async () => {
-        return Promise.resolve(
-          new Response(null, {
-            status: 200,
-            headers: {
-              ETag: "jkl012",
-            },
-          }),
-        );
-      },
-    },
+        return {
+          body: JSON.stringify(data),
+          headers,
+        };
+      }
+
+      if (req.method === "HEAD") {
+        return {
+          status: 200,
+          headers,
+        };
+      }
+    }
+
+    if (locale === "fr" && file === "messages.json") {
+      const headers: HeadersInit = {
+        ETag: hash("fr/messages.json"),
+      };
+
+      if (req.method === "GET") {
+        const messages = (await import("emojibase-data/fr/messages.json"))
+          .default;
+        return {
+          body: JSON.stringify(messages),
+          headers,
+        };
+      }
+
+      if (req.method === "HEAD") {
+        return {
+          status: 200,
+          headers,
+        };
+      }
+    }
+
+    throw new Error(`Unhandled URL: ${req.url}`);
   });
 });
 

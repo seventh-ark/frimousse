@@ -13,12 +13,10 @@ import { isEmojiSupported } from "../utils/is-emoji-supported";
 import { getStorage, setStorage } from "../utils/storage";
 import * as $ from "../utils/validate";
 
-const EMOJIBASE_VERSION = "latest";
-const EMOJIBASE_CDN_URL = `https://cdn.jsdelivr.net/npm/emojibase-data@${EMOJIBASE_VERSION}`;
-const EMOJIBASE_EMOJIS_URL = (locale: Locale) =>
-  `${EMOJIBASE_CDN_URL}/${locale}/data.json`;
-const EMOJIBASE_MESSAGES_URL = (locale: Locale) =>
-  `${EMOJIBASE_CDN_URL}/${locale}/messages.json`;
+const EMOJIBASE_EMOJIS_URL = (baseUrl: string, locale: Locale) =>
+  `${baseUrl}/${locale}/data.json`;
+const EMOJIBASE_MESSAGES_URL = (baseUrl: string, locale: Locale) =>
+  `${baseUrl}/${locale}/messages.json`;
 
 const EMOJIBASE_LOCALES = [
   "bn",
@@ -65,6 +63,13 @@ export const SESSION_METADATA_KEY = "frimousse/metadata";
   _allLocalesPresent;
 }
 
+type GetEmojiDataOptions = {
+  locale: Locale;
+  emojiVersion?: number;
+  emojibaseUrl?: string;
+  signal?: AbortSignal;
+};
+
 type LocalData = {
   data: EmojiData;
   metadata: {
@@ -88,16 +93,22 @@ async function fetchEtag(url: string, signal?: AbortSignal) {
   }
 }
 
-async function fetchEmojibaseData(locale: Locale, signal?: AbortSignal) {
+async function fetchEmojibaseData(
+  baseUrl: string,
+  locale: Locale,
+  signal?: AbortSignal,
+) {
   const [{ emojis, emojisEtag }, { messages, messagesEtag }] =
     await Promise.all([
-      fetch(EMOJIBASE_EMOJIS_URL(locale), { signal }).then(async (response) => {
-        return {
-          emojis: (await response.json()) as EmojibaseEmoji[],
-          emojisEtag: response.headers.get("etag"),
-        };
-      }),
-      fetch(EMOJIBASE_MESSAGES_URL(locale), { signal }).then(
+      fetch(EMOJIBASE_EMOJIS_URL(baseUrl, locale), { signal }).then(
+        async (response) => {
+          return {
+            emojis: (await response.json()) as EmojibaseEmoji[],
+            emojisEtag: response.headers.get("etag"),
+          };
+        },
+      ),
+      fetch(EMOJIBASE_MESSAGES_URL(baseUrl, locale), { signal }).then(
         async (response) => {
           return {
             messages: (await response.json()) as EmojibaseMessagesDataset,
@@ -115,10 +126,14 @@ async function fetchEmojibaseData(locale: Locale, signal?: AbortSignal) {
   };
 }
 
-async function fetchEmojibaseEtags(locale: Locale, signal?: AbortSignal) {
+async function fetchEmojibaseEtags(
+  baseUrl: string,
+  locale: Locale,
+  signal?: AbortSignal,
+) {
   const [emojisEtag, messagesEtag] = await Promise.all([
-    fetchEtag(EMOJIBASE_EMOJIS_URL(locale), signal),
-    fetchEtag(EMOJIBASE_MESSAGES_URL(locale), signal),
+    fetchEtag(EMOJIBASE_EMOJIS_URL(baseUrl, locale), signal),
+    fetchEtag(EMOJIBASE_MESSAGES_URL(baseUrl, locale), signal),
   ]);
 
   return {
@@ -151,11 +166,12 @@ export function getEmojibaseSkinToneVariations(
 }
 
 async function fetchEmojiData(
+  baseUrl: string,
   locale: Locale,
   signal?: AbortSignal,
 ): Promise<EmojiData> {
   const { emojis, emojisEtag, messages, messagesEtag } =
-    await fetchEmojibaseData(locale, signal);
+    await fetchEmojibaseData(baseUrl, locale, signal);
   const countryFlagsSubgroup = messages.subgroups.find(
     (subgroup) =>
       subgroup.key === "country-flag" || subgroup.key === "subdivision-flag",
@@ -215,7 +231,10 @@ async function fetchEmojiData(
   return emojiData;
 }
 
-function getSessionMetadata(emojis: EmojiDataEmoji[]): SessionMetadata {
+function getSessionMetadata(
+  emojis: EmojiDataEmoji[],
+  emojiVersion?: number,
+): SessionMetadata {
   const versionEmojis = new Map<number, string>();
 
   for (const emoji of emojis) {
@@ -228,6 +247,13 @@ function getSessionMetadata(emojis: EmojiDataEmoji[]): SessionMetadata {
   const highestVersion = descendingVersions[0] ?? 0;
 
   const supportsCountryFlags = isEmojiSupported("🇪🇺");
+
+  if (typeof emojiVersion === "number") {
+    return {
+      emojiVersion,
+      countryFlags: supportsCountryFlags,
+    };
+  }
 
   for (const version of descendingVersions) {
     const emoji = versionEmojis.get(version)!;
@@ -293,11 +319,16 @@ const validateLocalData = $.object<LocalData>({
   }),
 });
 
-export async function getEmojiData(
-  locale: Locale,
-  maxEmojiVersion = Number.POSITIVE_INFINITY,
-  signal?: AbortSignal,
-): Promise<EmojiData> {
+export async function getEmojiData({
+  locale,
+  emojiVersion,
+  emojibaseUrl,
+  signal,
+}: GetEmojiDataOptions): Promise<EmojiData> {
+  const baseUrl =
+    typeof emojibaseUrl === "string"
+      ? emojibaseUrl
+      : `https://cdn.jsdelivr.net/npm/emojibase-data@${typeof emojiVersion === "number" ? Math.floor(emojiVersion) : "latest"}`;
   let sessionMetadata = getStorage<SessionMetadata>(
     sessionStorage,
     SESSION_METADATA_KEY,
@@ -313,7 +344,7 @@ export async function getEmojiData(
 
   if (!localData) {
     // No local data
-    data = await fetchEmojiData(locale, signal);
+    data = await fetchEmojiData(baseUrl, locale, signal);
   } else if (sessionMetadata) {
     // ETags are used to check if the data is up-to-date but only
     // once per session, so if the session metadata is already set,
@@ -324,6 +355,7 @@ export async function getEmojiData(
     // but if that fails, the possibly-stale local data is used
     try {
       const { emojisEtag, messagesEtag } = await fetchEmojibaseEtags(
+        baseUrl,
         locale,
         signal,
       );
@@ -333,7 +365,7 @@ export async function getEmojiData(
         !messagesEtag ||
         emojisEtag !== localData.metadata.emojisEtag ||
         messagesEtag !== localData.metadata.messagesEtag
-          ? await fetchEmojiData(locale, signal)
+          ? await fetchEmojiData(baseUrl, locale, signal)
           : localData.data;
     } catch {
       data = localData.data;
@@ -341,14 +373,12 @@ export async function getEmojiData(
   }
 
   // Set the session metadata if needed
-  sessionMetadata ??= getSessionMetadata(data.emojis);
+  sessionMetadata ??= getSessionMetadata(data.emojis, emojiVersion);
   setStorage(sessionStorage, SESSION_METADATA_KEY, sessionMetadata);
 
   // Filter out unsupported emojis
   const filteredEmojis = data.emojis.filter((emoji) => {
-    const isSupportedVersion =
-      emoji.version <= sessionMetadata.emojiVersion &&
-      emoji.version <= maxEmojiVersion;
+    const isSupportedVersion = emoji.version <= sessionMetadata.emojiVersion;
 
     return emoji.countryFlag
       ? isSupportedVersion && sessionMetadata.countryFlags
