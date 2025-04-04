@@ -31,7 +31,7 @@
     "test:watch": "vitest watch --silent",
     "test:coverage": "npm run test -- --coverage",
     "format": "biome check --write --assists-enabled=true",
-    "lint": "npm run lint:biome && npm run lint:tsc && npm run lint:package",
+    "lint": "turbo run lint:tsc lint:biome lint:package",
     "lint:tsc": "tsc --noEmit",
     "lint:biome": "biome lint",
     "lint:package": "publint --strict && attw --pack",

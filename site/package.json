@@ -6,8 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "test": "vitest run",
-    "test:watch": "vitest watch",
+    "test": "vitest run --silent",
+    "test:watch": "vitest watch --silent",
+    "format": "biome check --write --assists-enabled=true",
     "lint:tsc": "tsc --noEmit",
     "lint:biome": "biome lint"
   },
