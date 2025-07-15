@@ -197,7 +197,7 @@ export interface EmojiPickerRootProps extends ComponentProps<"div"> {
   emojibaseUrl?: string;
 
   /**
-   * Whether to enable the sticky position of the category headers.
+   * Whether the category headers should be sticky.
    *
    * @default true
    */

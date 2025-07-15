@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Add `sticky` prop on `EmojiPicker.Root` to allow disabling sticky category headers, thanks @Earthsplit!
+
 ## [0.2.0] - 2025-04-02
 
 - When setting `emojiVersion` on `EmojiPicker.Root`, this version of Emojibase’s data will be fetched instead of `latest`.
