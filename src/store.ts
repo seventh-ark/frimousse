@@ -16,6 +16,7 @@ type Interaction = "keyboard" | "pointer" | "none";
 export type EmojiPickerStore = {
   locale: Locale;
   columns: number;
+  sticky: boolean;
   skinTone: SkinTone;
   onEmojiSelect: NonNullable<EmojiPickerRootProps["onEmojiSelect"]>;
 
@@ -59,6 +60,7 @@ export function createEmojiPickerStore(
   onEmojiSelect: NonNullable<EmojiPickerRootProps["onEmojiSelect"]>,
   initialLocale: Locale,
   initialColumns: number,
+  initialSticky: boolean,
   initialSkinTone: SkinTone,
 ) {
   let viewportScrollY = 0;
@@ -66,6 +68,7 @@ export function createEmojiPickerStore(
   return createStore<EmojiPickerStore>((set, get) => ({
     locale: initialLocale,
     columns: initialColumns,
+    sticky: initialSticky,
     skinTone: initialSkinTone,
     onEmojiSelect,
 
