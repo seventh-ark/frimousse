@@ -1,7 +1,7 @@
+import type { ComponentProps } from "react";
 import { CodeBlock } from "@/components/ui/code-block";
 import { Tabs } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import type { ComponentProps } from "react";
 import { ColorfulButtonsAlternatePreview } from "./colorful-buttons-alternate.client";
 
 export function ColorfulButtonsAlternate({

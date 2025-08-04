@@ -1,3 +1,5 @@
+/* biome-ignore-all lint/suspicious/noDuplicateCustomProperties: `@variant` blocks aren't parsed as different contexts */
+
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
@@ -23,8 +25,9 @@
   --text-base: 0.9375rem;
   --text-sm: 0.8125rem;
 
-  --shadow-elevation: 0 0 0 1px rgb(0 0 0 / 4%), 0 2px 12px rgb(0 0 0 / 6%), 0
-    8px 36px rgb(0 0 0 / 6%);
+  --shadow-elevation:
+    0 0 0 1px rgb(0 0 0 / 4%), 0 2px 12px rgb(0 0 0 / 6%), 0 8px 36px
+    rgb(0 0 0 / 6%);
 
   @variant dark {
     --background: var(--color-black);
@@ -42,7 +45,8 @@
     --border: var(--color-neutral-800);
     --ring: var(--color-neutral-800);
 
-    --shadow-elevation: 0 2px 12px rgb(0 0 0 / 18%), 0 8px 36px rgb(0 0 0 / 32%);
+    --shadow-elevation:
+      0 2px 12px rgb(0 0 0 / 18%), 0 8px 36px rgb(0 0 0 / 32%);
 
     &.elevation,
     & .elevation {
@@ -96,9 +100,8 @@
   }
 
   * {
-    @apply selection:bg-foreground/15;
-
     scrollbar-width: thin;
+    @apply selection:bg-foreground/15;
   }
 
   *:where(:not(.not-base, .not-base *)) {
@@ -283,8 +286,8 @@
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track, transparent);
 
   &::-webkit-scrollbar-thumb {
-    border-radius: 100%;
     background: var(--scrollbar-thumb);
+    border-radius: 100%;
   }
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { type ComponentProps, useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const ICONS = [Face, Heart, Flash];
 const INTERVAL = 400;

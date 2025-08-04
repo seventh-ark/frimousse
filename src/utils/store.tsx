@@ -1,6 +1,6 @@
 import {
-  type PropsWithChildren,
   createContext,
+  type PropsWithChildren,
   useCallback,
   useContext,
   useDebugValue,
@@ -70,7 +70,7 @@ export function useCreateStore<T>(createStore: () => Store<T>) {
   return store;
 }
 
-export function useCreateStoreContext<T>(missingProviderError?: string) {
+export function createStoreContext<T>(missingProviderError?: string) {
   const Context = createContext<Store<T> | null>(null);
 
   const useStore = () => {

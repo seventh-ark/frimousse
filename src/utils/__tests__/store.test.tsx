@@ -2,10 +2,10 @@ import { act, renderHook } from "@testing-library/react";
 import type { PropsWithChildren } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  type Store,
   createStore,
+  createStoreContext,
+  type Store,
   useCreateStore,
-  useCreateStoreContext,
   useSelector,
   useSelectorKey,
 } from "../store";
@@ -220,7 +220,7 @@ describe("useCreateStore", () => {
 
 describe("useCreateStoreContext", () => {
   it("should create a context provider and a hook for the store", () => {
-    const { useStore, Provider } = useCreateStoreContext<{ count: number }>();
+    const { useStore, Provider } = createStoreContext<{ count: number }>();
     const store = createStore<{ count: number }>(() => ({ count: 0 }));
 
     const { result } = renderHook(() => useStore(), {
@@ -233,7 +233,7 @@ describe("useCreateStoreContext", () => {
   });
 
   it("should throw an error when the hook is used outside of the provider", () => {
-    const { useStore } = useCreateStoreContext<{ count: number }>(
+    const { useStore } = createStoreContext<{ count: number }>(
       "Provider is missing",
     );
 

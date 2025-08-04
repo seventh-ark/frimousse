@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { LOCAL_DATA_KEY, SESSION_METADATA_KEY, getEmojiData } from "../emoji";
+import { getEmojiData, LOCAL_DATA_KEY, SESSION_METADATA_KEY } from "../emoji";
 
 describe("getEmojiData", () => {
   afterEach(() => {

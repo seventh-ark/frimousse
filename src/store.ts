@@ -7,7 +7,7 @@ import type {
   Locale,
   SkinTone,
 } from "./types";
-import { createStore, useCreateStoreContext } from "./utils/store";
+import { createStore, createStoreContext } from "./utils/store";
 
 const VIEWPORT_OVERSCAN = 2;
 
@@ -299,7 +299,7 @@ export function createEmojiPickerStore(
 export const {
   useStore: useEmojiPickerStore,
   Provider: EmojiPickerStoreProvider,
-} = useCreateStoreContext<EmojiPickerStore>("EmojiPicker.Root is missing.");
+} = createStoreContext<EmojiPickerStore>("EmojiPicker.Root is missing.");
 
 export function $search(state: EmojiPickerStore) {
   return state.search;

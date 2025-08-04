@@ -1,6 +1,5 @@
 "use cache";
 
-import { cn } from "@/lib/utils";
 import {
   transformerNotationDiff,
   transformerNotationErrorLevel,
@@ -11,6 +10,7 @@ import dedent from "dedent";
 import type { ComponentProps } from "react";
 import type { BundledLanguage } from "shiki";
 import { codeToHtml } from "shiki";
+import { cn } from "@/lib/utils";
 import { CopyButton } from "../copy-button";
 
 const TRANSFORMERS_ANNOTATION_REGEX = /\[!code(?:\s+\w+(:\w+)?)?\]/;

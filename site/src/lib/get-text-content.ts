@@ -1,8 +1,8 @@
 import {
   Children,
+  isValidElement,
   type PropsWithChildren,
   type ReactNode,
-  isValidElement,
 } from "react";
 
 export function getTextContent(children: ReactNode): string {

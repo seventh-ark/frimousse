@@ -3,7 +3,7 @@
 import { useLayoutEffect } from "react";
 
 const IOS_REGEX = /iPad|iPhone/;
-const SCALE_REGEX = /maximum\-scale=[0-9\.]+/g;
+const SCALE_REGEX = /maximum-scale=[0-9.]+/g;
 
 export function DynamicMaximumScaleMeta() {
   useLayoutEffect(() => {

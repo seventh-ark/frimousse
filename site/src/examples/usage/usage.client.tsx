@@ -1,12 +1,12 @@
 "use client";
 
-import { ExamplePreview } from "@/examples/example-preview";
-import { toast } from "@/lib/toast";
-import { cn } from "@/lib/utils";
 import {
   EmojiPicker as EmojiPickerPrimitive,
   type EmojiPickerRootProps,
 } from "frimousse";
+import { ExamplePreview } from "@/examples/example-preview";
+import { toast } from "@/lib/toast";
+import { cn } from "@/lib/utils";
 
 function EmojiPicker({ className, columns, ...props }: EmojiPickerRootProps) {
   return (

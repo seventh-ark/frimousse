@@ -1,9 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import { useIsMounted } from "@/hooks/use-mounted";
 import { useIsSticky } from "@/hooks/use-sticky";
 import { cn } from "@/lib/utils";
-import { useRef } from "react";
 import { Logo } from "../logo";
 import { buttonVariants } from "../ui/button";
 

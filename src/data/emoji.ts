@@ -1,10 +1,10 @@
 import { SKIN_TONES } from "../constants";
 import type {
-  EmojiData,
-  EmojiDataEmoji,
   EmojibaseEmoji,
   EmojibaseEmojiWithGroup,
   EmojibaseMessagesDataset,
+  EmojiData,
+  EmojiDataEmoji,
   Locale,
   SkinTone,
 } from "../types";

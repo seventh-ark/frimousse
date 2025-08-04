@@ -1,11 +1,11 @@
-import { Footer } from "@/components/sections/footer";
-import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
 import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import { ThemeProvider } from "next-themes";
 import type { PropsWithChildren } from "react";
 import { Toaster } from "sonner";
+import { Footer } from "@/components/sections/footer";
+import { cn } from "@/lib/utils";
 import { DynamicMaximumScaleMeta } from "./layout.client";
 import "./styles.css";
 import { config } from "@/config";

@@ -1,9 +1,9 @@
 "use client";
 
-import { toast } from "@/lib/toast";
-import { cn } from "@/lib/utils";
 import type { Emoji as EmojiObject } from "frimousse";
 import { type ComponentProps, type PointerEvent, useCallback } from "react";
+import { toast } from "@/lib/toast";
+import { cn } from "@/lib/utils";
 import { ExamplePreview } from "../example-preview";
 
 interface ListProps extends ComponentProps<"div"> {

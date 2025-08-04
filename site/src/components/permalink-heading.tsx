@@ -1,9 +1,9 @@
 "use client";
 
-import { getTextContent } from "@/lib/get-text-content";
-import { cn } from "@/lib/utils";
 import { type ComponentProps, useMemo } from "react";
 import slugify from "slugify";
+import { getTextContent } from "@/lib/get-text-content";
+import { cn } from "@/lib/utils";
 
 type Heading = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 

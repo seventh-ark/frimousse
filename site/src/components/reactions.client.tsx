@@ -1,10 +1,5 @@
 "use client";
 
-import { useIsInitialRender } from "@/hooks/use-initial-render";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useIsMounted } from "@/hooks/use-mounted";
-import { getFastBoundingRects } from "@/lib/get-fast-bounding-rects";
-import { cn } from "@/lib/utils";
 import { LiveMap } from "@liveblocks/client";
 import {
   ClientSideSuspense,
@@ -21,15 +16,15 @@ import {
   DEFAULT_REACTIONS,
   MAX_REACTIONS,
   type ReactionsJson,
-  UPDATED_AT_KEY,
   sortReactions,
   sortReactionsEntries,
+  UPDATED_AT_KEY,
 } from "liveblocks.config";
 import {
   type ComponentProps,
-  type RefObject,
   createContext,
   memo,
+  type RefObject,
   use,
   useCallback,
   useEffect,
@@ -39,6 +34,11 @@ import {
   useState,
 } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { useIsInitialRender } from "@/hooks/use-initial-render";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMounted } from "@/hooks/use-mounted";
+import { getFastBoundingRects } from "@/lib/get-fast-bounding-rects";
+import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
 import {
   Drawer,

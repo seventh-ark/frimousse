@@ -1,8 +1,8 @@
 import { Liveblocks as LiveblocksClient } from "@liveblocks/node";
 import {
   DEFAULT_REACTIONS,
-  ROOM_ID,
   type ReactionsJson,
+  ROOM_ID,
 } from "liveblocks.config";
 import { unstable_cacheLife as cachelife } from "next/cache";
 import { type ComponentProps, Suspense } from "react";

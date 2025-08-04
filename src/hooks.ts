@@ -1,13 +1,13 @@
 import { useCallback, useDeferredValue, useMemo } from "react";
-import { $activeEmoji, sameEmojiPickerEmoji } from "./store";
-
-import { useEmojiPickerStore } from "./store";
+import type * as EmojiPicker from "./components/emoji-picker";
+import {
+  $activeEmoji,
+  sameEmojiPickerEmoji,
+  useEmojiPickerStore,
+} from "./store";
 import type { Emoji, SkinTone, SkinToneVariation } from "./types";
 import { getSkinToneVariations } from "./utils/get-skin-tone-variations";
 import { useSelector, useSelectorKey } from "./utils/store";
-
-// biome-ignore lint/correctness/noUnusedImports: This import is only used to create @link tags in JSDoc comments
-import type * as EmojiPicker from "./components/emoji-picker";
 
 /**
  * Returns the currently active emoji (either hovered or selected

@@ -1,7 +1,7 @@
+import type { ComponentProps } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { CodeBlock } from "@/components/ui/code-block";
 import { cn } from "@/lib/utils";
-import type { ComponentProps } from "react";
 import { ShadcnUiPopoverPreview } from "./shadcnui-popover.client";
 
 export function ShadcnUiPopover({

@@ -6,12 +6,13 @@
     "indentStyle": "space",
     "lineWidth": 80
   },
-  "organizeImports": { "enabled": true },
-  "assists": {
+  "assist": {
     "enabled": true,
     "actions": {
       "source": {
-        "sortJsxProps": "on"
+        "organizeImports": "on",
+        "useSortedAttributes": "on",
+        "useSortedProperties": "on"
       }
     }
   },
@@ -20,11 +21,11 @@
     "rules": {
       "recommended": true,
       "correctness": {
-        "noUnusedFunctionParameters": "error",
-        "noUnusedVariables": "error",
-        "noUnusedImports": "error",
+        "noUnusedFunctionParameters": "on",
+        "noUnusedVariables": "on",
+        "noUnusedImports": "on",
         "useExhaustiveDependencies": {
-          "level": "error",
+          "level": "on",
           "options": {
             "hooks": [
               { "name": "useCreateStore", "stableResult": true },
@@ -39,16 +40,22 @@
         "noArrayIndexKey": "off"
       },
       "style": {
-        "noNonNullAssertion": "off"
+        "noNonNullAssertion": "off",
+        "noUselessElse": "on",
+        "useCollapsedElseIf": "on",
+        "useCollapsedIf": "on",
+        "useTemplate": "off",
+        "useSelfClosingElements": "on"
       },
       "a11y": {
         "useSemanticElements": "off",
         "noAutofocus": "off"
       },
       "nursery": {
+        "noUnassignedVariables": "on",
         "useSortedClasses": {
           "fix": "safe",
-          "level": "error",
+          "level": "on",
           "options": {
             "functions": ["classNames", "clsx", "cn"]
           }

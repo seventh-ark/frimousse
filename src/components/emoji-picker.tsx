@@ -1,15 +1,15 @@
 import {
-  type CSSProperties,
   type ComponentProps,
+  type CSSProperties,
   Fragment,
+  forwardRef,
+  memo,
   type ChangeEvent as ReactChangeEvent,
   type FocusEvent as ReactFocusEvent,
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
   type SyntheticEvent as ReactSyntheticEvent,
   type UIEvent as ReactUIEvent,
-  forwardRef,
-  memo,
   useCallback,
   useEffect,
   useImperativeHandle,
@@ -30,9 +30,9 @@ import {
   $rowsCount,
   $search,
   $skinTones,
+  createEmojiPickerStore,
   type EmojiPickerStore,
   EmojiPickerStoreProvider,
-  createEmojiPickerStore,
   sameEmojiPickerRow,
   useEmojiPickerStore,
 } from "../store";
@@ -470,8 +470,8 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
       >
         <EmojiPickerStoreProvider store={store}>
           <EmojiPickerDataHandler
-            emojiVersion={emojiVersion}
             emojibaseUrl={emojibaseUrl}
+            emojiVersion={emojiVersion}
           />
           {children}
         </EmojiPickerStoreProvider>
@@ -894,8 +894,8 @@ const EmojiPickerListRow = memo(
       <Row {...listRowProps(rowIndex)}>
         {row.emojis.map((emoji, columnIndex) => (
           <EmojiPickerListEmoji
-            Emoji={Emoji}
             columnIndex={columnIndex}
+            Emoji={Emoji}
             emoji={emoji}
             key={emoji.label}
             rowIndex={rowIndex}
@@ -1248,8 +1248,6 @@ const EmojiPickerSkinToneSelector = forwardRef<
       ]!;
     const nextSkinTone = nextSkinToneVariation.skinTone;
 
-    const skinToneLabel =
-      skinTone === "none" ? undefined : skinTones?.[skinTone];
     const nextSkinToneLabel =
       nextSkinTone === "none" ? undefined : skinTones?.[nextSkinTone];
 
@@ -1272,7 +1270,6 @@ const EmojiPickerSkinToneSelector = forwardRef<
           ariaLabel + (nextSkinToneLabel ? ` (${nextSkinToneLabel})` : "")
         }
         aria-live="polite"
-        aria-valuetext={skinToneLabel}
         frimousse-skin-tone-selector=""
         onClick={handleClick}
         ref={forwardedRef}
@@ -1314,7 +1311,9 @@ function EmojiPickerLoading({ children, ...props }: EmojiPickerLoadingProps) {
 
 function EmojiPickerEmptyWithSearch({
   children,
-}: { children: (props: { search: string }) => ReactNode }) {
+}: {
+  children: (props: { search: string }) => ReactNode;
+}) {
   const store = useEmojiPickerStore();
   const search = useSelector(store, $search);
 

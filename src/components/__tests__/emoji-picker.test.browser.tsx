@@ -1,3 +1,5 @@
+/* biome-ignore-all lint/a11y/useAriaPropsSupportedByRole: ARIA attributes are used for testing purposes */
+
 import { page, userEvent } from "@vitest/browser/context";
 import { Children, type ReactNode, useState } from "react";
 import { describe, expect, it } from "vitest";

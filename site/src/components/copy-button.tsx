@@ -1,10 +1,10 @@
 "use client";
 
+import { Check, Copy } from "lucide-react";
+import { AnimatePresence, motion, type Variants } from "motion/react";
+import { useCallback, useRef, useState } from "react";
 import { useIsMounted } from "@/hooks/use-mounted";
 import { cn } from "@/lib/utils";
-import { Check, Copy } from "lucide-react";
-import { AnimatePresence, type Variants, motion } from "motion/react";
-import { useCallback, useRef, useState } from "react";
 import { Button } from "./ui/button";
 
 const COPY_ANIMATION_DURATION = 2000;

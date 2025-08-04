@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
+import { cn } from "@/lib/utils";
 
 interface PropertiesListRowProps
   extends Omit<ComponentProps<"li">, "name" | "type"> {

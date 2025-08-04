@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
 import { LoaderCircleIcon } from "lucide-react";
 import { useInView } from "motion/react";
 import { type ComponentProps, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 export function ExamplePreview({
   children,

@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
 import { unstable_cacheLife as cacheLife } from "next/cache";
 import { type ComponentProps, Suspense } from "react";
+import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import { ThemeSwitcher } from "../ui/theme-switcher";
 

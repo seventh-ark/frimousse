@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import {
   type EmojiPickerListCategoryHeaderProps,
   type EmojiPickerListEmojiProps,
@@ -8,7 +7,8 @@ import {
   EmojiPicker as EmojiPickerPrimitive,
   type EmojiPickerRootProps,
 } from "frimousse";
-import type { CSSProperties, ComponentProps } from "react";
+import type { ComponentProps, CSSProperties } from "react";
+import { cn } from "@/lib/utils";
 import { buttonVariants } from "./button";
 
 interface EmojiPickerProps extends EmojiPickerRootProps {

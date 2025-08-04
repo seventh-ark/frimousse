@@ -1,11 +1,11 @@
+import { CircleHelp } from "lucide-react";
+import type { ComponentProps } from "react";
 import { ColorfulButtonsAlternate } from "@/examples/colorful-buttons/colorful-buttons-alternate";
 import { ColorfulButtonsBlur } from "@/examples/colorful-buttons/colorful-buttons-blur";
 import { ShadcnUi } from "@/examples/shadcnui/shadcnui";
 import { ShadcnUiPopover } from "@/examples/shadcnui/shadcnui-popover";
 import { Usage } from "@/examples/usage/usage";
 import { cn } from "@/lib/utils";
-import { CircleHelp } from "lucide-react";
-import type { ComponentProps } from "react";
 import { PermalinkHeading } from "../permalink-heading";
 import { CodeBlock } from "../ui/code-block";
 import {
