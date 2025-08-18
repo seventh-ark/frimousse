@@ -8,7 +8,8 @@
     "start": "next start",
     "test": "vitest run --silent",
     "test:watch": "vitest watch --silent",
-    "format": "biome check --write --assists-enabled=true",
+    "format": "biome check --write",
+    "lint": "turbo run lint:tsc lint:biome",
     "lint:tsc": "tsc --noEmit",
     "lint:biome": "biome lint"
   },

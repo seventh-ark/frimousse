@@ -11,8 +11,7 @@
     "actions": {
       "source": {
         "organizeImports": "on",
-        "useSortedAttributes": "on",
-        "useSortedProperties": "on"
+        "useSortedAttributes": "on"
       }
     }
   },
@@ -21,6 +20,7 @@
     "rules": {
       "recommended": true,
       "correctness": {
+        "noNestedComponentDefinitions": "off",
         "noUnusedFunctionParameters": "on",
         "noUnusedVariables": "on",
         "noUnusedImports": "on",
@@ -37,7 +37,8 @@
       },
       "suspicious": {
         "noExplicitAny": "off",
-        "noArrayIndexKey": "off"
+        "noArrayIndexKey": "off",
+        "noUnassignedVariables": "on"
       },
       "style": {
         "noNonNullAssertion": "off",
@@ -50,22 +51,7 @@
       "a11y": {
         "useSemanticElements": "off",
         "noAutofocus": "off"
-      },
-      "nursery": {
-        "noUnassignedVariables": "on",
-        "useSortedClasses": {
-          "fix": "safe",
-          "level": "on",
-          "options": {
-            "functions": ["classNames", "clsx", "cn"]
-          }
-        }
       }
-    }
-  },
-  "css": {
-    "parser": {
-      "cssModules": true
     }
   },
   "vcs": {
