@@ -1,5 +1,5 @@
 {
-  "name": "frimousse",
+  "name": "@seventh-ark/frimousse",
   "description": "A lightweight, unstyled, and composable emoji picker for React.",
   "version": "0.4.0",
   "license": "MIT",
@@ -23,6 +23,9 @@
         "default": "./dist/index.cjs"
       }
     }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "files": [
     "dist/**",
@@ -77,11 +80,11 @@
     "vitest-fetch-mock": "^0.4.5"
   },
   "bugs": {
-    "url": "https://github.com/liveblocks/frimousse/issues"
+    "url": "https://github.com/seventh-ark/frimousse/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liveblocks/frimousse.git"
+    "url": "git+https://github.com/seventh-ark/frimousse.git"
   },
   "homepage": "https://frimousse.liveblocks.io",
   "keywords": [
