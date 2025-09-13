@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.4.0] - 2025-09-13
+
+- Allow to exclude emojis
+
 ## [0.3.0] - 2025-07-15
 
 - Add `sticky` prop on `EmojiPicker.Root` to allow disabling sticky category headers, thanks @Earthsplit!
