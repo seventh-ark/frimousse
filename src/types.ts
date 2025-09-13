@@ -202,6 +202,9 @@ export interface EmojiPickerRootProps extends ComponentProps<"div"> {
    * @default true
    */
   sticky?: boolean;
+
+  /** Excluded emoji list */
+  excludedEmojis?: Array<string>;
 }
 
 export type EmojiPickerViewportProps = ComponentProps<"div">;

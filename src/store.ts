@@ -18,6 +18,7 @@ export type EmojiPickerStore = {
   columns: number;
   sticky: boolean;
   skinTone: SkinTone;
+  excludedEmojis?: Array<string>;
   onEmojiSelect: NonNullable<EmojiPickerRootProps["onEmojiSelect"]>;
 
   data: EmojiPickerData | null | undefined;
@@ -62,6 +63,7 @@ export function createEmojiPickerStore(
   initialColumns: number,
   initialSticky: boolean,
   initialSkinTone: SkinTone,
+  initialExcludedEmojis?: Array<string>,
 ) {
   let viewportScrollY = 0;
 
@@ -70,6 +72,7 @@ export function createEmojiPickerStore(
     columns: initialColumns,
     sticky: initialSticky,
     skinTone: initialSkinTone,
+    excludedEmojis: initialExcludedEmojis,
     onEmojiSelect,
 
     data: null,

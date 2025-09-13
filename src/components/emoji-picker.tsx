@@ -73,6 +73,7 @@ function EmojiPickerDataHandler({
   const columns = useSelectorKey(store, "columns");
   const skinTone = useSelectorKey(store, "skinTone");
   const search = useSelectorKey(store, "search");
+  const excludedEmojis = useSelectorKey(store, "excludedEmojis");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -103,12 +104,18 @@ function EmojiPickerDataHandler({
         store
           .get()
           .onDataChange(
-            getEmojiPickerData(emojiData, columns, skinTone, search),
+            getEmojiPickerData(
+              emojiData,
+              columns,
+              skinTone,
+              search,
+              excludedEmojis,
+            ),
           );
       },
       { timeout: 100 },
     );
-  }, [emojiData, columns, skinTone, search]);
+  }, [emojiData, columns, skinTone, search, excludedEmojis]);
 
   return null;
 }
@@ -150,6 +157,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
       children,
       style,
       sticky = true,
+      excludedEmojis,
       ...props
     },
     forwardedRef,
@@ -162,6 +170,7 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
         columns,
         sticky,
         validateSkinTone(skinTone),
+        excludedEmojis,
       ),
     );
     const [isFocusedWithin, setFocusedWithin] = useState(false);
@@ -188,6 +197,10 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
     useLayoutEffect(() => {
       store.set({ skinTone: validateSkinTone(skinTone) });
     }, [skinTone]);
+
+    useLayoutEffect(() => {
+      store.set({ excludedEmojis });
+    }, [excludedEmojis]);
 
     const handleFocusCapture = useCallback(
       (event: ReactFocusEvent<HTMLDivElement>) => {
