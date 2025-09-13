@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { EmojiData } from "../../types";
-import { getEmojiPickerData, searchEmojis } from "../emoji-picker";
+import { getEmojiPickerData, searchAndExcludeEmojis } from "../emoji-picker";
 
 const data: EmojiData = {
   locale: "en",
@@ -214,30 +214,44 @@ const data: EmojiData = {
 
 describe("searchEmojis", () => {
   it("should return all emojis when search is missing or empty", () => {
-    expect(searchEmojis(data.emojis)).toEqual(data.emojis);
-    expect(searchEmojis(data.emojis, "")).toEqual(data.emojis);
+    expect(searchAndExcludeEmojis(data.emojis)).toEqual(data.emojis);
+    expect(searchAndExcludeEmojis(data.emojis, "")).toEqual(data.emojis);
   });
 
   it("should filter emojis by label", () => {
-    const results = searchEmojis(data.emojis, "broccoli");
+    const results = searchAndExcludeEmojis(data.emojis, "broccoli");
 
     expect(results).toHaveLength(1);
     expect(results[0]?.emoji).toBe("🥦");
-    expect(searchEmojis(data.emojis, "   BrOcCoLi ")).toEqual(results);
+    expect(searchAndExcludeEmojis(data.emojis, "   BrOcCoLi ")).toEqual(
+      results,
+    );
   });
 
   it("should filter emojis by tags", () => {
-    const results = searchEmojis(data.emojis, "film");
+    const results = searchAndExcludeEmojis(data.emojis, "film");
 
     expect(results).toHaveLength(1);
     expect(results[0]?.emoji).toBe("🎦");
-    expect(searchEmojis(data.emojis, " FiLm   ")).toEqual(results);
+    expect(searchAndExcludeEmojis(data.emojis, " FiLm   ")).toEqual(results);
   });
 
   it("should return an empty array if no match is found", () => {
-    const results = searchEmojis(data.emojis, "unknown");
+    const results = searchAndExcludeEmojis(data.emojis, "unknown");
 
     expect(results).toHaveLength(0);
+  });
+
+  it("should return array without excluded emojis", () => {
+    const excludedEmojis = ["🙂"];
+    const results = searchAndExcludeEmojis(
+      data.emojis,
+      undefined,
+      excludedEmojis,
+    );
+
+    expect(results).toHaveLength(10);
+    expect(results[0]?.emoji).not.toBe("🙂");
   });
 });
 

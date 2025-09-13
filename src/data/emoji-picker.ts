@@ -10,35 +10,47 @@ import type {
 } from "../types";
 import { chunk } from "../utils/chunk";
 
-export function searchEmojis(emojis: EmojiDataEmoji[], search?: string) {
-  if (!search) {
+export function searchAndExcludeEmojis(
+  emojis: EmojiDataEmoji[],
+  search?: string,
+  excludedEmojis?: Array<string>,
+) {
+  if (!search && !excludedEmojis) {
     return emojis;
   }
 
-  const searchText = search.toLowerCase().trim();
+  const searchText = search?.toLowerCase().trim() ?? "";
   const scores = new WeakMap<Emoji, number>();
 
   return emojis
     .filter((emoji) => {
-      let score = 0;
-
-      if (emoji.label.toLowerCase().includes(searchText)) {
-        score += 10;
+      if (excludedEmojis?.includes(emoji.emoji)) {
+        return false;
       }
 
-      for (const tag of emoji.tags) {
-        if (tag.toLowerCase().includes(searchText)) {
-          score += 1;
+      if (searchText !== "") {
+        let score = 0;
+
+        if (emoji.label.toLowerCase().includes(searchText)) {
+          score += 10;
         }
+
+        for (const tag of emoji.tags) {
+          if (tag.toLowerCase().includes(searchText)) {
+            score += 1;
+          }
+        }
+
+        if (score > 0) {
+          scores.set(emoji, score);
+
+          return true;
+        }
+
+        return false;
       }
 
-      if (score > 0) {
-        scores.set(emoji, score);
-
-        return true;
-      }
-
-      return false;
+      return true;
     })
     .sort((a, b) => (scores.get(b) ?? 0) - (scores.get(a) ?? 0));
 }
@@ -48,8 +60,9 @@ export function getEmojiPickerData(
   columns: number,
   skinTone: SkinTone | undefined,
   search: string,
+  excludedEmojis?: Array<string>,
 ): EmojiPickerData {
-  const emojis = searchEmojis(data.emojis, search);
+  const emojis = searchAndExcludeEmojis(data.emojis, search, excludedEmojis);
   const rows: EmojiPickerDataRow[] = [];
   const categories: EmojiPickerDataCategory[] = [];
   const categoriesStartRowIndices: number[] = [];
