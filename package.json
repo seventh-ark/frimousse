@@ -24,9 +24,6 @@
       }
     }
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "files": [
     "dist/**",
     "README.md",
