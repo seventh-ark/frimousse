@@ -16,12 +16,19 @@ type SkinToneVariation = {
 };
 type Emoji = Resolve<EmojiPickerEmoji>;
 type Category = Resolve<EmojiPickerCategory>;
+type EmojiDataCategory = {
+    index: number;
+    label: string;
+    isCustom?: boolean;
+};
 type EmojiPickerEmoji = {
     emoji: string;
     label: string;
+    isCustom?: boolean;
 };
 type EmojiPickerCategory = {
     label: string;
+    isCustom?: boolean;
 };
 type EmojiPickerListComponents = {
     /**
@@ -124,6 +131,10 @@ interface EmojiPickerRootProps extends ComponentProps<"div"> {
     sticky?: boolean;
     /** Excluded emoji list */
     excludedEmojis?: Array<string>;
+    /** Custom category list */
+    customCategories?: Array<EmojiDataCategory>;
+    /** Custom emoji list */
+    customEmojis?: Array<CustomEmoji>;
 }
 type EmojiPickerViewportProps = ComponentProps<"div">;
 type EmojiPickerSearchProps = ComponentProps<"input">;
@@ -189,6 +200,17 @@ type EmojiPickerSkinToneProps = {
      * to change it, as well as the skin tone variations of the specified emoji.
      */
     children: (props: EmojiPickerSkinToneRenderProps) => ReactNode;
+};
+type CustomCategory = EmojiDataCategory;
+type CustomEmoji = {
+    /** Emoji image path */
+    emoji: string;
+    /** Emoji category */
+    category: number;
+    /** Emoji name */
+    label: string;
+    /** Emoji tags */
+    tags?: Array<string>;
 };
 
 /**
@@ -516,4 +538,4 @@ declare function useActiveEmoji(): Emoji | undefined;
  */
 declare function useSkinTone(emoji?: string): [SkinTone, (skinTone: SkinTone) => void, SkinToneVariation[]];
 
-export { type Category, type Emoji, emojiPicker as EmojiPicker, type EmojiPickerActiveEmojiProps, type EmojiPickerEmptyProps, type EmojiPickerListCategoryHeaderProps, type EmojiPickerListComponents, type EmojiPickerListEmojiProps, type EmojiPickerListProps, type EmojiPickerListRowProps, type EmojiPickerLoadingProps, type EmojiPickerRootProps, type EmojiPickerSearchProps, type EmojiPickerSkinToneProps, type EmojiPickerSkinToneSelectorProps, type EmojiPickerViewportProps, type Locale, type SkinTone, useActiveEmoji, useSkinTone };
+export { type Category, type CustomCategory, type CustomEmoji, type Emoji, emojiPicker as EmojiPicker, type EmojiPickerActiveEmojiProps, type EmojiPickerEmptyProps, type EmojiPickerListCategoryHeaderProps, type EmojiPickerListComponents, type EmojiPickerListEmojiProps, type EmojiPickerListProps, type EmojiPickerListRowProps, type EmojiPickerLoadingProps, type EmojiPickerRootProps, type EmojiPickerSearchProps, type EmojiPickerSkinToneProps, type EmojiPickerSkinToneSelectorProps, type EmojiPickerViewportProps, type Locale, type SkinTone, useActiveEmoji, useSkinTone };
