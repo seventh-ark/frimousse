@@ -1,4 +1,6 @@
-## [Unreleased]
+## [0.5.0] - 2025-09-18
+
+- Add custom categories and custom emojis
 
 ## [0.4.0] - 2025-09-13
 
