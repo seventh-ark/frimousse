@@ -201,7 +201,10 @@ type EmojiPickerSkinToneProps = {
      */
     children: (props: EmojiPickerSkinToneRenderProps) => ReactNode;
 };
-type CustomCategory = EmojiDataCategory;
+type CustomCategory = {
+    index: number;
+    label: string;
+};
 type CustomEmoji = {
     /** Emoji image path */
     emoji: string;
