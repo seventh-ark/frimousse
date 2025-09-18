@@ -48,11 +48,13 @@ export type EmojiDataEmoji = {
   tags: string[];
   countryFlag: true | undefined;
   skins: Record<Exclude<SkinTone, "none">, string> | undefined;
+  isCustom?: boolean;
 };
 
 export type EmojiDataCategory = {
   index: number;
   label: string;
+  isCustom?: boolean;
 };
 
 export type EmojiData = {
@@ -65,10 +67,12 @@ export type EmojiData = {
 export type EmojiPickerEmoji = {
   emoji: string;
   label: string;
+  isCustom?: boolean;
 };
 
 export type EmojiPickerCategory = {
   label: string;
+  isCustom?: boolean;
 };
 
 export type EmojiPickerDataRow = {
@@ -78,6 +82,7 @@ export type EmojiPickerDataRow = {
 
 export type EmojiPickerDataCategory = {
   label: string;
+  isCustom?: boolean;
   rowsCount: number;
   startRowIndex: number;
 };
@@ -205,6 +210,12 @@ export interface EmojiPickerRootProps extends ComponentProps<"div"> {
 
   /** Excluded emoji list */
   excludedEmojis?: Array<string>;
+
+  /** Custom category list */
+  customCategories?: Array<EmojiDataCategory>;
+
+  /** Custom emoji list */
+  customEmojis?: Array<CustomEmoji>;
 }
 
 export type EmojiPickerViewportProps = ComponentProps<"div">;
@@ -285,4 +296,17 @@ export type EmojiPickerSkinToneProps = {
    * to change it, as well as the skin tone variations of the specified emoji.
    */
   children: (props: EmojiPickerSkinToneRenderProps) => ReactNode;
+};
+
+export type CustomCategory = EmojiDataCategory;
+
+export type CustomEmoji = {
+  /** Emoji image path */
+  emoji: string;
+  /** Emoji category */
+  category: number;
+  /** Emoji name */
+  label: string;
+  /** Emoji tags */
+  tags?: Array<string>;
 };

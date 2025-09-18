@@ -1,5 +1,7 @@
 import type { RefObject } from "react";
 import type {
+  CustomEmoji,
+  EmojiDataCategory,
   EmojiPickerData,
   EmojiPickerDataRow,
   EmojiPickerEmoji,
@@ -19,6 +21,8 @@ export type EmojiPickerStore = {
   sticky: boolean;
   skinTone: SkinTone;
   excludedEmojis?: Array<string>;
+  customCategories?: Array<EmojiDataCategory>;
+  customEmojis?: Array<CustomEmoji>;
   onEmojiSelect: NonNullable<EmojiPickerRootProps["onEmojiSelect"]>;
 
   data: EmojiPickerData | null | undefined;
@@ -64,6 +68,8 @@ export function createEmojiPickerStore(
   initialSticky: boolean,
   initialSkinTone: SkinTone,
   initialExcludedEmojis?: Array<string>,
+  initialCustomCategories?: Array<EmojiDataCategory>,
+  initialCustomEmojis?: Array<CustomEmoji>,
 ) {
   let viewportScrollY = 0;
 
@@ -73,6 +79,8 @@ export function createEmojiPickerStore(
     sticky: initialSticky,
     skinTone: initialSkinTone,
     excludedEmojis: initialExcludedEmojis,
+    customCategories: initialCustomCategories,
+    customEmojis: initialCustomEmojis,
     onEmojiSelect,
 
     data: null,

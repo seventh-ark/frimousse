@@ -38,6 +38,8 @@ import {
 } from "../store";
 import type {
   EmojiData,
+  EmojiDataCategory,
+  EmojiDataEmoji,
   EmojiPickerActiveEmojiProps,
   EmojiPickerCategory,
   EmojiPickerDataCategory,
@@ -56,6 +58,7 @@ import type {
   EmojiPickerViewportProps,
   WithAttributes,
 } from "../types";
+import { capitalize } from "../utils/capitalize";
 import { shallow } from "../utils/compare";
 import { noop } from "../utils/noop";
 import { requestIdleCallback } from "../utils/request-idle-callback";
@@ -74,6 +77,8 @@ function EmojiPickerDataHandler({
   const skinTone = useSelectorKey(store, "skinTone");
   const search = useSelectorKey(store, "search");
   const excludedEmojis = useSelectorKey(store, "excludedEmojis");
+  const customCategories = useSelectorKey(store, "customCategories");
+  const customEmojis = useSelectorKey(store, "customEmojis");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -81,7 +86,48 @@ function EmojiPickerDataHandler({
 
     getEmojiData({ locale, emojiVersion, emojibaseUrl, signal })
       .then((data) => {
-        setEmojiData(data);
+        if (customCategories === undefined && customEmojis === undefined) {
+          return setEmojiData(data);
+        }
+
+        let categories: Array<EmojiDataCategory>;
+
+        if (customCategories !== undefined && customCategories.length !== 0) {
+          categories = customCategories.map((customCategory) => ({
+            index: customCategory.index,
+            label: capitalize(customCategory.label),
+            isCustom: true,
+          }));
+
+          categories = categories.concat(data.categories);
+        } else {
+          categories = data.categories;
+        }
+
+        let emojis: Array<EmojiDataEmoji>;
+
+        if (customEmojis !== undefined && customEmojis.length !== 0) {
+          emojis = customEmojis.map((customEmoji) => ({
+            emoji: customEmoji.emoji,
+            category: customEmoji.category,
+            version: 0,
+            label: capitalize(customEmoji.label),
+            tags: customEmoji.tags ?? [],
+            countryFlag: undefined,
+            skins: undefined,
+            isCustom: true,
+          }));
+
+          emojis = emojis.concat(data.emojis);
+        } else {
+          emojis = data.emojis;
+        }
+
+        setEmojiData({
+          ...data,
+          categories,
+          emojis,
+        });
       })
       .catch((error) => {
         if (!signal.aborted) {
@@ -92,7 +138,7 @@ function EmojiPickerDataHandler({
     return () => {
       controller.abort();
     };
-  }, [emojiVersion, emojibaseUrl, locale]);
+  }, [emojiVersion, emojibaseUrl, locale, customCategories, customEmojis]);
 
   useEffect(() => {
     if (!emojiData) {
@@ -158,6 +204,8 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
       style,
       sticky = true,
       excludedEmojis,
+      customCategories,
+      customEmojis,
       ...props
     },
     forwardedRef,
@@ -171,6 +219,8 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
         sticky,
         validateSkinTone(skinTone),
         excludedEmojis,
+        customCategories,
+        customEmojis,
       ),
     );
     const [isFocusedWithin, setFocusedWithin] = useState(false);
@@ -201,6 +251,14 @@ const EmojiPickerRoot = forwardRef<HTMLDivElement, EmojiPickerRootProps>(
     useLayoutEffect(() => {
       store.set({ excludedEmojis });
     }, [excludedEmojis]);
+
+    useLayoutEffect(() => {
+      store.set({ customCategories });
+    }, [customCategories]);
+
+    useLayoutEffect(() => {
+      store.set({ customEmojis });
+    }, [customEmojis]);
 
     const handleFocusCapture = useCallback(
       (event: ReactFocusEvent<HTMLDivElement>) => {
@@ -943,7 +1001,11 @@ const EmojiPickerListCategory = memo(
     return (
       <div {...listCategoryProps(categoryIndex, category)}>
         <CategoryHeader
-          {...listCategoryHeaderProps({ label: category.label }, false, sticky)}
+          {...listCategoryHeaderProps(
+            { label: category.label, isCustom: category.isCustom },
+            false,
+            sticky,
+          )}
         />
       </div>
     );
@@ -1061,7 +1123,11 @@ function DefaultEmojiPickerListEmoji({
 }: EmojiPickerListEmojiProps) {
   return (
     <button type="button" {...props}>
-      {emoji.emoji}
+      {emoji.isCustom === true ? (
+        <img alt={emoji.label} src={emoji.emoji} />
+      ) : (
+        emoji.emoji
+      )}
     </button>
   );
 }
