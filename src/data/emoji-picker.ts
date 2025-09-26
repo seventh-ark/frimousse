@@ -82,6 +82,7 @@ export function getEmojiPickerData(
           : emoji.emoji,
       label: emoji.label,
       isCustom: emoji.isCustom,
+      meta: emoji.meta,
     });
   }
 

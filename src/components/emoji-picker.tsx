@@ -116,6 +116,7 @@ function EmojiPickerDataHandler({
             countryFlag: undefined,
             skins: undefined,
             isCustom: true,
+            meta: customEmoji.meta,
           }));
 
           emojis = emojis.concat(data.emojis);

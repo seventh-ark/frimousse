@@ -21,10 +21,11 @@ type EmojiDataCategory = {
     label: string;
     isCustom?: boolean;
 };
-type EmojiPickerEmoji = {
+type EmojiPickerEmoji<T = Record<string, unknown>> = {
     emoji: string;
     label: string;
     isCustom?: boolean;
+    meta?: T;
 };
 type EmojiPickerCategory = {
     label: string;
@@ -205,7 +206,7 @@ type CustomCategory = {
     index: number;
     label: string;
 };
-type CustomEmoji = {
+type CustomEmoji<T = Record<string, unknown>> = {
     /** Emoji image path */
     emoji: string;
     /** Emoji category */
@@ -214,6 +215,8 @@ type CustomEmoji = {
     label: string;
     /** Emoji tags */
     tags?: Array<string>;
+    /** Extra data */
+    meta?: T;
 };
 
 /**
