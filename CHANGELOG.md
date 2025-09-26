@@ -1,3 +1,7 @@
+## [0.6.0] - 2025-09-26
+
+- Allow to pass extra data to custom emojis
+
 ## [0.5.0] - 2025-09-18
 
 - Add custom categories and custom emojis
