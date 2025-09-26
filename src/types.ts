@@ -40,7 +40,7 @@ export type Emoji = Resolve<EmojiPickerEmoji>;
 
 export type Category = Resolve<EmojiPickerCategory>;
 
-export type EmojiDataEmoji = {
+export type EmojiDataEmoji<T = Record<string, unknown>> = {
   emoji: string;
   category: number;
   label: string;
@@ -49,6 +49,7 @@ export type EmojiDataEmoji = {
   countryFlag: true | undefined;
   skins: Record<Exclude<SkinTone, "none">, string> | undefined;
   isCustom?: boolean;
+  meta?: T;
 };
 
 export type EmojiDataCategory = {
@@ -64,10 +65,11 @@ export type EmojiData = {
   skinTones: Record<Exclude<SkinTone, "none">, string>;
 };
 
-export type EmojiPickerEmoji = {
+export type EmojiPickerEmoji<T = Record<string, unknown>> = {
   emoji: string;
   label: string;
   isCustom?: boolean;
+  meta?: T;
 };
 
 export type EmojiPickerCategory = {
@@ -303,7 +305,7 @@ export type CustomCategory = {
   label: string;
 };
 
-export type CustomEmoji = {
+export type CustomEmoji<T = Record<string, unknown>> = {
   /** Emoji image path */
   emoji: string;
   /** Emoji category */
@@ -312,4 +314,6 @@ export type CustomEmoji = {
   label: string;
   /** Emoji tags */
   tags?: Array<string>;
+  /** Extra data */
+  meta?: T;
 };
