@@ -36,7 +36,7 @@ export type SkinToneVariation = {
   emoji: string;
 };
 
-export type Emoji = Resolve<EmojiPickerEmoji>;
+export type Emoji<T = Record<string, unknown>> = Resolve<EmojiPickerEmoji<T>>;
 
 export type Category = Resolve<EmojiPickerCategory>;
 
@@ -58,9 +58,9 @@ export type EmojiDataCategory = {
   isCustom?: boolean;
 };
 
-export type EmojiData = {
+export type EmojiData<T = Record<string, unknown>> = {
   locale: Locale;
-  emojis: EmojiDataEmoji[];
+  emojis: EmojiDataEmoji<T>[];
   categories: EmojiDataCategory[];
   skinTones: Record<Exclude<SkinTone, "none">, string>;
 };
@@ -77,9 +77,9 @@ export type EmojiPickerCategory = {
   isCustom?: boolean;
 };
 
-export type EmojiPickerDataRow = {
+export type EmojiPickerDataRow<T = Record<string, unknown>> = {
   categoryIndex: number;
-  emojis: EmojiPickerEmoji[];
+  emojis: EmojiPickerEmoji<T>[];
 };
 
 export type EmojiPickerDataCategory = {
@@ -89,11 +89,11 @@ export type EmojiPickerDataCategory = {
   startRowIndex: number;
 };
 
-export type EmojiPickerData = {
+export type EmojiPickerData<T = Record<string, unknown>> = {
   count: number;
   categories: EmojiPickerDataCategory[];
   categoriesStartRowIndices: number[];
-  rows: EmojiPickerDataRow[];
+  rows: EmojiPickerDataRow<T>[];
   skinTones: Record<Exclude<SkinTone, "none">, string>;
 };
 

@@ -14,7 +14,7 @@ type SkinToneVariation = {
     skinTone: SkinTone;
     emoji: string;
 };
-type Emoji = Resolve<EmojiPickerEmoji>;
+type Emoji<T = Record<string, unknown>> = Resolve<EmojiPickerEmoji<T>>;
 type Category = Resolve<EmojiPickerCategory>;
 type EmojiDataCategory = {
     index: number;
